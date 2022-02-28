@@ -2,6 +2,24 @@
 ```
 Web application platform for facilitate KMITL's teacher and teacher assistant(student)
 ``` 
+## Knowledge for this project.
+> - ### [React](https://reactjs.org/)
+>   Main framework.
+---
+> - ### [Redux](https://redux.js.org/)
+>    State management.
+---
+> - ### [Tailwind](https://tailwindcss.com/)
+>    For css framework.
+---
+> - ### [GSAP](https://greensock.com/gsap/)
+>    Animation!
+---
+> - ### [HeadlessUI](https://headlessui.dev/)
+>    UI components.
+    
+
+
 
 
 # Getting Started with Create React App
