@@ -1,10 +1,25 @@
 import React from "react";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+
+import Login from "./views/login/Login";
+import Register from "./views/register/Register";
+import Home from "./views/home/Home";
+
+import Navbar from "./component/navbar/Navbar";
+import Modal from "./component/modal/Modal";
 
 const App = () => {
     return (
-        <div className="flex min-h-screen w-screen items-center justify-center">
-            <span className="text-xl font-bold uppercase">app</span>
+        <div className="min-h-screen w-screen">
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Home/>} />
+                <Route path="login" element={<Login/>} />
+                <Route path="register" element={<Register/>} />
+            </Routes>
+            <Modal>
+                coooolllll
+            </Modal>
         </div>
     );
 };
