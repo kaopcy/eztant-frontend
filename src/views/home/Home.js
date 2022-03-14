@@ -1,9 +1,8 @@
-import React from 'react'
-
+import React from "react";
+import { useLocation } from "react-router-dom";
+import RegisterModal from "../register/Register";
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+    return <div></div>;
+};
 
-export default Home
+export default Home;

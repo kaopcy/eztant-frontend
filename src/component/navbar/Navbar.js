@@ -1,11 +1,12 @@
 import React from "react";
-import { Link, useMatch, useResolvedPath } from "react-router-dom";
+import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 const Navbar = () => {
+    const location = useLocation()
     return (
         <div className="relative flex h-[80px] w-full items-center justify-end space-x-7 bg-slate-100 px-4 font-bold text-blue-700">
             <CustomLink to="/">Home</CustomLink>
             <CustomLink to="login">Login</CustomLink>
-            <CustomLink to="register">Register</CustomLink>
+            <CustomLink to="register" state={{backgroundLocation: location}} >Register</CustomLink>
         </div>
     );
 };

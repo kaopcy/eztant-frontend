@@ -1,25 +1,28 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Login from "./views/login/Login";
-import Register from "./views/register/Register";
+import RegisterModal from "./views/register/Register";
 import Home from "./views/home/Home";
 
 import Navbar from "./component/navbar/Navbar";
-import Modal from "./component/modal/Modal";
 
 const App = () => {
+    const location = useLocation();
+    const backgroundLocation = location.state || null
     return (
         <div className="min-h-screen w-screen">
             <Navbar />
-            <Routes>
-                <Route path="/" element={<Home/>} />
-                <Route path="login" element={<Login/>} />
-                <Route path="register" element={<Register/>} />
+            <Routes location={backgroundLocation || location}>
+                <Route index path="/" element={<Home />} />
+                <Route path="login" element={<Login />} />
             </Routes>
-            <Modal>
-                coooolllll
-            </Modal>
+
+            {backgroundLocation && (
+                <Routes>
+                    <Route path="/register" element={<RegisterModal />} />
+                </Routes>
+            )}
         </div>
     );
 };
