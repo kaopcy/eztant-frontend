@@ -4,43 +4,41 @@
 
 @layer base {
     @font-face {
-        font-family: 'Thonburi';
+        font-family: "Thonburi";
         font-weight: 500;
         src: url("./assets/fonts/SFThonburi-Regular.ttf");
     }
     @font-face {
-        font-family: 'Thonburi';
+        font-family: "Thonburi";
         font-weight: 600;
         src: url("./assets/fonts/SFThonburi-Semibold.ttf");
     }
     @font-face {
-        font-family: 'Thonburi';
+        font-family: "Thonburi";
         font-weight: 700;
         src: url("./assets/fonts/SFThonburi-Bold.ttf");
     }
     * {
-        font-family: 'Thonburi', system-ui, sans-serif;
+        font-family: "Thonburi", system-ui, sans-serif;
     }
 }
 
 @layer components {
     .input-register {
-        @apply rounded-md border p-1 text-sm outline-none focus:border-gray-500;
+        @apply w-full rounded-md border px-2 py-[0.45rem] text-xs outline-none focus:border-gray-300;
     }
     .input-lable {
-        @apply text-sm;
+        @apply text-xs;
     }
 
     .flex-col-cen {
-        @apply flex flex-col items-center justify-center space-x-2;
+        @apply flex flex-col items-center justify-center;
     }
-
-    .flex-container {
-        @apply flex h-full w-full flex-col items-center justify-center;
-    }
-
     .flex-cen {
-        @apply flex items-center justify-center space-y-2;
+        @apply flex items-center justify-center;
+    }
+    .triangle-clip {
+        clip-path: polygon(0 0, 0% 100%, 100% 100%);
     }
 }
 
@@ -52,6 +50,8 @@
 
 .vertical-text {
     writing-mode: vertical-lr;
+    -webkit-writing-mode: vertical-lr;
+    -ms-writing-mode: vertical-lr;
     text-orientation: mixed;
     transform: scaleX(-1) scaleY(-1);
 }
