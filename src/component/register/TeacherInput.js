@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import {
     faChevronLeft,
-    faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
+import { ReactComponent as GoogleSVG } from '../../assets/logos/google.svg'
 
-const TeacherInput = ({ userinput, handleInput, role, onClose }) => {
+const TeacherInput = (props) => {
+    const { userinput, handleInput, role, onClose , handleOnRegSuccess } = props;
     const container = useRef(null);
     useEffect(() => {
         gsap.to(container.current, {
@@ -18,7 +19,6 @@ const TeacherInput = ({ userinput, handleInput, role, onClose }) => {
     }, []);
 
     useEffect(() => {
-        const inputGroup = document.querySelectorAll(".input-group");
         console.log("appeared");
         const tl = gsap.timeline();
         if (role === "teacher") {
@@ -27,35 +27,24 @@ const TeacherInput = ({ userinput, handleInput, role, onClose }) => {
                 {
                     y: container.current.offsetHeight * 1.2,
                     position: "absolute",
-                    duration: 1,
-                    ease: "power4.inOut",
                     opacity: 1,
                 },
                 {
+                    ease: "power4.out",
+                    duration: 1.5,
                     y: 0,
                 }
-            ).from(
-                inputGroup,
-                {
-                    y: (e) => e * 0.1 + 70,
-                    duration: 1,
-                    scale: 0,
-                    stagger: {
-                        amount: 0.3,
-                    },
-                },
-                "-=1"
-            );
+            )
         } else {
             tl.fromTo(
                 container.current,
                 {
                     y: "0",
                     position: "absolute",
-                    duration: 1,
-                    ease: "power4.inOut",
                 },
                 {
+                    duration: 1.5,
+                    ease: "power1",
                     y: container.current.offsetHeight * 1.2,
                 }
             );
@@ -63,7 +52,7 @@ const TeacherInput = ({ userinput, handleInput, role, onClose }) => {
     }, [role]);
 
     return (
-        <div ref={container} className="flex-col-cen w-full">
+        <div ref={container} className="flex-col-cen w-full h-full">
             <GoogleLoginButton />
             {/* divider */}
             <div className="flex-cen mt-4 space-x-1">
@@ -125,14 +114,17 @@ const TeacherInput = ({ userinput, handleInput, role, onClose }) => {
                 </div>
                 {/* btn wrapper */}
                 <div className="input-group mt-4 flex items-center justify-center space-x-8">
-                    <button className=" flex h-12 w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1">
+                    <button
+                        className=" flex h-12 w-[6.5rem] group hover:bg-secondary items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1"
+                        onClick={() => onClose()}
+                    >
                         <FontAwesomeIcon
-                            className="text-lg text-secondary"
+                            className="text-lg text-secondary group-hover:text-white"
                             icon={faChevronLeft}
                         />
-                        <span className="text-lg text-secondary">กลับ</span>
+                        <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                     </button>
-                    <button className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1">
+                    <button className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1" onClick={()=>handleOnRegSuccess()} >
                         <span className="text-lg text-white">ลงทะเบียน</span>
                     </button>
                 </div>
@@ -152,7 +144,9 @@ const TeacherInput = ({ userinput, handleInput, role, onClose }) => {
 const GoogleLoginButton = () => {
     return (
         <div className="flex items-center justify-center space-x-2 rounded-full border p-2 text-sm text-gray-600">
-            <div className="h-[20px] w-[20px] rounded-full bg-orange-300"></div>
+            <div className="h-[20px] w-[20px] rounded-full ">
+                <GoogleSVG/>
+            </div>
             <div>ลงทะเบียนด้วยบัญชี Google</div>
         </div>
     );

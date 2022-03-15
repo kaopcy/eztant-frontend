@@ -6,6 +6,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
 
+import { ReactComponent as GoogleSVG } from '../../assets/logos/google.svg'
+
 const TaInput = (props) => {
     const { role } = props;
     const container = useRef(null);
@@ -13,7 +15,6 @@ const TaInput = (props) => {
 
     // transition on change role
     useEffect(() => {
-        const inputGroup = document.querySelectorAll(".input-group");
         const tl = gsap.timeline();
         if (role === "student") {
             tl.fromTo(
@@ -21,22 +22,12 @@ const TaInput = (props) => {
                 {
                     y: -container.current.offsetHeight * 1.2,
                     position: "absolute",
-                    duration: 1,
                 },
                 {
+                    ease: "power4.out",
+                    duration: 1.5,
                     y: 0,
                 }
-            ).from(
-                inputGroup,
-                {
-                    y: -200,
-                    scale: 0,
-                    duration: 1,
-                    stagger: {
-                        amount: 0.3,
-                    },
-                },
-                "-=1"
             );
         } else {
             tl.fromTo(
@@ -44,10 +35,10 @@ const TaInput = (props) => {
                 {
                     y: "0",
                     position: "absolute",
-                    duration: 1,
                 },
                 {
-                    ease: "power4.Out",
+                    duration: 1.5,
+                    ease: "power1",
                     y: -container.current.offsetHeight * 1.2,
                 }
             );
@@ -55,7 +46,7 @@ const TaInput = (props) => {
     }, [role]);
 
     return (
-        <div ref={container} className="flex-col-cen w-full">
+        <div ref={container} className="flex-col-cen h-full w-full">
             <div className="flex-col-cen w-full">
                 {page === 1 ? (
                     <InputFirstPage {...props} setPage={setPage} />
@@ -120,9 +111,9 @@ const InputFirstPage = (props) => {
                 <div className="input-label  ">รหัสผ่าน</div>
                 <input
                     type="text"
-                    value={userinput.studentID}
+                    value={userinput.password}
                     onChange={handleInput}
-                    name={"studentID"}
+                    name={"password"}
                     className="input-register"
                 />
             </div>
@@ -130,33 +121,31 @@ const InputFirstPage = (props) => {
                 <div className="input-label  ">เบอร์โทรศัพท์</div>
                 <input
                     type="text"
-                    value={userinput.department}
+                    value={userinput.phone}
                     onChange={handleInput}
-                    name={"department"}
+                    name={"phone"}
                     className="input-register"
                 />
             </div>
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
-                <button className=" flex h-12 w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1">
+                <button
+                    className=" flex h-12 w-[6.5rem]  group items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
+                    onClick={() => onClose()}
+                >
                     <FontAwesomeIcon
-                        className="text-lg text-secondary"
+                        className="text-lg text-secondary group-hover:text-white"
                         icon={faChevronLeft}
                     />
-                    <span
-                        className="text-lg text-secondary"
-                        onClick={() => onClose()}
-                    >
-                        กลับ
-                    </span>
+                    <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                 </button>
                 <button
-                    className=" flex h-12 w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1"
+                    className=" flex h-12 w-[6.5rem] group  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
                     onClick={() => setPage(2)}
                 >
-                    <span className="text-lg text-secondary">ถัดไป</span>
+                    <span className="text-lg text-secondary group-hover:text-white">ถัดไป</span>
                     <FontAwesomeIcon
-                        className="text-lg text-secondary"
+                        className="text-lg text-secondary group-hover:text-white"
                         icon={faChevronRight}
                     />
                 </button>
@@ -166,7 +155,7 @@ const InputFirstPage = (props) => {
 };
 
 const InputSecondPage = (props) => {
-    const { userinput, handleInput, onClose, setPage } = props;
+    const { userinput, handleInput, setPage, handleOnRegSuccess } = props;
     return (
         <>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
@@ -202,16 +191,19 @@ const InputSecondPage = (props) => {
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
-                    className=" flex h-12 w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1"
+                    className=" flex h-12 w-[6.5rem] group  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
                     onClick={() => setPage(1)}
                 >
                     <FontAwesomeIcon
-                        className="text-lg text-secondary"
+                        className="text-lg text-secondary group-hover:text-white"
                         icon={faChevronLeft}
                     />
-                    <span className="text-lg text-secondary">กลับ</span>
+                    <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                 </button>
-                <button className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1">
+                <button
+                    className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1"
+                    onClick={() => handleOnRegSuccess()}
+                >
                     <span className="text-lg text-white">ลงทะเบียน</span>
                 </button>
             </div>
@@ -222,7 +214,9 @@ const InputSecondPage = (props) => {
 const GoogleLoginButton = () => {
     return (
         <div className="flex items-center justify-center space-x-2 rounded-full border p-2 text-sm text-gray-600">
-            <div className="h-[20px] w-[20px] rounded-full bg-orange-300"></div>
+            <div className="h-[20px] w-[20px] rounded-full bg-transparent">
+                <GoogleSVG />
+            </div>
             <div>ลงทะเบียนด้วยบัญชี Google</div>
         </div>
     );

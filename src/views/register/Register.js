@@ -3,9 +3,12 @@ import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import gsap, { Back, Power4 } from "gsap";
+import { useNonInitialEffect } from "../../composables/useNonInitialEffect";
 
 import { ReactComponent as RegisterPeopleTA } from "../../assets/images/register-people-ta.svg";
 import { ReactComponent as RegisterPeopleTeacher } from "../../assets/images/register-people-teacher.svg";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import TeacherInput from "../../component/register/TeacherInput";
 import TaInput from "../../component/register/TaInput";
@@ -66,19 +69,120 @@ const MainBody = forwardRef(({ onClose }, ref) => {
     const changeRole = (role) => {
         setCurRole(role);
     };
+    const [isRegSuccess, setIsRegSuccess] = useState(false);
+    const handleOnRegSuccess = () => {
+        setIsRegSuccess(true);
+    };
 
-    useEffect(() => {
-        console.log(curRole);
-    }, [curRole]);
+    const [userinput, setUserinput] = useState({
+        firstname: "",
+        lastname: "",
+        studentID: "",
+        password: "",
+        phone: "",
+        email: "",
+        department: "",
+        year: "",
+    });
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        console.log(`name: ${name}v value: ${value}`);
+        setUserinput({
+            ...userinput,
+            [name]: value,
+        });
+    };
+
+    // handle register success animation
+    const secondaryContainer = useRef(null);
+    const mainContainer = useRef(null);
+    useNonInitialEffect(() => {
+        // document.getElementById('').offsetParent
+        const curSecondConH = secondaryContainer.current.offsetHeight;
+        const curSecondConW = secondaryContainer.current.offsetWidth;
+        const curSecondConT = secondaryContainer.current.offsetParent;
+        const curSecondConL = secondaryContainer.current.offsetLeft;
+
+        const tl = gsap.timeline();
+
+        // insert temp element for prevent expand after make container absolute position
+        const parent = mainContainer.current;
+        const tempElement = document.createElement("div");
+        tempElement.style.width = "100%";
+        parent.insertBefore(tempElement, parent.children[1]);
+
+        tl.fromTo(
+            secondaryContainer.current,
+            {
+                width: curSecondConW,
+                height: curSecondConH,
+                position: "absolute",
+                zIndex: 10,
+                x: curSecondConL,
+                y: curSecondConT,
+            },
+            {
+                duration: 1,
+                ease: "power4.inOut",
+                xPercent: -50,
+                left: "50%",
+                yPercent: -50,
+                top: "50%",
+                x: 0,
+                y: 0,
+            }
+        )
+            .fromTo(
+                mainContainer.current,
+                {
+                    width: "100%",
+                },
+                {
+                    width: "40%",
+                    duration: 1,
+                    ease: "power4.inOut",
+                },
+                "<"
+            )
+            .to(
+                secondaryContainer.current,
+                {
+                    width: curSecondConW + curSecondConW * 0.5,
+                    height: curSecondConH + curSecondConH * 0.1,
+                    duration: 1,
+                    ease: "power4.inOut",
+                },
+                "+=0"
+            );
+
+        return () => {
+            tl.kill();
+        };
+    }, [isRegSuccess]);
 
     return (
         <div
             ref={ref}
-            className="relative flex h-[550px] w-[80%] max-w-[1000px] transform bg-white shadow-md transition-all"
+            className="flex-cen relative h-[550px] w-[80%] max-w-[1000px] transform transition-all "
         >
-            <RoleSelecter changeRole={changeRole} role={curRole} />
-            <SecondaryBody role={curRole} />
-            <InputBody role={curRole} onclose={onClose} />
+            <div
+                ref={mainContainer}
+                className="relative flex h-full w-full bg-white shadow-md "
+            >
+                <RoleSelecter changeRole={changeRole} role={curRole} />
+                <SecondaryBody
+                    ref={secondaryContainer}
+                    role={curRole}
+                    isRegSuccess={isRegSuccess}
+                />
+                <InputBody
+                    role={curRole}
+                    onClose={onClose}
+                    userinput={userinput}
+                    handleInput={handleInput}
+                    handleOnRegSuccess={handleOnRegSuccess}
+                />
+            </div>
         </div>
     );
 });
@@ -117,9 +221,19 @@ const RoleSelecter = ({ changeRole, role }) => {
     );
 };
 
-const SecondaryBody = ({ role }) => {
+const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
+    // handle onChangeRole event animation
     const taPicture = useRef(null);
     const teacherPicture = useRef(null);
+    const container = useRef(null);
+
+    const finishedOverlay = useRef(null);
+    useEffect(() => {
+        gsap.set(finishedOverlay.current, {
+            yPercent: -100,
+        });
+    }, []);
+
     useEffect(() => {
         const offset = taPicture.current.height.animVal.value;
         console.log();
@@ -155,10 +269,10 @@ const SecondaryBody = ({ role }) => {
                 taPicture.current,
                 {
                     y: 0,
-                    duration: 1,
                     position: "absolute",
                 },
                 {
+                    duration: 1,
                     ease: Power4.easeOut,
                     y: offset,
                 }
@@ -178,61 +292,96 @@ const SecondaryBody = ({ role }) => {
         }
     }, [role]);
 
+    useNonInitialEffect(() => {
+        const tl = gsap.timeline();
+        tl.to(
+            container.current,
+            {
+                y: "100%",
+                duration: 1,
+                ease: "power4.inOut",
+            },
+            "+=1"
+        )
+            .to(
+                finishedOverlay.current,
+                {
+                    yPercent: 0,
+                    duration: 1,
+                    ease: Back.easeInOut.config(2),
+                },
+                "<"
+            )
+            .fromTo(
+                ".stagger-animation",
+                {
+                    y: (e) => (5 - e) * -100,
+                },
+                {
+                    y: 0,
+                    duration: 0.6,
+                    ease: "power4.inOut",
+                    stagger: {
+                        amount: 0.4,
+                    },
+                },
+                "<"
+            );
+    }, [isRegSuccess]);
+
     return (
-        <div className="relative hidden h-[115%] w-full  flex-col items-center space-y-2 self-center overflow-x-hidden overflow-y-hidden bg-[#465ffb] text-lg font-bold text-white shadow-2xl md:flex">
-            <span className="mt-4 text-3xl font-medium text-white">
-                ลงทะเบียน
-            </span>
-            <span className="h-[1.5px] w-[65%] bg-white "></span>
-            <span className="text-sm font-normal text-white">
-                ยินดีต้อนรับเข้าสู่ระบบของ Eztant
-            </span>
+        <div
+            ref={ref}
+            className=" relative hidden h-[605px] w-full self-center overflow-hidden bg-primary text-lg  font-medium text-white shadow-2xl md:flex"
+        >
+            <div
+                className="relative flex h-full w-full flex-col items-center space-y-2 "
+                ref={container}
+            >
+                <span className="mt-4 text-3xl font-medium text-white">
+                    ลงทะเบียน
+                </span>
+                <span className="h-[1.5px] w-[65%] bg-white "></span>
+                <span className="text-sm font-normal text-white">
+                    ยินดีต้อนรับเข้าสู่ระบบของ Eztant
+                </span>
+                <RegisterPeopleTA
+                    className="absolute -right-4 bottom-0"
+                    ref={taPicture}
+                />
+                <RegisterPeopleTeacher
+                    className="absolute -right-4 bottom-0"
+                    ref={teacherPicture}
+                />
+            </div>
+            <div
+                ref={finishedOverlay}
+                className="absolute top-0 left-0 flex h-full w-full flex-col items-center justify-center space-y-10 bg-transparent"
+            >
+                <span className=" stagger-animation text-3xl">ลงทะเบียน</span>
+                <span className=" stagger-animation h-[2px] w-3/4 bg-white"></span>
+                <span className=" stagger-animation text-[4vw]">
+                    เสร็จเรียบร้อย
+                </span>
+                <FontAwesomeIcon
+                    className="stagger-animation text-[80px]"
+                    icon={faCheckCircle}
+                />
+                <div className="stagger-animation flex-cen w-2/3 cursor-pointer rounded-full border-4 border-white bg-white py-4 text-xl text-primary hover:border-white hover:bg-primary hover:text-white">
+                    เข้าสุ่ระบบ
+                </div>
+            </div>
             <div className="triangle-clip absolute bottom-0 left-0 h-1/6 w-full bg-white"></div>
-            <RegisterPeopleTA
-                className="absolute -right-4 bottom-0"
-                ref={taPicture}
-            />
-            <RegisterPeopleTeacher
-                className="absolute -right-4 bottom-0"
-                ref={teacherPicture}
-            />
         </div>
     );
-};
+});
 
-const InputBody = ({ role, onclose }) => {
-    const [userinput, setUserinput] = useState({
-        firstname: "",
-        lastname: "",
-        studentID: "",
-        email: "",
-        department: "",
-        year: "",
-    });
-    const handleInput = (e) => {
-        const { name, value } = e.target;
-        console.log(`name: ${name}v value: ${value}`);
-        setUserinput({
-            ...userinput,
-            [name]: value,
-        });
-    };
-
+const InputBody = (props) => {
     return (
         <div className="relative flex w-[900px] flex-col items-center justify-center overflow-hidden">
             <>
-                <TeacherInput
-                    userinput={userinput}
-                    handleInput={handleInput}
-                    role={role}
-                    onClose={onclose}
-                />
-                <TaInput
-                    userinput={userinput}
-                    handleInput={handleInput}
-                    role={role}
-                    onClose={onclose}
-                />
+                <TeacherInput {...props} />
+                <TaInput {...props} />
             </>
         </div>
     );
