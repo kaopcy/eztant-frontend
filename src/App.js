@@ -11,7 +11,7 @@ const App = () => {
     const location = useLocation();
     const backgroundLocation = location.state || null
     return (
-        <div className="min-h-screen w-screen">
+        <div className="min-h-screen w-screen bg-slate-50">
             <Navbar />
             <Routes location={backgroundLocation || location}>
                 <Route index path="/" element={<Home />} />

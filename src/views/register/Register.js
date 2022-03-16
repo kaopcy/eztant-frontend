@@ -135,10 +135,10 @@ const MainBody = forwardRef(({ onClose }, ref) => {
             .fromTo(
                 mainContainer.current,
                 {
-                    width: "100%",
+                    width: `${mainContainer.current.offsetWidth}px`,
                 },
                 {
-                    width: "40%",
+                    width: `${curSecondConW - 100 }px`,
                     duration: 1,
                     ease: "power4.inOut",
                 },
