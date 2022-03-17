@@ -48,6 +48,7 @@
     box-sizing: border-box;
 }
 
+
 .vertical-text {
     writing-mode: vertical-lr;
     -webkit-writing-mode: vertical-lr;

@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import MobileDropdown from "./MobileDropdown";
 
-const Navbar = () => {
+const Navbar = ({ height }) => {
     const location = useLocation();
     const isMobile = useMediaQuery({ query: "(max-width: 648px)" });
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
@@ -96,7 +96,7 @@ const Navbar = () => {
     ];
     const isLogin = false;
     return (
-        <div className="relative flex h-[80px] w-full items-center justify-between  bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10">
+        <div className="fixed z-10 flex h-[80px] w-full items-center justify-between  bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10" style={{ height }}>
             {isMobile ? (
                 <MobileMenu
                     location={location}
