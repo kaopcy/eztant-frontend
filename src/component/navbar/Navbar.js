@@ -175,7 +175,7 @@ const MobileMenu = (props) => {
                     className="cursor-pointer text-2xl text-gray-700 hover:text-gray-800"
                     onClick={() => toggleMobileDropdown()}
                 />
-                <EztantLogo className="h-[35%] shrink-0" />
+                <EztantLogo className="h-[49%] shrink-0" />
                 <UserIcon height={35} />
             </div>
         </>

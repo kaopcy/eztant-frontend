@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
 
-import { ReactComponent as GoogleSVG } from '../../assets/logos/google.svg'
+import GoogleRegister from "./GoogleRegister";
 
 const TaInput = (props) => {
     const { role } = props;
@@ -70,7 +70,7 @@ const InputFirstPage = (props) => {
     const { userinput, handleInput, onClose, setPage } = props;
     return (
         <>
-            <GoogleLoginButton />
+            <GoogleRegister />
             {/* divider */}
             <div className="flex-cen mt-4 space-x-1">
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400 "></span>
@@ -130,20 +130,24 @@ const InputFirstPage = (props) => {
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
-                    className=" flex h-12 w-[6.5rem]  group items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
+                    className=" group flex h-12  w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
                     onClick={() => onClose()}
                 >
                     <FontAwesomeIcon
                         className="text-lg text-secondary group-hover:text-white"
                         icon={faChevronLeft}
                     />
-                    <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
+                    <span className="text-lg text-secondary group-hover:text-white">
+                        กลับ
+                    </span>
                 </button>
                 <button
-                    className=" flex h-12 w-[6.5rem] group  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
+                    className=" group flex h-12 w-[6.5rem]  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
                     onClick={() => setPage(2)}
                 >
-                    <span className="text-lg text-secondary group-hover:text-white">ถัดไป</span>
+                    <span className="text-lg text-secondary group-hover:text-white">
+                        ถัดไป
+                    </span>
                     <FontAwesomeIcon
                         className="text-lg text-secondary group-hover:text-white"
                         icon={faChevronRight}
@@ -191,14 +195,16 @@ const InputSecondPage = (props) => {
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
-                    className=" flex h-12 w-[6.5rem] group  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
+                    className=" group flex h-12 w-[6.5rem]  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
                     onClick={() => setPage(1)}
                 >
                     <FontAwesomeIcon
                         className="text-lg text-secondary group-hover:text-white"
                         icon={faChevronLeft}
                     />
-                    <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
+                    <span className="text-lg text-secondary group-hover:text-white">
+                        กลับ
+                    </span>
                 </button>
                 <button
                     className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1"
@@ -208,17 +214,6 @@ const InputSecondPage = (props) => {
                 </button>
             </div>
         </>
-    );
-};
-
-const GoogleLoginButton = () => {
-    return (
-        <div className="flex items-center justify-center space-x-2 rounded-full border p-2 text-sm text-gray-600">
-            <div className="h-[20px] w-[20px] rounded-full bg-transparent">
-                <GoogleSVG />
-            </div>
-            <div>ลงทะเบียนด้วยบัญชี Google</div>
-        </div>
     );
 };
 

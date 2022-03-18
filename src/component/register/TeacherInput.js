@@ -1,13 +1,11 @@
 import React, { useRef, useEffect } from "react";
-import {
-    faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
-import { ReactComponent as GoogleSVG } from '../../assets/logos/google.svg'
+import GoogleRegister from "./GoogleRegister";
 
 const TeacherInput = (props) => {
-    const { userinput, handleInput, role, onClose , handleOnRegSuccess } = props;
+    const { userinput, handleInput, role, onClose, handleOnRegSuccess } = props;
     const container = useRef(null);
     useEffect(() => {
         gsap.to(container.current, {
@@ -34,7 +32,7 @@ const TeacherInput = (props) => {
                     duration: 1.5,
                     y: 0,
                 }
-            )
+            );
         } else {
             tl.fromTo(
                 container.current,
@@ -52,8 +50,8 @@ const TeacherInput = (props) => {
     }, [role]);
 
     return (
-        <div ref={container} className="flex-col-cen w-full h-full">
-            <GoogleLoginButton />
+        <div ref={container} className="flex-col-cen h-full w-full">
+            <GoogleRegister />
             {/* divider */}
             <div className="flex-cen mt-4 space-x-1">
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400 "></span>
@@ -115,16 +113,21 @@ const TeacherInput = (props) => {
                 {/* btn wrapper */}
                 <div className="input-group mt-4 flex items-center justify-center space-x-8">
                     <button
-                        className=" flex h-12 w-[6.5rem] group hover:bg-secondary items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1"
+                        className=" group flex h-12 w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary"
                         onClick={() => onClose()}
                     >
                         <FontAwesomeIcon
                             className="text-lg text-secondary group-hover:text-white"
                             icon={faChevronLeft}
                         />
-                        <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
+                        <span className="text-lg text-secondary group-hover:text-white">
+                            กลับ
+                        </span>
                     </button>
-                    <button className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1" onClick={()=>handleOnRegSuccess()} >
+                    <button
+                        className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1"
+                        onClick={() => handleOnRegSuccess()}
+                    >
                         <span className="text-lg text-white">ลงทะเบียน</span>
                     </button>
                 </div>
@@ -137,17 +140,6 @@ const TeacherInput = (props) => {
                     </span>
                 </div>
             </div>
-        </div>
-    );
-};
-
-const GoogleLoginButton = () => {
-    return (
-        <div className="flex items-center justify-center space-x-2 rounded-full border p-2 text-sm text-gray-600">
-            <div className="h-[20px] w-[20px] rounded-full ">
-                <GoogleSVG/>
-            </div>
-            <div>ลงทะเบียนด้วยบัญชี Google</div>
         </div>
     );
 };
