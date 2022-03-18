@@ -5,7 +5,7 @@ import DesktopRegister from "../../component/register/DesktopRegister";
 import MobileRegister from "../../component/register/MobileRegister";
 
 const Register = () => {
-    const isMobile = useMediaQuery({ query: "(max-width: 648px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const [userinput, setUserinput] = useState({
         firstname: "",
         lastname: "",

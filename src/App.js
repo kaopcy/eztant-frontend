@@ -11,7 +11,7 @@ import { useMediaQuery } from "react-responsive";
 
 const App = () => {
     const location = useLocation();
-    const isMobile = useMediaQuery({ query: "(max-width: 648px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const backgroundLocation = location.state || null;
     return (
         <div className="m-0 flex flex-col bg-slate-50 p-0">

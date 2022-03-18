@@ -14,7 +14,8 @@ const MobileRegister = (props) => {
             <RoleSelector role={role} setRole={setRole} />
             <GoogleRegister />
             <span className="text-lg font-bold text-secondary">ลงทะเบียน</span>
-            <InputField {...props} />
+            <TeacherInputField {...props} />
+            <TaInputField {...props} />
         </div>
     );
 };
@@ -35,7 +36,19 @@ const Input = (props) => {
     );
 };
 
-const InputField = (props) => {
+const TeacherInputField = (props) => {
+    return (
+        <div className="flex w-full flex-col items-center">
+            <Input {...props} type="firstname" label="ชื่อ" />
+            <Input {...props} type="lastname" label="นามสกุล" />
+            <Input {...props} type="email" label="อีเมล์" />
+            <Input {...props} type="password" label="รหัสผ่าน" />
+            <Input {...props} type="phone" label="โทรศัพท์" />
+        </div>
+    );
+};
+
+const TaInputField = (props) => {
     return (
         <div className="flex w-full flex-col items-center">
             <Input {...props} type="firstname" label="ชื่อ" />
