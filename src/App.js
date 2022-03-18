@@ -15,14 +15,14 @@ const App = () => {
     return (
         <div className="m-0 flex flex-col bg-slate-50 p-0">
             <Navbar height={80} />
-            <div className="h-[80px]"></div>
+            <div className={`${isMobile ? 'h-[60px]' : 'h-[80px]'}`}></div>
             {/* this logic used for when not in mobile we want to render background for register */}
             <Routes
                 location={!isMobile ? backgroundLocation : null || location}
             >
                 <Route index path="/" element={<Home />} />
                 <Route path="login" element={<Login />} />
-                {isMobile && <Route path="/register" element={<Login />} />}
+                {isMobile && <Route path="/register" element={<RegisterModal />} />}
             </Routes>
 
             {backgroundLocation && !isMobile && (

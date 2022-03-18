@@ -124,7 +124,7 @@ const CustomLink = ({
             style={style}
             to={to}
             {...props}
-            onClick={match ? () => handleOnClose() : null}
+            onClick={()=>handleOnClose()}
         >
             {children}
         </Link>

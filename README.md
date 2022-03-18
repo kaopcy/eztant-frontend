@@ -1,10 +1,10 @@
 # EZtant
 ```
-Web application platform for facilitate KMITL's teacher and teacher assistant(student)
+เว็บไซต์สำหรับอำนวยความสะดวกให้คณา
 ``` 
-## Knowledge for this project.
+## Stack ที่ใช้ในโปรเจค.
 > - ### [React](https://reactjs.org/)
->   Main framework.
+>   ใช้เป็น Javascript Library หลัก
 ---
 > - ### [Redux](https://redux.js.org/)
 >    State management.
