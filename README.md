@@ -1,94 +1,26 @@
-# EZtant
-```
-เว็บไซต์สำหรับอำนวยความสะดวกให้คณา
-``` 
-## Stack ที่ใช้ในโปรเจค.
-> - ### [React](https://reactjs.org/)
->   ใช้เป็น Javascript Library หลัก
+<div align="center" >
+    <div>
+        <h1 color="red">Eztant</h1>
+        <span>เว็บไซต์อำนวยความสะดวกให้ครูและนักเรียนผู้ช่วย</span>
+    </div>
+    <br/>
+    <img src="https://raw.githubusercontent.com/kaopcy/eztant-frontend/867238499b25c388852f497fd52ba1572279715f/src/assets/logos/eztant.svg" width="200" ></img>
+</div>
+
 ---
-> - ### [Redux](https://redux.js.org/)
->    State management.
----
-> - ### [Tailwind](https://tailwindcss.com/)
->    For css framework.
----
-> - ### [GSAP](https://greensock.com/gsap/)
->    Animation!
----
-> - ### [HeadlessUI](https://headlessui.dev/)
->    UI components.
-    
 
+## Project's purpose
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; การหา Teacher assistance หรือนักเรียนผู้ช่วยใน KMITL ในปัจจุบันนั้นไม่ทั่วถึงทุกคนในมหาลัย เช่น<b>การประกาศรับสมัครที่ไม่ได้มีแหล่งที่มาแน่ชัด</b>ทำให้นักศึกษาบางคนไม่ทราบว่ามีการรับสมัคร TA หรือ<b>ปัญหาเมื่ออาจารย์ต้องการชี้แจงข้อมูลให้ TA</b> ทราบแต่ไม่รู้ว่าจะชี้แจงที่ไหน และเกรงว่า TA จะรู้ไม่ทั่วถึงทุกคน<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; โดย Eztant จะมาตอบโจทย์ในเรื่องนี้, "Eztant" เป็นเว็บไซต์ที่อำนวยความสะดวกให้ทั้งอาจารย์และนักเรียน โดยที่อาจารย์จะสามารถโพสต์เพื่อหานักเรียนผู้ช่วยได้ และนักศึกษาสามารถค้นหาวิชาที่ตนเองสนใจอยากเป็น TA โดยระบบจะช่วยคัดกรองเกรดจาก transcript ของนักศึกษาเพื่อที่ระบบจะแนะนำวิชาที่เหมาะกับนักศึกษาคนนั้น อีกทั้งยังมีระบบ "Community" ที่จะทำหน้าที่เป็นเหมือนกลุ่มที่ถูกสร้างขึ้นเพื่อให้ TA และอาจารย์สามารถติดต่อกันได้ และยังสามารถเช็คชื่อเพื่อใช้หลักฐานในการพิมพ์ใบเสร็จรับเงินได้อีกด้วย!
 
+## Stack ที่ใช้ในโปรเจค
+- [<b>React</b>](https://reactjs.org/) ใช้เป็น Javascript Library หลัก
 
+- [<b>Redux</b>](https://redux.js.org/) ใช้เป็น State management
 
-# Getting Started with Create React App
+- [<b>Tailwind</b>](https://tailwindcss.com/) เพื่อจัดการ css framework.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- [<b>GSAP</b>](https://greensock.com/gsap/) ใช้เพื่อทำ Animation ต่างๆภายในแอพ
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [<b>HeadlessUI</b>](https://headlessui.dev/) ใช้เพื่อทำ UI components ที่มี
+  

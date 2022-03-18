@@ -1,3 +1,4 @@
+
 import React, { useEffect, Fragment, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 
@@ -121,9 +122,11 @@ const Navbar = ({ height }) => {
                     links={links}
                 />
             )}
+
         </div>
     );
 };
+
 
 const DesktopMenu = (props) => {
     const { links, location, isLogin } = props;
@@ -179,20 +182,24 @@ const MobileMenu = (props) => {
     );
 };
 
+
 const CustomLink = ({ children, to, ...props }) => {
     const { pathname: path } = useResolvedPath(to);
     const match = useMatch({ path, end: true });
 
     return (
+
         <Link
             style={{ color: match ? "red" : "rgb(75,85,99)" }}
             to={to}
             {...props}
         >
+
             {children}
         </Link>
     );
 };
+
 
 const UserIcon = ({ height = 40 }) => {
     return (

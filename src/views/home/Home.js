@@ -94,3 +94,4 @@ const BackgroundImage = () => {
 };
 
 export default Home;
+
