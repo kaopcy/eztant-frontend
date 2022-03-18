@@ -13,6 +13,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import MobileDropdown from "./MobileDropdown";
+import UserlistDropdown from "./UserlistDropdown";
 
 const Navbar = ({ height }) => {
     const location = useLocation();
@@ -96,7 +97,10 @@ const Navbar = ({ height }) => {
     ];
     const isLogin = false;
     return (
-        <div className="fixed z-10 flex h-[80px] w-full items-center justify-between  bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10" style={{ height }}>
+        <div
+            className={`fixed z-10 flex w-full items-center justify-between  bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10 `}
+            style={{ height: isMobile ? `${height - 20}px` : `${height}px` }}
+        >
             {isMobile ? (
                 <MobileMenu
                     location={location}
@@ -147,10 +151,7 @@ const DesktopMenu = (props) => {
                         สร้างโพสต์
                     </div>
                 )}
-                <FontAwesomeIcon
-                    icon={faUser}
-                    className="text-2xl text-gray-600"
-                />
+                <UserlistDropdown />
                 <FontAwesomeIcon
                     icon={faBell}
                     className="text-2xl text-gray-600"
@@ -165,16 +166,14 @@ const MobileMenu = (props) => {
     const { toggleMobileDropdown } = props;
     return (
         <>
-            <div
-                className="flex h-full w-full items-center justify-between"
-                onClick={() => toggleMobileDropdown()}
-            >
+            <div className="flex h-full w-full items-center justify-between">
                 <FontAwesomeIcon
                     icon={faBars}
-                    className="cursor-pointer text-3xl text-gray-700 hover:text-gray-800"
+                    className="cursor-pointer text-2xl text-gray-700 hover:text-gray-800"
+                    onClick={() => toggleMobileDropdown()}
                 />
-                <EztantLogo className="h-[57%] shrink-0" />
-                <UserIcon />
+                <EztantLogo className="h-[35%] shrink-0" />
+                <UserIcon height={35} />
             </div>
         </>
     );
@@ -195,17 +194,18 @@ const CustomLink = ({ children, to, ...props }) => {
     );
 };
 
-const UserIcon = () => {
+const UserIcon = ({ height = 40 }) => {
     return (
         <div className="flex items-center space-x-1">
             <img
                 src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
                 alt="dwad"
                 className="h-10 w-10 rounded-full bg-black object-cover shadow-sm"
+                style={{ height: `${height}px`, width: `${height}px` }}
             ></img>
             <FontAwesomeIcon
                 icon={faChevronDown}
-                className="text-lgxl text-gray-600"
+                className="text-base text-gray-600"
             />
         </div>
     );

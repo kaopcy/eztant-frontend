@@ -8,7 +8,7 @@ const Home = () => {
                 <WelcomQuote />
                 <ImageQuote />
             </div>
-            <ManyPeopleSvg className="w-full bg-white" />
+            <BackgroundImage />
         </div>
     );
 };
@@ -39,14 +39,14 @@ const ImageQuote = () => {
                     className={`relative flex w-full ${image.pos}`}
                     key={image.url}
                 >
-                    <div className="relative flex w-1/3 items-center justify-center md:w-full md:space-x-6 space-y-3 md:space-y-0">
+                    <div className="relative flex w-1/3 items-center justify-center space-y-3 md:w-full md:space-x-6 md:space-y-0">
                         <img
                             src={image.url}
                             alt=""
-                            className="w-[130px] object-cover md:w-[150px] lg:w-[170px] xl:w-[200px]"
+                            className="w-[130px] object-cover md:w-[150px] lg:w-[160px] xl:w-[180px]"
                             key={image.url}
                         />
-                        <div className="absolute top-full left-1/2 w-full -translate-x-1/2 px-4 text-center leading-[0] md:relative md:top-0 md:left-0 md:max-w-md md:translate-x-0 md:px-0 md:text-left sm:leading-[1.3]">
+                        <div className="absolute top-full left-1/2 w-full -translate-x-1/2 px-4 text-center leading-[0] sm:leading-[1.3] md:relative md:top-0 md:left-0 md:max-w-md md:translate-x-0 md:px-0 md:text-left">
                             <span className=" text-sm font-medium  tracking-wider text-text sm:text-base md:text-xl 2md:text-2xl ">
                                 {image.text}
                             </span>
@@ -81,6 +81,14 @@ const WelcomQuote = () => {
             <div className="self-center text-[15px] tracking-wider text-text 2md:text-[16px] lg:text-[18px] xl:text-[21px]">
                 ยินดีต้อนรับอาจารย์ 'ปิยชัย แก้วชุ่ม'
             </div>
+        </div>
+    );
+};
+
+const BackgroundImage = () => {
+    return (
+        <div className="relative min-h-[200px] w-full overflow-x-hidden">
+            <ManyPeopleSvg className="min-w-[100vw] bg-white" />
         </div>
     );
 };
