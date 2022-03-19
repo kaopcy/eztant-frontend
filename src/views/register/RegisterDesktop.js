@@ -9,64 +9,66 @@ import { ReactComponent as RegisterPeopleTA } from "../../assets/images/register
 import { ReactComponent as RegisterPeopleTeacher } from "../../assets/images/register-people-teacher.svg";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
- 
+import { UserinputProvider } from "../../composables/context/useUserinputContext";
+
 import TeacherInput from "../../component/register/TeacherInput";
 import TaInput from "../../component/register/TaInput";
 
 const DesktopRegister = (props) => {
     const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate();
-
     const handleCloseModal = () => {
         setIsOpen(false);
     };
     return (
-        <Transition appear show={isOpen} as={Fragment}>
-            <Dialog
-                as="div"
-                className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
-                onClose={() => handleCloseModal()}
-            >
-                <>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                        afterLeave={() => navigate(-1)}
-                    >
-                        <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-                    </Transition.Child>
+        <UserinputProvider mode="register">
+            <Transition appear show={isOpen} as={Fragment}>
+                <Dialog
+                    as="div"
+                    className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
+                    onClose={() => handleCloseModal()}
+                >
+                    <>
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                            afterLeave={() => navigate(-1)}
+                        >
+                            <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
+                        </Transition.Child>
 
-                    {/* This element is to trick the browser into centering the modal contents. */}
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0 scale-95"
-                        enterTo="opacity-100 scale-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100 scale-100"
-                        leaveTo="opacity-0 scale-95"
-                    >
-                        {(ref) => (
-                            <MainBody
-                                ref={ref}
-                                {...props}
-                                onClose={() => setIsOpen(false)}
-                            />
-                        )}
-                    </Transition.Child>
-                </>
-            </Dialog>
-        </Transition>
+                        {/* This element is to trick the browser into centering the modal contents. */}
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 scale-95"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-95"
+                        >
+                            {(ref) => (
+                                <MainBody
+                                    ref={ref}
+                                    {...props}
+                                    onClose={() => setIsOpen(false)}
+                                />
+                            )}
+                        </Transition.Child>
+                    </>
+                </Dialog>
+            </Transition>
+        </UserinputProvider>
     );
 };
 
 const MainBody = forwardRef((props, ref) => {
-    const { onClose, handleInput, userinput } = props;
+    const { onClose } = props;
     const [curRole, setCurRole] = useState("student");
     const changeRole = (role) => {
         setCurRole(role);
@@ -161,8 +163,6 @@ const MainBody = forwardRef((props, ref) => {
                 <InputBody
                     role={curRole}
                     onClose={onClose}
-                    userinput={userinput}
-                    handleInput={handleInput}
                     handleOnRegSuccess={handleOnRegSuccess}
                 />
             </div>

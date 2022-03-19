@@ -93,6 +93,11 @@ const Navbar = ({ height }) => {
             to: "register",
             modal: true,
         },
+        {
+            name: "เข้าสู่ระบบ",
+            to: "login",
+            modal: true,
+        },
     ];
     const isLogin = false;
     return (

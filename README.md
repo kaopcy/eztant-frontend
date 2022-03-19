@@ -22,5 +22,5 @@
 
 - [<b>GSAP</b>](https://greensock.com/gsap/) ใช้เพื่อทำ Animation ต่างๆภายในแอพ
 
-- [<b>HeadlessUI</b>](https://headlessui.dev/) ใช้เพื่อทำ UI components ที่มี
+- [<b>HeadlessUI</b>](https://headlessui.dev/) ใช้เพื่อเป็นเครื่องมือช่วยทำ UI components
   

@@ -1,73 +1,39 @@
-import React, {
-    forwardRef,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
-import ArrowFatRight from "../utils/ArrowFatRight";
-import GoogleRegister from "./GoogleRegister";
+import React, { forwardRef, useLayoutEffect, useRef, useState } from "react";
+import ArrowFatRight from "../../component/utils/ArrowFatRight";
+import GoogleRegister from "../../component/register/GoogleRegister";
 import { useNavigate } from "react-router-dom";
 import gsap, { Back } from "gsap";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNonInitialEffect } from "../../composables/useNonInitialEffect";
+
+import { useTwoComTransition } from "../../composables/animation/useTwoComTransition";
+import { UserinputProvider } from "../../composables/context/useUserinputContext";
+import {
+    useUserinput,
+    useHandleUserinputUpdate,
+} from "../../composables/context/useUserinputContext";
+
 const MobileRegister = (props) => {
     const [role, setRole] = useState("teacher");
     const navigate = useNavigate();
 
     const teacherInputContainer = useRef(null);
     const taInputContainer = useRef(null);
-    const tl = useRef();
     const [isRegSuccess, setIsRegSuccess] = useState(false);
     const handleOnRegSuccess = () => {
         setIsRegSuccess(true);
     };
-    useEffect(() => {
-        tl.current = gsap
-            .timeline({ paused: true })
-            .fromTo(
-                taInputContainer.current,
-                {
-                    xPercent: 100,
-                },
-                {
-                    xPercent: 0,
-                    duration: 0.5,
-                    ease: "power4.inOut",
-                }
-            )
-            .fromTo(
-                teacherInputContainer.current,
-                {
-                    xPercent: 0,
-                },
-                {
-                    xPercent: -100,
-                    duration: 0.5,
-                    ease: "power4.inOut",
-                },
-                "<"
-            );
-        gsap.set(teacherInputContainer.current, {
-            xPercent: 0,
-        });
-        gsap.set(taInputContainer.current, {
-            xPercent: -100,
-        });
-    }, []);
 
-    useNonInitialEffect(() => {
-        console.log("awdwad");
-        if (role === "teacher") {
-            tl.current.reverse();
-        } else {
-            tl.current.play();
-        }
-    }, [role]);
+    useTwoComTransition(
+        {
+            firstContainer: taInputContainer,
+            secondContainer: teacherInputContainer,
+        },
+        role === "teacher"
+    );
 
     return (
-        <>
+        <UserinputProvider mode="register">
             <div className="flex w-full flex-col items-center space-y-8 bg-white px-8 pb-24 text-text">
                 <ArrowFatRight
                     className="mt-4 self-start"
@@ -94,12 +60,14 @@ const MobileRegister = (props) => {
             >
                 ลงทะเบียน
             </div>
-        </>
+        </UserinputProvider>
     );
 };
 
 const Input = (props) => {
-    const { userinput, handleInput, type, label } = props;
+    const { type, label } = props;
+    const userinput = useUserinput();
+    const handleInput = useHandleUserinputUpdate();
     return (
         <div className="flex-col-cen input-group mb-2 w-[95%] items-start xs:w-[85%]">
             <div className="input-label  ">{label}</div>

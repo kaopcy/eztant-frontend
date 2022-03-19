@@ -2,8 +2,10 @@ import React from "react";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import Login from "./views/login/Login";
-import RegisterModal from "./views/register/Register";
+import LoginDesktop from "./views/login/LoginDesktop";
+import LoginMobile from "./views/login/LoginMobile";
+import RegisterDesktop from "./views/register/RegisterDesktop";
+import RegisterMobile from "./views/register/RegisterMobile";
 import Home from "./views/home/Home";
 
 import Navbar from "./component/navbar/Navbar";
@@ -16,19 +18,25 @@ const App = () => {
     return (
         <div className="m-0 flex flex-col bg-slate-50 p-0">
             <Navbar height={80} />
-            <div className={`${isMobile ? 'h-[60px]' : 'h-[80px]'}`}></div>
+            <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
+
             {/* this logic used for when not in mobile we want to render background for register */}
             <Routes
                 location={!isMobile ? backgroundLocation : null || location}
             >
                 <Route index path="/" element={<Home />} />
-                <Route path="login" element={<Login />} />
-                {isMobile && <Route path="/register" element={<RegisterModal />} />}
+                {isMobile && (
+                    <>
+                        <Route path="/register" element={<RegisterMobile />} />
+                        <Route path="/login" element={<LoginMobile />} />
+                    </>
+                )}
             </Routes>
 
             {backgroundLocation && !isMobile && (
                 <Routes>
-                    <Route path="/register" element={<RegisterModal />} />
+                    <Route path="/register" element={<RegisterDesktop />} />
+                    <Route path="/login" element={<LoginDesktop />} />
                 </Routes>
             )}
         </div>

@@ -3,9 +3,16 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
 import GoogleRegister from "./GoogleRegister";
+import {
+    useHandleUserinputUpdate,
+    useUserinput,
+} from "../../composables/context/useUserinputContext";
 
 const TeacherInput = (props) => {
-    const { userinput, handleInput, role, onClose, handleOnRegSuccess } = props;
+    const { role, onClose, handleOnRegSuccess } = props;
+    const userinput = useUserinput();
+    const handleInput = useHandleUserinputUpdate();
+
     const container = useRef(null);
     useEffect(() => {
         gsap.to(container.current, {
