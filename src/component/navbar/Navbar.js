@@ -1,12 +1,10 @@
-
-import React, { useEffect, Fragment, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 
 import { ReactComponent as EztantLogo } from "../../assets/logos/eztant.svg";
 import { useMediaQuery } from "react-responsive";
 
 import {
-    faUser,
     faBell,
     faChevronDown,
     faBars,
@@ -18,7 +16,7 @@ import UserlistDropdown from "./UserlistDropdown";
 
 const Navbar = ({ height }) => {
     const location = useLocation();
-    const isMobile = useMediaQuery({ query: "(max-width: 648px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
     useEffect(() => {
         if (!isMobile) {
@@ -37,7 +35,7 @@ const Navbar = ({ height }) => {
         },
         {
             name: "โพสต์",
-            to: "register",
+            to: "post",
             modal: true,
             children: [
                 {
@@ -99,7 +97,7 @@ const Navbar = ({ height }) => {
     const isLogin = false;
     return (
         <div
-            className={`fixed z-10 flex w-full items-center justify-between  bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10 `}
+            className={`fixed z-10 flex w-full items-center justify-between  border-b-[1.5px] bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10 `}
             style={{ height: isMobile ? `${height - 20}px` : `${height}px` }}
         >
             {isMobile ? (
@@ -122,33 +120,32 @@ const Navbar = ({ height }) => {
                     links={links}
                 />
             )}
-
         </div>
     );
 };
-
 
 const DesktopMenu = (props) => {
     const { links, location, isLogin } = props;
 
     return (
         <>
-            <div className="flex h-full items-center space-x-6 md:space-x-8 lg:space-x-14">
-                <EztantLogo className=" h-[40%] shrink-0 md:h-[57%]" />
-                {links.map((link) => (
-                    <CustomLink
-                        className="shrink-0 text-xl font-semibold text-gray-600 "
-                        to={link.to}
-                        state={
-                            link.modal ? { backgroundLocation: location } : null
-                        }
-                        key={link.name}
-                    >
-                        {link.name}
-                    </CustomLink>
-                ))}
+            <div className="flex h-full items-center md:space-x-6 2md:space-x-8 lg:space-x-14">
+                <EztantLogo className=" h-[40%] shrink-0 md:h-[50%] lg:h-[57%] " />
+                <div className="flex h-full">
+                    {links.map((link) => (
+                        <CustomLink
+                            to={link.to}
+                            state={
+                                link.modal ? { backgroundLocation: location } : null
+                            }
+                            key={link.name}
+                        >
+                            {link.name}
+                        </CustomLink>
+                    ))}
+                </div>
             </div>
-            <div className="flex h-full items-center space-x-5 md:space-x-10">
+            <div className="flex h-full items-center space-x-5 2md:space-x-8 lg:space-x-10">
                 {!isLogin && (
                     <div className="rounded-md bg-secondary px-4 py-2 text-white">
                         สร้างโพสต์
@@ -182,24 +179,21 @@ const MobileMenu = (props) => {
     );
 };
 
-
 const CustomLink = ({ children, to, ...props }) => {
     const { pathname: path } = useResolvedPath(to);
     const match = useMatch({ path, end: true });
-
     return (
-
         <Link
-            style={{ color: match ? "red" : "rgb(75,85,99)" }}
+            className={`flex h-full shrink-0 px-4 2md:px-6 lg:px-8 items-center justify-center text-base 2md:text-xl font-semibold text-gray-600 border-b-[3px]  ${
+                match ? " border-primary" : "border-transparent"
+            }`}
             to={to}
             {...props}
         >
-
             {children}
         </Link>
     );
 };
-
 
 const UserIcon = ({ height = 40 }) => {
     return (
