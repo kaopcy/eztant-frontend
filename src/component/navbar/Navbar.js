@@ -130,13 +130,20 @@ const DesktopMenu = (props) => {
     return (
         <>
             <div className="flex h-full items-center md:space-x-6 2md:space-x-8 lg:space-x-14">
-                <EztantLogo className=" h-[40%] shrink-0 md:h-[50%] lg:h-[57%] " />
+                <Link
+                    to={"/"}
+                    className="h-[40%] shrink-0 md:h-[50%] lg:h-[57%] "
+                >
+                    <EztantLogo className="h-full" />
+                </Link>
                 <div className="flex h-full">
                     {links.map((link) => (
                         <CustomLink
                             to={link.to}
                             state={
-                                link.modal ? { backgroundLocation: location } : null
+                                link.modal
+                                    ? { backgroundLocation: location }
+                                    : null
                             }
                             key={link.name}
                         >
@@ -167,12 +174,18 @@ const MobileMenu = (props) => {
     return (
         <>
             <div className="flex h-full w-full items-center justify-between">
-                <FontAwesomeIcon
-                    icon={faBars}
-                    className="cursor-pointer text-2xl text-gray-700 hover:text-gray-800"
+                <div
+                    className="flex h-full w-10 cursor-pointer items-center justify-start"
                     onClick={() => toggleMobileDropdown()}
-                />
-                <EztantLogo className="h-[49%] shrink-0" />
+                >
+                    <FontAwesomeIcon
+                        icon={faBars}
+                        className="text-2xl text-gray-700 hover:text-gray-800"
+                    />
+                </div>
+                <Link to={"/"} className="h-[49%] shrink-0">
+                    <EztantLogo className="h-full" />
+                </Link>
                 <UserIcon height={35} />
             </div>
         </>
@@ -184,7 +197,7 @@ const CustomLink = ({ children, to, ...props }) => {
     const match = useMatch({ path, end: true });
     return (
         <Link
-            className={`flex h-full shrink-0 px-4 2md:px-6 lg:px-8 items-center justify-center text-base 2md:text-xl font-semibold text-gray-600 border-b-[3px]  ${
+            className={`flex h-full shrink-0 items-center justify-center border-b-[3px] px-4 text-base font-semibold text-gray-600 2md:px-6 2md:text-xl lg:px-8  ${
                 match ? " border-primary" : "border-transparent"
             }`}
             to={to}
