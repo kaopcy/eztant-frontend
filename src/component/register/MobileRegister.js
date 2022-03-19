@@ -89,7 +89,7 @@ const MobileRegister = (props) => {
                 )}
             </div>
             <div
-                className="fixed bottom-0 flex h-16 w-full items-center justify-center bg-secondary text-xl xs:text-2xl font-bold text-white"
+                className="fixed bottom-0 flex h-16 w-full items-center justify-center bg-secondary text-xl font-bold text-white xs:text-2xl"
                 onClick={() => handleOnRegSuccess()}
             >
                 ลงทะเบียน
