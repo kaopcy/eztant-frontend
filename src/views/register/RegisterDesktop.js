@@ -154,6 +154,7 @@ const MainBody = forwardRef((props, ref) => {
                 ref={mainContainer}
                 className="relative flex h-full w-full bg-white shadow-md "
             >
+                <button></button>
                 <RoleSelecter changeRole={changeRole} role={curRole} />
                 <SecondaryBody
                     ref={secondaryContainer}
@@ -210,6 +211,7 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
     const teacherPicture = useRef(null);
     const container = useRef(null);
 
+    const navigate = useNavigate();
     const finishedOverlay = useRef(null);
     useEffect(() => {
         gsap.set(finishedOverlay.current, {
@@ -219,7 +221,6 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
 
     useEffect(() => {
         const offset = taPicture.current.height.animVal.value;
-        console.log();
         const tl = gsap.timeline();
         if (role === "student") {
             tl.fromTo(
@@ -350,7 +351,23 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
                     className="stagger-animation text-[80px]"
                     icon={faCheckCircle}
                 />
-                <div className="stagger-animation flex-cen w-2/3 cursor-pointer rounded-full border-4 border-white bg-white py-4 text-xl text-primary hover:border-white hover:bg-primary hover:text-white">
+                <div
+                    className="stagger-animation flex-cen w-2/3 cursor-pointer rounded-full border-4 border-white bg-white py-4 text-xl text-primary hover:border-white hover:bg-primary hover:text-white"
+                    onClick={async () => {
+                        await navigate("/");
+                        await navigate("/login", {
+                            state: {
+                                backgroundLocation: {
+                                    pathname: "/",
+                                    search: "",
+                                    hash: "",
+                                    state: null,
+                                    key: "vgcp8l3i",
+                                },
+                            },
+                        });
+                    }}
+                >
                     เข้าสุ่ระบบ
                 </div>
             </div>

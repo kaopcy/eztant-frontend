@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 
 import { ReactComponent as EztantLogo } from "../../assets/logos/eztant.svg";
-import { useMediaQuery } from "react-responsive";
 
 import {
     faBell,
@@ -14,9 +13,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MobileDropdown from "./MobileDropdown";
 import UserlistDropdown from "./UserlistDropdown";
 
+import { useResponsive } from "../../composables/context/useResponsive";
+
 const Navbar = ({ height }) => {
     const location = useLocation();
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isMobile = useResponsive();
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
     useEffect(() => {
         if (!isMobile) {
@@ -36,7 +37,6 @@ const Navbar = ({ height }) => {
         {
             name: "โพสต์",
             to: "post",
-            modal: true,
             children: [
                 {
                     name: "รวมทุกภาควิชา",

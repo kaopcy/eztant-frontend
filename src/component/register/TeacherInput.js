@@ -24,7 +24,6 @@ const TeacherInput = (props) => {
     }, []);
 
     useEffect(() => {
-        console.log("appeared");
         const tl = gsap.timeline();
         if (role === "teacher") {
             tl.fromTo(

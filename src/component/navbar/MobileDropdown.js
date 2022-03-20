@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import {
     faMagnifyingGlass,
     faChevronLeft,
@@ -6,18 +7,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import { Disclosure } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
+import DisclosureAnimate from "../utils/DisclosureAnimate";
 
 const MobileDropdown = (props) => {
     const { toggleMobileDropdown, links, location } = props;
+
     const [searchValue, setSearchValue] = useState("");
     const handleInput = (e) => {
         const { value } = e.target.value;
         setSearchValue(value);
         console.log(searchValue);
     };
+
     const container = useRef(null);
     useEffect(() => {
         const tl = gsap.timeline();
@@ -45,9 +48,9 @@ const MobileDropdown = (props) => {
         });
     };
 
-    return (
+    return ReactDOM.createPortal(
         <div
-            className="fixed top-0 -left-full flex h-full w-full flex-col bg-white "
+            className="fixed top-0 -left-full z-30 flex h-full w-full flex-col overflow-y-auto bg-white "
             ref={container}
         >
             <div
@@ -63,11 +66,11 @@ const MobileDropdown = (props) => {
             <div className="mt-10 flex w-full flex-col items-center">
                 {links.map((link) =>
                     link.children ? (
-                        <DisclosureLink
+                        <DisclosureDropdown
                             key={link.name}
                             link={link}
                             handleOnClose={handleOnClose}
-                        ></DisclosureLink>
+                        />
                     ) : (
                         <CustomLink
                             className="w-[90%] shrink-0 rounded-md px-10 py-3 text-xl font-medium text-gray-600"
@@ -85,7 +88,8 @@ const MobileDropdown = (props) => {
                     )
                 )}
             </div>
-        </div>
+        </div>,
+        document.getElementById("navbar-modal")
     );
 };
 
@@ -120,20 +124,16 @@ const CustomLink = ({
         background: match ? "#465FFC" : defaultColor ?? "white",
     };
     return (
-        <Link
-            style={style}
-            to={to}
-            {...props}
-            onClick={()=>handleOnClose()}
-        >
+        <Link style={style} to={to} {...props} onClick={() => handleOnClose()}>
             {children}
         </Link>
     );
 };
 
-const DisclosureLink = (props) => {
+const DisclosureDropdown = (props) => {
     const { link: data } = props;
     const menu = data.children;
+    const [toggle, setToggle] = useState(false);
 
     const Link = (props) => {
         const { handleOnClose, link } = props;
@@ -152,34 +152,45 @@ const DisclosureLink = (props) => {
     };
 
     return (
-        <Disclosure>
-            {({ open }) => (
-                <>
-                    <Disclosure.Button as={Fragment}>
-                        <div
-                            className={`flex w-[90%] shrink-0 justify-between rounded-md px-10 py-3 text-xl font-medium text-gray-600 ${
-                                open ? "bg-slate-50" : "bg-white"
-                            }`}
-                        >
-                            <span>{data.name}</span>
-                            <FontAwesomeIcon
-                                icon={faChevronDown}
-                                className={`${
-                                    open ? "rotate-180" : ""
-                                } transition-transform duration-500 `}
-                            />
-                        </div>
-                    </Disclosure.Button>
-                    <Disclosure.Panel
-                        className={`flex w-[90%] flex-col bg-slate-50 pl-14`}
+        <DisclosureAnimate toggle={toggle}>
+            {({ childRelativeContainer, childAbsoluteContainer }) => (
+                <div className="w-[90%] ">
+                    <div
+                        className={` flex w-full justify-between rounded-md px-10 py-3 text-xl font-medium text-gray-600 ${
+                            toggle ? "bg-slate-50" : "bg-white"
+                        }`}
+                        onClick={() => setToggle((e) => !e)}
                     >
-                        {menu.map((e) => (
-                            <Link key={e.name} {...props} link={e}></Link>
-                        ))}
-                    </Disclosure.Panel>
-                </>
+                        <span>{data.name}</span>
+                        <FontAwesomeIcon
+                            icon={faChevronDown}
+                            className={`${
+                                toggle ? "rotate-180" : ""
+                            } transition-transform duration-500 `}
+                        />
+                    </div>
+                    <div
+                        className="relative w-full overflow-hidden"
+                        ref={childRelativeContainer}
+                    >
+                        <div
+                            ref={childAbsoluteContainer}
+                            className="absolute bottom-0 w-full"
+                        >
+                            <div className="flex w-[100%] flex-col bg-slate-50 pl-14">
+                                {menu.map((e) => (
+                                    <Link
+                                        key={e.name}
+                                        {...props}
+                                        link={e}
+                                    ></Link>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
-        </Disclosure>
+        </DisclosureAnimate>
     );
 };
 

@@ -24,14 +24,13 @@ export function UserinputProvider({ children, mode }) {
                   year: "",
               }
             : {
-                  username: "",
+                  email: "",
                   password: "",
               }
     );
 
     const handleInput = (e) => {
         const { value, name } = e.target;
-        console.log('kuay');
         setUserInput({ ...userInput, [name]: value });
     };
 

@@ -2,24 +2,22 @@ import React, { Fragment, forwardRef, useRef, useEffect } from "react";
 import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import gsap, { Back, Power4 } from "gsap";
+import gsap, { Back } from "gsap";
 
-import { ReactComponent as RegisterPeopleTA } from "../../assets/images/register-people-ta.svg";
-import { ReactComponent as RegisterPeopleTeacher } from "../../assets/images/register-people-teacher.svg";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { ReactComponent as EztantLogo } from "../../assets/logos/eztant.svg";
+import { ReactComponent as DecorationImage } from "../../assets/images/login-decoration.svg";
+import GoogleRegister from "../../component/register/GoogleRegister";
+
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useNonInitialEffect } from "../../composables/useNonInitialEffect";
-import { UserinputProvider } from "../../composables/context/useUserinputContext";
-import { useUserinput , useHandleUserinputUpdate } from "../../composables/context/useUserinputContext";
-
-import TeacherInput from "../../component/register/TeacherInput";
-import TaInput from "../../component/register/TaInput";
+import {
+    UserinputProvider,
+    useUserinput,
+    useHandleUserinputUpdate,
+} from "../../composables/context/useUserinputContext";
 
 const LoginDesktop = (props) => {
-    useEffect(() => {
-        console.log("hi this is desktop login");
-    }, []);
     const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate();
 
@@ -37,10 +35,10 @@ const LoginDesktop = (props) => {
                     <>
                         <Transition.Child
                             as={Fragment}
-                            enter="ease-out duration-300"
+                            enter="ease-out duration-200"
                             enterFrom="opacity-0"
                             enterTo="opacity-100"
-                            leave="ease-in duration-200"
+                            leave="ease-in duration-300"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                             afterLeave={() => navigate(-1)}
@@ -74,89 +72,169 @@ const LoginDesktop = (props) => {
 };
 
 const MainBody = forwardRef((props, ref) => {
-    const { onClose, handleInput, userinput } = props;
-    const [curRole, setCurRole] = useState("student");
-    const changeRole = (role) => {
-        setCurRole(role);
-    };
-    const [isRegSuccess, setIsRegSuccess] = useState(false);
-    const handleOnRegSuccess = () => {
-        setIsRegSuccess(true);
-    };
-
-    // handle register success animation
-    const secondaryContainer = useRef(null);
+    const decorationContainer = useRef(null);
+    const inputContainer = useRef(null);
     const mainContainer = useRef(null);
-    useNonInitialEffect(() => {
-        // document.getElementById('').offsetParent
-        const curSecondConH = secondaryContainer.current.offsetHeight;
-        const curSecondConW = secondaryContainer.current.offsetWidth;
-        const curSecondConT = secondaryContainer.current.offsetParent;
-        const curSecondConL = secondaryContainer.current.offsetLeft;
+    // const tl = useRef(null);
 
+    useEffect(() => {
+        const mainConWidth = mainContainer.current.offsetWidth;
+        const inputConWidth = inputContainer.current.offsetWidth;
         const tl = gsap.timeline();
-
-        // insert temp element for prevent expand after make container absolute position
-        const parent = mainContainer.current;
-        const tempElement = document.createElement("div");
-        tempElement.style.width = "100%";
-        parent.insertBefore(tempElement, parent.children[1]);
-
         tl.fromTo(
-            secondaryContainer.current,
+            inputContainer.current,
             {
-                width: curSecondConW,
-                height: curSecondConH,
-                position: "absolute",
-                zIndex: 10,
-                x: curSecondConL,
-                y: curSecondConT,
+                width: `${mainConWidth}px`,
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
             },
             {
+                borderTopLeftRadius: "1.5rem",
+                borderBottomLeftRadius: "1.5rem",
+                width: `${inputConWidth}px`,
                 duration: 1,
-                ease: "power4.inOut",
-                xPercent: -50,
-                left: "50%",
-                yPercent: -50,
-                top: "50%",
-                x: 0,
-                y: 0,
-            }
+                ease: "power3.inOut",
+            },
+            "<0.5"
         )
-            .fromTo(
-                mainContainer.current,
+            .from(
+                "#dec-img",
                 {
-                    width: `${mainContainer.current.offsetWidth}px`,
+                    yPercent: 100,
+                    ease: Back.easeOut.config(1.8),
+                    duration: 0.7,
                 },
+                "<0.6"
+            )
+            .from(
+                ".animated-text",
                 {
-                    width: `${curSecondConW - 100}px`,
-                    duration: 1,
-                    ease: "power4.inOut",
+                    xPercent: (i) => Math.pow(-1, i + 1) * 100,
+                    stagger: {
+                        amount: 0.2,
+                    },
                 },
                 "<"
-            )
-            .to(
-                secondaryContainer.current,
-                {
-                    width: curSecondConW + curSecondConW * 0.5,
-                    height: curSecondConH + curSecondConH * 0.1,
-                    duration: 1,
-                    ease: "power4.inOut",
-                },
-                "+=0"
             );
-
-        return () => {
-            tl.kill();
-        };
-    }, [isRegSuccess]);
+    }, []);
 
     return (
         <div
+            className="relative flex h-[550px] w-[80%] max-w-[1000px] transform items-center justify-center transition-all"
             ref={ref}
-            className="flex-cen relative h-[550px] w-[80%] max-w-[1000px] transform transition-all bg-blue-300 "
         >
-            <input type="text" />
+            <div
+                className="flex-cen relative h-full w-full justify-end overflow-hidden bg-primary text-text shadow-md"
+                ref={mainContainer}
+            >
+                <button></button>
+                <DecorationContainer ref={decorationContainer} />
+                <InputContainer ref={inputContainer} />
+            </div>
+        </div>
+    );
+});
+
+const InputContainer = forwardRef((_, ref) => {
+    const navigate = useNavigate()
+    return (
+        <div
+            className="flex-col-cen h-full w-[60%] shrink-0 space-y-6 rounded-l-3xl bg-white shadow-md"
+            ref={ref}
+        >
+            <span className="text-3xl">เข้าสู่ระบบ</span>
+            <GoogleRegister />
+            <div className="flex-cen relative w-full space-x-1">
+                <div className="h-[2px] w-1/4 bg-gray-200"></div>
+                <div className="text-base text-gray-500">หรือ</div>
+                <div className="h-[2px] w-1/4 bg-gray-200"></div>
+            </div>
+            <div className="flex w-full flex-col items-center">
+                <div className="flex-col-cen input-group mb-2 w-[95%] max-w-[380px] items-start xs:w-[85%]">
+                    <Input type="email" label="อีเมล์" />
+                    <Input type="password" label="รหัสผ่าน" />
+                    <div className="mt-2 mb-6 self-end text-xs text-primary underline ">
+                        ลืมรหัสผ่าน
+                    </div>
+                    <div className="input-group mt-4 flex w-full items-center justify-center space-x-8">
+                        <button
+                            className=" group flex h-12 w-[11rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary"
+                            onClick={() => navigate(-1)}
+                        >
+                            <FontAwesomeIcon
+                                className="text-lg text-secondary group-hover:text-white"
+                                icon={faChevronLeft}
+                            />
+                            <span className="text-lg text-secondary group-hover:text-white">
+                                กลับ
+                            </span>
+                        </button>
+                        <button className=" flex h-12 w-full items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1">
+                            <span className="text-lg text-white">
+                                ลงทะเบียน
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className="flex-cen mt-8 w-[80%] items-center justify-center space-x-1">
+                <span className="text-xs text-gray-400">มีบัญชีอยู่แล้ว?</span>
+                <span className="cursor-pointer text-xs text-blue-800 underline ">
+                    เข้าสู่ระบบ
+                </span>
+            </div>
+        </div>
+    );
+});
+
+const Input = (props) => {
+    const { type, label } = props;
+    const userinput = useUserinput();
+    const handleInput = useHandleUserinputUpdate();
+    return (
+        <>
+            <div className="input-label  ">{label}</div>
+            <input
+                type="text"
+                value={userinput[type]}
+                onChange={handleInput}
+                name={type}
+                className="input-register py-1 text-xl"
+            />
+        </>
+    );
+};
+
+const DecorationContainer = forwardRef((_, ref) => {
+    const Text = ({ children }) => {
+        return (
+            <div className="overflow-hidden">
+                <div className="animated-text whitespace-nowrap text-[35px] font-bold tracking-[2px] text-white ">
+                    {children}
+                </div>
+            </div>
+        );
+    };
+    return (
+        <div
+            className="flex-col-cen relative h-full flex-grow justify-start bg-transparent py-8"
+            ref={ref}
+        >
+            <EztantLogo className="mb-6 h-16" />
+            <div className="flex justify-center space-x-4">
+                <div className="flex flex-col">
+                    <Text>หาผู้ช่วย</Text>
+                    <Text>ต้องที่นี่</Text>
+                </div>
+                <div className="flex flex-col">
+                    <Text>แบบอีซี่</Text>
+                    <Text>อีซี่แทนต์</Text>
+                </div>
+            </div>
+            <DecorationImage
+                id="dec-img"
+                className="absolute bottom-0 left-0 w-[110%]"
+            />
         </div>
     );
 });

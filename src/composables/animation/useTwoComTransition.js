@@ -20,7 +20,7 @@ export function useTwoComTransition(
                 },
                 {
                     xPercent: 0,
-                    duration: 0.5,
+                    duration: 0.3,
                     ease: "power4.inOut",
                 }
             )
@@ -31,7 +31,7 @@ export function useTwoComTransition(
                 },
                 {
                     xPercent: -100,
-                    duration: 0.5,
+                    duration: 0.3,
                     ease: "power4.inOut",
                 },
                 "<"
