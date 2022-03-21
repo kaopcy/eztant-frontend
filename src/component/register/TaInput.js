@@ -12,9 +12,12 @@ import {
     useHandleUserinputUpdate,
     useUserinput,
 } from "../../composables/context/useUserinputContext";
+import { useNavigate } from "react-router-dom";
 
 const TaInput = (props) => {
     const { role } = props;
+
+    const navigate = useNavigate();
     const container = useRef(null);
     const [page, setPage] = useState(1);
 
@@ -77,7 +80,23 @@ const TaInput = (props) => {
                     <span className="text-xs text-gray-400">
                         มีบัญชีอยู่แล้ว?
                     </span>
-                    <span className="cursor-pointer text-xs text-blue-800 underline ">
+                    <span
+                        className="cursor-pointer text-xs text-blue-800 underline "
+                        onClick={async () => {
+                            await navigate("/");
+                            await navigate("/login", {
+                                state: {
+                                    backgroundLocation: {
+                                        search: "",
+                                        pathname: "/",
+                                        hash: "",
+                                        key: "1234",
+                                        state: null,
+                                    },
+                                },
+                            });
+                        }}
+                    >
                         เข้าสู่ระบบ
                     </span>
                 </div>
