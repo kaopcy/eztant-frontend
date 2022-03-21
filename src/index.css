@@ -47,7 +47,7 @@
         @apply cursor-pointer border border-secondary bg-white text-secondary transition-colors duration-200 hover:border-transparent hover:bg-secondary hover:text-white;
     }
     .loading {
-        @apply h-8 w-8  border-white border-[3px]  border-r-0 bg-transparent rounded-full ;
+        @apply h-8 w-8  rounded-full border-[3px]  border-r-0 border-white bg-transparent;
     }
 }
 
