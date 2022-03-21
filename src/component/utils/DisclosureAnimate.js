@@ -5,13 +5,14 @@ const DisclosureAnimate = ({ toggle, children }) => {
     const childRelativeContainer = useRef(null);
     const childAbsoluteContainer = useRef(null);
     const containerHeight = useRef(null);
+    
     useEffect(() => {
         containerHeight.current = childAbsoluteContainer.current.offsetHeight;
         const tl = gsap.timeline();
         tl.set(childRelativeContainer.current, {
             height: 0,
         });
-    }, []);
+    }, [childAbsoluteContainer.current?.offsetHeight]);
 
     useNonInitialEffect(() => {
         const tl = gsap.timeline();
