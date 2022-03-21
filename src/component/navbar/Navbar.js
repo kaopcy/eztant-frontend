@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import MobileDropdown from "./MobileDropdown";
 import UserlistDropdown from "./UserlistDropdown";
+import ProfileDropdown from "./ProfileDropdown";
 
 import { useResponsive } from "../../composables/context/useResponsive";
 
@@ -164,11 +165,13 @@ const DesktopMenu = (props) => {
                     </div>
                 )}
                 <UserlistDropdown />
+                
                 <FontAwesomeIcon
                     icon={faBell}
                     className="text-2xl text-gray-600"
                 />
                 <UserIcon />
+                <ProfileDropdown/>
             </div>
         </>
     );
@@ -215,7 +218,7 @@ const CustomLink = ({ children, to, ...props }) => {
 
 const UserIcon = ({ height = 40 }) => {
     return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1"  >
             <img
                 src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
                 alt="dwad"
