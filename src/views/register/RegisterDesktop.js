@@ -329,6 +329,8 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
                 <span className="text-sm font-normal text-white">
                     ยินดีต้อนรับเข้าสู่ระบบของ Eztant
                 </span>
+            <div className="triangle-clip absolute bottom-0 left-0 h-1/6 w-full bg-white"></div>
+
                 <RegisterPeopleTA
                     className="absolute -right-4 bottom-0"
                     ref={taPicture}
@@ -371,7 +373,6 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
                     เข้าสุ่ระบบ
                 </div>
             </div>
-            <div className="triangle-clip absolute bottom-0 left-0 h-1/6 w-full bg-white"></div>
         </div>
     );
 });

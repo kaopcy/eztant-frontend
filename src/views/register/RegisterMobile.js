@@ -55,7 +55,7 @@ const MobileRegister = (props) => {
                 )}
             </div>
             <div
-                className="fixed bottom-0 flex h-16 w-full items-center justify-center bg-secondary text-xl font-bold text-white xs:text-2xl"
+                className="btn-orange flex-col-cen fixed bottom-0 h-16 w-full text-xl font-bold xs:text-2xl"
                 onClick={() => handleOnRegSuccess()}
             >
                 ลงทะเบียน
