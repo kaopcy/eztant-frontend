@@ -40,6 +40,15 @@
     .triangle-clip {
         clip-path: polygon(0 0, 0% 100%, 100% 100%);
     }
+    .btn-orange {
+        @apply cursor-pointer border border-transparent bg-secondary text-white transition-colors duration-200 hover:border-secondary hover:bg-white hover:text-secondary;
+    }
+    .btn-white {
+        @apply cursor-pointer border border-secondary bg-white text-secondary transition-colors duration-200 hover:border-transparent hover:bg-secondary hover:text-white;
+    }
+    .loading {
+        @apply h-8 w-8  border-white border-[3px]  border-r-0 bg-transparent rounded-full ;
+    }
 }
 
 * {
@@ -48,7 +57,6 @@
     box-sizing: border-box;
 }
 
-
 .vertical-text {
     writing-mode: vertical-lr;
     -webkit-writing-mode: vertical-lr;
@@ -56,4 +64,3 @@
     text-orientation: mixed;
     transform: scaleX(-1) scaleY(-1);
 }
-
