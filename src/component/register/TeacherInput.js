@@ -3,9 +3,18 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
 import GoogleRegister from "./GoogleRegister";
+import {
+    useHandleUserinputUpdate,
+    useUserinput,
+} from "../../composables/context/useUserinputContext";
+import { useNavigate } from "react-router-dom";
 
 const TeacherInput = (props) => {
-    const { userinput, handleInput, role, onClose, handleOnRegSuccess } = props;
+    const { role, onClose, handleOnRegSuccess } = props;
+    const userinput = useUserinput();
+    const handleInput = useHandleUserinputUpdate();
+    const navigate = useNavigate()
+
     const container = useRef(null);
     useEffect(() => {
         gsap.to(container.current, {
@@ -17,7 +26,6 @@ const TeacherInput = (props) => {
     }, []);
 
     useEffect(() => {
-        console.log("appeared");
         const tl = gsap.timeline();
         if (role === "teacher") {
             tl.fromTo(
@@ -135,7 +143,20 @@ const TeacherInput = (props) => {
                     <span className="text-xs text-gray-400">
                         มีบัญชีอยู่แล้ว?
                     </span>
-                    <span className="cursor-pointer text-xs text-blue-800 underline ">
+                    <span className="cursor-pointer text-xs text-blue-800 underline " onClick={async () => {
+                            await navigate("/");
+                            await navigate("/login", {
+                                state: {
+                                    backgroundLocation: {
+                                        search: "",
+                                        pathname: "/",
+                                        hash: "",
+                                        key: "1234",
+                                        state: null,
+                                    },
+                                },
+                            });
+                        }}>
                         เข้าสู่ระบบ
                     </span>
                 </div>

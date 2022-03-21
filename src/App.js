@@ -1,34 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-import Login from "./views/login/Login";
-import RegisterModal from "./views/register/Register";
+import LoginDesktop from "./views/login/LoginDesktop";
+import LoginMobile from "./views/login/LoginMobile";
+import RegisterDesktop from "./views/register/RegisterDesktop";
+import RegisterMobile from "./views/register/RegisterMobile";
 import Home from "./views/home/Home";
 
 import Navbar from "./component/navbar/Navbar";
-import { useMediaQuery } from "react-responsive";
+import { useResponsive } from "./composables/context/useResponsive";
 
 const App = () => {
     const location = useLocation();
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
-    const backgroundLocation = location.state || null;
+    const navigate = useNavigate();
+    const isMobile = useResponsive();
+    const state = location.state;
+
+    // prevent user access some route without background state
+    useEffect(() => {
+        const isIllegalRoute =
+            location.pathname === "/register" || location.pathname === "/login";
+        if (!state?.backgroundLocation && isIllegalRoute) {
+            navigate("/");
+        }
+    }, [state?.backgroundLocation, location.pathname, navigate]);
+
     return (
         <div className="m-0 flex flex-col bg-slate-50 p-0">
             <Navbar height={80} />
-            <div className={`${isMobile ? 'h-[60px]' : 'h-[80px]'}`}></div>
+            <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
+
             {/* this logic used for when not in mobile we want to render background for register */}
             <Routes
-                location={!isMobile ? backgroundLocation : null || location}
+                location={
+                    !isMobile ? state?.backgroundLocation : null || location
+                }
             >
+                <Route path="/post" element={<RegisterMobile />} />
                 <Route index path="/" element={<Home />} />
-                <Route path="login" element={<Login />} />
-                {isMobile && <Route path="/register" element={<RegisterModal />} />}
+                {isMobile && (
+                    <>
+                        <Route path="/register" element={<RegisterMobile />} />
+                        <Route path="/login" element={<LoginMobile />} />
+                    </>
+                )}
             </Routes>
 
-            {backgroundLocation && !isMobile && (
+            {state?.backgroundLocation && !isMobile && (
                 <Routes>
-                    <Route path="/register" element={<RegisterModal />} />
+                    <Route path="/register" element={<RegisterDesktop />} />
+                    <Route path="/login" element={<LoginDesktop />} />
                 </Routes>
             )}
         </div>

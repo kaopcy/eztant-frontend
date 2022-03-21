@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import {
     faChevronLeft,
     faChevronRight,
@@ -7,12 +7,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
 
 import GoogleRegister from "./GoogleRegister";
+import { useTwoComTransition } from "../../composables/animation/useTwoComTransition";
+import {
+    useHandleUserinputUpdate,
+    useUserinput,
+} from "../../composables/context/useUserinputContext";
+import { useNavigate } from "react-router-dom";
 
 const TaInput = (props) => {
     const { role } = props;
+
+    const navigate = useNavigate();
     const container = useRef(null);
     const [page, setPage] = useState(1);
 
+    const inputFirstPageContainer = useRef(null);
+    const inputSecondPageContainer = useRef(null);
+
+    useTwoComTransition(
+        {
+            firstContainer: inputSecondPageContainer,
+            secondContainer: inputFirstPageContainer,
+        },
+        page === 1
+    );
     // transition on change role
     useEffect(() => {
         const tl = gsap.timeline();
@@ -48,16 +66,37 @@ const TaInput = (props) => {
     return (
         <div ref={container} className="flex-col-cen h-full w-full">
             <div className="flex-col-cen w-full">
-                {page === 1 ? (
-                    <InputFirstPage {...props} setPage={setPage} />
-                ) : (
-                    <InputSecondPage {...props} setPage={setPage} />
-                )}
+                <InputFirstPage
+                    {...props}
+                    setPage={setPage}
+                    ref={inputFirstPageContainer}
+                />
+                <InputSecondPage
+                    {...props}
+                    setPage={setPage}
+                    ref={inputSecondPageContainer}
+                />
                 <div className="flex-cen mt-8 w-[80%] items-center justify-end space-x-1">
                     <span className="text-xs text-gray-400">
                         มีบัญชีอยู่แล้ว?
                     </span>
-                    <span className="cursor-pointer text-xs text-blue-800 underline ">
+                    <span
+                        className="cursor-pointer text-xs text-blue-800 underline "
+                        onClick={async () => {
+                            await navigate("/");
+                            await navigate("/login", {
+                                state: {
+                                    backgroundLocation: {
+                                        search: "",
+                                        pathname: "/",
+                                        hash: "",
+                                        key: "1234",
+                                        state: null,
+                                    },
+                                },
+                            });
+                        }}
+                    >
                         เข้าสู่ระบบ
                     </span>
                 </div>
@@ -66,10 +105,12 @@ const TaInput = (props) => {
     );
 };
 
-const InputFirstPage = (props) => {
-    const { userinput, handleInput, onClose, setPage } = props;
+const InputFirstPage = forwardRef((props, ref) => {
+    const userinput = useUserinput();
+    const handleInput = useHandleUserinputUpdate();
+    const { onClose, setPage } = props;
     return (
-        <>
+        <div className="flex-col-cen w-full" ref={ref}>
             <GoogleRegister />
             {/* divider */}
             <div className="flex-cen mt-4 space-x-1">
@@ -154,14 +195,16 @@ const InputFirstPage = (props) => {
                     />
                 </button>
             </div>
-        </>
+        </div>
     );
-};
+});
 
-const InputSecondPage = (props) => {
-    const { userinput, handleInput, setPage, handleOnRegSuccess } = props;
+const InputSecondPage = forwardRef((props, ref) => {
+    const userinput = useUserinput();
+    const handleInput = useHandleUserinputUpdate();
+    const { setPage, handleOnRegSuccess } = props;
     return (
-        <>
+        <div className="flex-col-cen absolute w-full" ref={ref}>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">รหัสนักศึกษา</div>
                 <input
@@ -213,8 +256,8 @@ const InputSecondPage = (props) => {
                     <span className="text-lg text-white">ลงทะเบียน</span>
                 </button>
             </div>
-        </>
+        </div>
     );
-};
+});
 
 export default TaInput;

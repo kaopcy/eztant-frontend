@@ -9,64 +9,66 @@ import { ReactComponent as RegisterPeopleTA } from "../../assets/images/register
 import { ReactComponent as RegisterPeopleTeacher } from "../../assets/images/register-people-teacher.svg";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
- 
+import { UserinputProvider } from "../../composables/context/useUserinputContext";
+
 import TeacherInput from "../../component/register/TeacherInput";
 import TaInput from "../../component/register/TaInput";
 
 const DesktopRegister = (props) => {
     const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate();
-
     const handleCloseModal = () => {
         setIsOpen(false);
     };
     return (
-        <Transition appear show={isOpen} as={Fragment}>
-            <Dialog
-                as="div"
-                className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
-                onClose={() => handleCloseModal()}
-            >
-                <>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                        afterLeave={() => navigate(-1)}
-                    >
-                        <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-                    </Transition.Child>
+        <UserinputProvider mode="register">
+            <Transition appear show={isOpen} as={Fragment}>
+                <Dialog
+                    as="div"
+                    className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
+                    onClose={() => handleCloseModal()}
+                >
+                    <>
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                            afterLeave={() => navigate(-1)}
+                        >
+                            <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
+                        </Transition.Child>
 
-                    {/* This element is to trick the browser into centering the modal contents. */}
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0 scale-95"
-                        enterTo="opacity-100 scale-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100 scale-100"
-                        leaveTo="opacity-0 scale-95"
-                    >
-                        {(ref) => (
-                            <MainBody
-                                ref={ref}
-                                {...props}
-                                onClose={() => setIsOpen(false)}
-                            />
-                        )}
-                    </Transition.Child>
-                </>
-            </Dialog>
-        </Transition>
+                        {/* This element is to trick the browser into centering the modal contents. */}
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 scale-95"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-95"
+                        >
+                            {(ref) => (
+                                <MainBody
+                                    ref={ref}
+                                    {...props}
+                                    onClose={() => setIsOpen(false)}
+                                />
+                            )}
+                        </Transition.Child>
+                    </>
+                </Dialog>
+            </Transition>
+        </UserinputProvider>
     );
 };
 
 const MainBody = forwardRef((props, ref) => {
-    const { onClose, handleInput, userinput } = props;
+    const { onClose } = props;
     const [curRole, setCurRole] = useState("student");
     const changeRole = (role) => {
         setCurRole(role);
@@ -152,6 +154,7 @@ const MainBody = forwardRef((props, ref) => {
                 ref={mainContainer}
                 className="relative flex h-full w-full bg-white shadow-md "
             >
+                <button></button>
                 <RoleSelecter changeRole={changeRole} role={curRole} />
                 <SecondaryBody
                     ref={secondaryContainer}
@@ -161,8 +164,6 @@ const MainBody = forwardRef((props, ref) => {
                 <InputBody
                     role={curRole}
                     onClose={onClose}
-                    userinput={userinput}
-                    handleInput={handleInput}
                     handleOnRegSuccess={handleOnRegSuccess}
                 />
             </div>
@@ -210,6 +211,7 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
     const teacherPicture = useRef(null);
     const container = useRef(null);
 
+    const navigate = useNavigate();
     const finishedOverlay = useRef(null);
     useEffect(() => {
         gsap.set(finishedOverlay.current, {
@@ -219,7 +221,6 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
 
     useEffect(() => {
         const offset = taPicture.current.height.animVal.value;
-        console.log();
         const tl = gsap.timeline();
         if (role === "student") {
             tl.fromTo(
@@ -328,6 +329,8 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
                 <span className="text-sm font-normal text-white">
                     ยินดีต้อนรับเข้าสู่ระบบของ Eztant
                 </span>
+            <div className="triangle-clip absolute bottom-0 left-0 h-1/6 w-full bg-white"></div>
+
                 <RegisterPeopleTA
                     className="absolute -right-4 bottom-0"
                     ref={taPicture}
@@ -350,11 +353,26 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
                     className="stagger-animation text-[80px]"
                     icon={faCheckCircle}
                 />
-                <div className="stagger-animation flex-cen w-2/3 cursor-pointer rounded-full border-4 border-white bg-white py-4 text-xl text-primary hover:border-white hover:bg-primary hover:text-white">
+                <div
+                    className="stagger-animation flex-cen w-2/3 cursor-pointer rounded-full border-4 border-white bg-white py-4 text-xl text-primary hover:border-white hover:bg-primary hover:text-white"
+                    onClick={async () => {
+                        await navigate("/");
+                        await navigate("/login", {
+                            state: {
+                                backgroundLocation: {
+                                    pathname: "/",
+                                    search: "",
+                                    hash: "",
+                                    state: null,
+                                    key: "vgcp8l3i",
+                                },
+                            },
+                        });
+                    }}
+                >
                     เข้าสุ่ระบบ
                 </div>
             </div>
-            <div className="triangle-clip absolute bottom-0 left-0 h-1/6 w-full bg-white"></div>
         </div>
     );
 });
