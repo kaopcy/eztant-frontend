@@ -1,15 +1,20 @@
 import React, { useReducer, useContext, createContext } from "react";
 
-const AuthContext = createContext({ 
+const AuthContext = createContext({
     user: null,
     login: () => {},
     logout: () => {},
 });
 
+if (localStorage.getItem("jwt")) {
+    const token = localStorage.getItem("jwt");
+}
+
 const authReducer = (state, action) => {
     switch (action.type) {
         case "LOGIN": {
-            console.log(`username: ${action.payload.email}, password: ${action.payload.password}`);    
+            localStorage.setItem("jwt", action.payload.email);
+            console.log(action.payload);
             return {
                 ...state,
                 user: action.payload,
@@ -25,10 +30,10 @@ const authReducer = (state, action) => {
     }
 };
 
-const AuthProvider = (props) => {
+const AuthProvider = props => {
     const [authState, dispatch] = useReducer(authReducer, { user: null });
 
-    const login = (userData) => {
+    const login = userData => {
         dispatch({
             type: "LOGIN",
             payload: userData,

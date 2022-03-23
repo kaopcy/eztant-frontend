@@ -8,38 +8,16 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import GoogleRegister from "../../../component/register/GoogleRegister";
 
 // Context
-import { AuthContext } from "../../../composables/context/auth";
 import { useUserinput, useHandleUserinputUpdate } from "../../../composables/context/useUserinputContext";
 import { useNonInitialEffect } from "../../../composables/useNonInitialEffect";
+import { useLogin } from "../useLogin";
 
 const InputContainer = forwardRef((props, ref) => {
     const { onClose, finishedAnimation } = props;
     const navigate = useNavigate();
-
-    const userinput = useUserinput();
-    const { login } = useContext(AuthContext);
-    const [isLoading, setIsLoading] = useState(false);
     const loadingRef = useRef(null);
     const loadingTextRef = useRef(null);
-
-    const handleLogin = async e => {
-        setIsLoading(true);
-        const data = await new Promise(resolve => {
-            setTimeout(async () => {
-                const res = await axios.get(`https://randomuser.me/api/?seed=${userinput.email}`);
-                const fakeUser = res.data.results[0];
-                resolve(fakeUser);
-            }, 100);
-        });
-        setIsLoading(false);
-        console.log(data);
-        finishedAnimation();
-        login({
-            firstname: data.name.first,
-            lastname: data.name.last,
-            gender: data.gender,
-        });
-    };
+    const { login , isLoading } = useLogin(finishedAnimation)
 
     useNonInitialEffect(() => {
         const tl2 = gsap.timeline({ repeat: -1 });
@@ -96,7 +74,7 @@ const InputContainer = forwardRef((props, ref) => {
                         </button>
                         <button
                             className="btn-orange flex-cen group h-12 w-full  space-x-3 rounded-2xl border-4 px-6 py-1"
-                            onClick={() => handleLogin()}>
+                            onClick={() => login()}>
                             <span className="flex-cen relative text-lg">
                                 <div ref={loadingTextRef}>เข้าสุ่ระบบ</div>
                                 <div
