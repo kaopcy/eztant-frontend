@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 
 import { ReactComponent as EztantLogo } from "../../assets/logos/eztant.svg";
@@ -7,7 +7,6 @@ import { faBell, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import MobileDropdown from "./MobileDropdown";
-import ProfileDropdown from "./ProfileDropdown";
 
 import { useResponsive } from "../../composables/context/useResponsive";
 import UserIcon from "./UserIcon";
@@ -134,7 +133,6 @@ const DesktopMenu = props => {
                 {!isLogin && <div className="rounded-md bg-secondary px-4 py-2 text-white">สร้างโพสต์</div>}
                 <FontAwesomeIcon icon={faBell} className="text-2xl text-gray-600" />
                 <UserIcon />
-                <ProfileDropdown />
             </div>
         </>
     );

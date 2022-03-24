@@ -1,11 +1,15 @@
-import React, { useContext, Fragment } from "react";
-import { AuthContext } from "../../composables/context/auth";
+import React, { useContext, Fragment, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { Menu, Transition } from "@headlessui/react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { Menu, Transition } from "@headlessui/react";
 
+import { logout } from "../../store/actions/authAction";
 const UserIcon = ({ height = 45 }) => {
+    const dispatch = useDispatch();
     return (
         <div className="relative">
             <Menu>
@@ -44,6 +48,17 @@ const UserIcon = ({ height = 45 }) => {
                                 </div>
                             )}
                         </Menu.Item>
+                        <Menu.Item>
+                            {({ active }) => (
+                                <div
+                                    onClick={() => dispatch(logout())}
+                                    className={`flex w-36 cursor-pointer justify-center  rounded-md border-2 border-white py-2 transition-all duration-300 ${
+                                        active ? " bg-primary text-white" : "bg-white"
+                                    }`}>
+                                    Logout
+                                </div>
+                            )}
+                        </Menu.Item>
                     </Menu.Items>
                 </Transition>
             </Menu>
@@ -51,13 +66,15 @@ const UserIcon = ({ height = 45 }) => {
     );
 };
 const Icon = ({ height = 45 }) => {
-    const { user } = useContext(AuthContext);
-
+    const { user } = useSelector(state => state.user);
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
     return (
         <div className="flex items-center space-x-1">
             {user ? (
                 <img
-                    src={user.imgURL}
+                    src={user.picture.large}
                     alt="dwad"
                     className="h-10 w-10 rounded-full bg-black object-cover shadow-sm"
                     style={{ height: `${height}px`, width: `${height}px` }}></img>
