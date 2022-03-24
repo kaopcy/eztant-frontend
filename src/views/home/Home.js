@@ -70,12 +70,12 @@ const WelcomQuote = () => {
         <div className="flex flex-col items-center justify-center self-end py-14 md:w-[45%] md:self-center">
             <div className="flex justify-center space-x-4 md:w-[500px]">
                 <div className="flex flex-col">
-                    <Text>หาผู้ช่วย</Text>
-                    <Text>ต้องที่นี่</Text>
+                    <Text>"หาผู้ช่วย</Text>
+                    <Text>&nbsp;&nbsp;ต้องที่นี่</Text>
                 </div>
                 <div className="flex flex-col">
                     <Text>แบบอีซี่</Text>
-                    <Text>อีซี่แทนต์</Text>
+                    <Text>อีซี่แทนต์"</Text>
                 </div>
             </div>
             <div className="self-center text-[15px] tracking-wider text-text 2md:text-[16px] lg:text-[18px] xl:text-[21px]">

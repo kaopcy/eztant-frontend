@@ -3,31 +3,27 @@ import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import gsap, { Back, Power4 } from "gsap";
-import { useNonInitialEffect } from "../../composables/useNonInitialEffect";
+import { useNonInitialEffect } from "../../../composables/useNonInitialEffect";
 
-import { ReactComponent as RegisterPeopleTA } from "../../assets/images/register-people-ta.svg";
-import { ReactComponent as RegisterPeopleTeacher } from "../../assets/images/register-people-teacher.svg";
+import { ReactComponent as RegisterPeopleTA } from "../../../assets/images/register-people-ta.svg";
+import { ReactComponent as RegisterPeopleTeacher } from "../../../assets/images/register-people-teacher.svg";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UserinputProvider } from "../../composables/context/useUserinputContext";
+import { InputProvider } from "../contexts/InputContext";
 
-import TeacherInput from "../../component/register/TeacherInput";
-import TaInput from "../../component/register/TaInput";
+import TeacherInput from "./components/TeacherInput";
+import TaInput from "./components/TaInput";
 
-const DesktopRegister = (props) => {
+const RegisterDesktop = props => {
     const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate();
     const handleCloseModal = () => {
         setIsOpen(false);
     };
     return (
-        <UserinputProvider mode="register">
+        <InputProvider>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog
-                    as="div"
-                    className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
-                    onClose={() => handleCloseModal()}
-                >
+                <Dialog as="div" className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto" onClose={() => handleCloseModal()}>
                     <>
                         <Transition.Child
                             as={Fragment}
@@ -37,8 +33,7 @@ const DesktopRegister = (props) => {
                             leave="ease-in duration-200"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
-                            afterLeave={() => navigate(-1)}
-                        >
+                            afterLeave={() => navigate(-1)}>
                             <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
                         </Transition.Child>
 
@@ -50,27 +45,20 @@ const DesktopRegister = (props) => {
                             enterTo="opacity-100 scale-100"
                             leave="ease-in duration-200"
                             leaveFrom="opacity-100 scale-100"
-                            leaveTo="opacity-0 scale-95"
-                        >
-                            {(ref) => (
-                                <MainBody
-                                    ref={ref}
-                                    {...props}
-                                    onClose={() => setIsOpen(false)}
-                                />
-                            )}
+                            leaveTo="opacity-0 scale-95">
+                            {ref => <MainBody ref={ref} {...props} onClose={() => setIsOpen(false)} />}
                         </Transition.Child>
                     </>
                 </Dialog>
             </Transition>
-        </UserinputProvider>
+        </InputProvider>
     );
 };
 
 const MainBody = forwardRef((props, ref) => {
     const { onClose } = props;
     const [curRole, setCurRole] = useState("student");
-    const changeRole = (role) => {
+    const changeRole = role => {
         setCurRole(role);
     };
     const [isRegSuccess, setIsRegSuccess] = useState(false);
@@ -146,26 +134,12 @@ const MainBody = forwardRef((props, ref) => {
     }, [isRegSuccess]);
 
     return (
-        <div
-            ref={ref}
-            className="flex-cen relative h-[550px] w-[80%] max-w-[1000px] transform transition-all "
-        >
-            <div
-                ref={mainContainer}
-                className="relative flex h-full w-full bg-white shadow-md "
-            >
+        <div ref={ref} className="flex-cen relative h-[550px] w-[80%] max-w-[1000px] transform transition-all ">
+            <div ref={mainContainer} className="relative flex h-full w-full bg-white shadow-md ">
                 <button></button>
                 <RoleSelecter changeRole={changeRole} role={curRole} />
-                <SecondaryBody
-                    ref={secondaryContainer}
-                    role={curRole}
-                    isRegSuccess={isRegSuccess}
-                />
-                <InputBody
-                    role={curRole}
-                    onClose={onClose}
-                    handleOnRegSuccess={handleOnRegSuccess}
-                />
+                <SecondaryBody ref={secondaryContainer} role={curRole} isRegSuccess={isRegSuccess} />
+                <InputBody role={curRole} onClose={onClose} handleOnRegSuccess={handleOnRegSuccess} />
             </div>
         </div>
     );
@@ -180,26 +154,20 @@ const RoleSelecter = ({ changeRole, role }) => {
             <div className="absolute bottom-[20px] flex h-full w-full flex-col items-center justify-end overflow-hidden">
                 <div
                     className="vertical-text flex-col-cen absolute bottom-[183.3px] h-1/4 w-full cursor-pointer text-lg text-gray-800 hover:bg-slate-100  md:h-1/3 md:text-2xl"
-                    onClick={() => changeRole("teacher")}
-                >
+                    onClick={() => changeRole("teacher")}>
                     อาจารย์
                 </div>
                 <div
                     className="vertical-text flex-col-cen absolute h-1/4 w-full cursor-pointer text-lg text-gray-800 hover:bg-slate-100  md:h-1/3 md:text-2xl"
-                    onClick={() => changeRole("student")}
-                >
+                    onClick={() => changeRole("student")}>
                     นักศึกษา
                 </div>
                 {/* hider */}
                 <div
                     className="absolute bottom-0 left-0 h-1/4 w-[3px] bg-[#14279b] transition-transform duration-500 ease-in-out md:h-1/3 md:w-[7px]"
                     style={{
-                        transform:
-                            role === "teacher"
-                                ? "translateY(-100%)"
-                                : "translateY(0)",
-                    }}
-                ></div>
+                        transform: role === "teacher" ? "translateY(-100%)" : "translateY(0)",
+                    }}></div>
             </div>
         </div>
     );
@@ -299,7 +267,7 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
             .fromTo(
                 ".stagger-animation",
                 {
-                    y: (e) => (5 - e) * -100,
+                    y: e => (5 - e) * -100,
                 },
                 {
                     y: 0,
@@ -316,43 +284,23 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
     return (
         <div
             ref={ref}
-            className=" relative hidden h-[605px] w-full self-center overflow-hidden bg-primary text-lg  font-medium text-white shadow-2xl md:flex"
-        >
-            <div
-                className="relative flex h-full w-full flex-col items-center space-y-2 "
-                ref={container}
-            >
-                <span className="mt-4 text-3xl font-medium text-white">
-                    ลงทะเบียน
-                </span>
+            className=" relative hidden h-[605px] w-full self-center overflow-hidden bg-primary text-lg  font-medium text-white shadow-2xl md:flex">
+            <div className="relative flex h-full w-full flex-col items-center space-y-2 " ref={container}>
+                <span className="mt-4 text-3xl font-medium text-white">ลงทะเบียน</span>
                 <span className="h-[1.5px] w-[65%] bg-white "></span>
-                <span className="text-sm font-normal text-white">
-                    ยินดีต้อนรับเข้าสู่ระบบของ Eztant
-                </span>
-            <div className="triangle-clip absolute bottom-0 left-0 h-1/6 w-full bg-white"></div>
+                <span className="text-sm font-normal text-white">ยินดีต้อนรับเข้าสู่ระบบของ Eztant</span>
+                <div className="triangle-clip absolute bottom-0 left-0 h-1/6 w-full bg-white"></div>
 
-                <RegisterPeopleTA
-                    className="absolute -right-4 bottom-0"
-                    ref={taPicture}
-                />
-                <RegisterPeopleTeacher
-                    className="absolute -right-4 bottom-0"
-                    ref={teacherPicture}
-                />
+                <RegisterPeopleTA className="absolute -right-4 bottom-0" ref={taPicture} />
+                <RegisterPeopleTeacher className="absolute -right-4 bottom-0" ref={teacherPicture} />
             </div>
             <div
                 ref={finishedOverlay}
-                className="absolute top-0 left-0 flex h-full w-full flex-col items-center justify-center space-y-10 bg-transparent"
-            >
+                className="absolute top-0 left-0 flex h-full w-full flex-col items-center justify-center space-y-10 bg-transparent">
                 <span className=" stagger-animation text-3xl">ลงทะเบียน</span>
                 <span className=" stagger-animation h-[2px] w-3/4 bg-white"></span>
-                <span className=" stagger-animation text-[4vw]">
-                    เสร็จเรียบร้อย
-                </span>
-                <FontAwesomeIcon
-                    className="stagger-animation text-[80px]"
-                    icon={faCheckCircle}
-                />
+                <span className=" stagger-animation text-[4vw]">เสร็จเรียบร้อย</span>
+                <FontAwesomeIcon className="stagger-animation text-[80px]" icon={faCheckCircle} />
                 <div
                     className="stagger-animation flex-cen w-2/3 cursor-pointer rounded-full border-4 border-white bg-white py-4 text-xl text-primary hover:border-white hover:bg-primary hover:text-white"
                     onClick={async () => {
@@ -368,8 +316,7 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
                                 },
                             },
                         });
-                    }}
-                >
+                    }}>
                     เข้าสุ่ระบบ
                 </div>
             </div>
@@ -377,7 +324,7 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
     );
 });
 
-const InputBody = (props) => {
+const InputBody = props => {
     return (
         <div className="relative flex w-[900px] flex-col items-center justify-center overflow-hidden">
             <>
@@ -388,4 +335,4 @@ const InputBody = (props) => {
     );
 };
 
-export default DesktopRegister;
+export default RegisterDesktop;

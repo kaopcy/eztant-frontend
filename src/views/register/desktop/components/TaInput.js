@@ -1,20 +1,15 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
-import {
-    faChevronLeft,
-    faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { forwardRef, useEffect, useRef, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 
-import GoogleRegister from "./GoogleRegister";
-import { useTwoComTransition } from "../../composables/animation/useTwoComTransition";
-import {
-    useHandleUserinputUpdate,
-    useUserinput,
-} from "../../composables/context/useUserinputContext";
-import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
-const TaInput = (props) => {
+import GoogleRegister from "./GoogleRegister";
+import { InputContext } from "../../contexts/InputContext";
+import { useTwoComTransition } from "../../../../composables/animation/useTwoComTransition";
+
+const TaInput = props => {
     const { role } = props;
 
     const navigate = useNavigate();
@@ -66,20 +61,10 @@ const TaInput = (props) => {
     return (
         <div ref={container} className="flex-col-cen h-full w-full">
             <div className="flex-col-cen w-full">
-                <InputFirstPage
-                    {...props}
-                    setPage={setPage}
-                    ref={inputFirstPageContainer}
-                />
-                <InputSecondPage
-                    {...props}
-                    setPage={setPage}
-                    ref={inputSecondPageContainer}
-                />
+                <InputFirstPage {...props} setPage={setPage} ref={inputFirstPageContainer} />
+                <InputSecondPage {...props} setPage={setPage} ref={inputSecondPageContainer} />
                 <div className="flex-cen mt-8 w-[80%] items-center justify-end space-x-1">
-                    <span className="text-xs text-gray-400">
-                        มีบัญชีอยู่แล้ว?
-                    </span>
+                    <span className="text-xs text-gray-400">มีบัญชีอยู่แล้ว?</span>
                     <span
                         className="cursor-pointer text-xs text-blue-800 underline "
                         onClick={async () => {
@@ -95,8 +80,7 @@ const TaInput = (props) => {
                                     },
                                 },
                             });
-                        }}
-                    >
+                        }}>
                         เข้าสู่ระบบ
                     </span>
                 </div>
@@ -106,8 +90,7 @@ const TaInput = (props) => {
 };
 
 const InputFirstPage = forwardRef((props, ref) => {
-    const userinput = useUserinput();
-    const handleInput = useHandleUserinputUpdate();
+    const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
     const { onClose, setPage } = props;
     return (
         <div className="flex-col-cen w-full" ref={ref}>
@@ -120,79 +103,37 @@ const InputFirstPage = forwardRef((props, ref) => {
             </div>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">ชื่อ</div>
-                <input
-                    type="text"
-                    value={userinput.firstname}
-                    onChange={handleInput}
-                    name={"firstname"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.firstname} onChange={handleInput} name={"firstname"} className="input-register" />
             </div>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">นามสกุล</div>
-                <input
-                    type="text"
-                    value={userinput.lastname}
-                    onChange={handleInput}
-                    name={"lastname"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.lastname} onChange={handleInput} name={"lastname"} className="input-register" />
             </div>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">อีเมล์</div>
-                <input
-                    type="text"
-                    value={userinput.email}
-                    onChange={handleInput}
-                    name={"email"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.email} onChange={handleInput} name={"email"} className="input-register" />
             </div>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">รหัสผ่าน</div>
-                <input
-                    type="text"
-                    value={userinput.password}
-                    onChange={handleInput}
-                    name={"password"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.password} onChange={handleInput} name={"password"} className="input-register" />
             </div>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">เบอร์โทรศัพท์</div>
-                <input
-                    type="text"
-                    value={userinput.phone}
-                    onChange={handleInput}
-                    name={"phone"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.phone} onChange={handleInput} name={"phone"} className="input-register" />
             </div>
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
                     className=" group flex h-12  w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
-                    onClick={() => onClose()}
-                >
-                    <FontAwesomeIcon
-                        className="text-lg text-secondary group-hover:text-white"
-                        icon={faChevronLeft}
-                    />
-                    <span className="text-lg text-secondary group-hover:text-white">
-                        กลับ
-                    </span>
+                    onClick={() => onClose()}>
+                    <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronLeft} />
+                    <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                 </button>
                 <button
                     className=" group flex h-12 w-[6.5rem]  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
-                    onClick={() => setPage(2)}
-                >
-                    <span className="text-lg text-secondary group-hover:text-white">
-                        ถัดไป
-                    </span>
-                    <FontAwesomeIcon
-                        className="text-lg text-secondary group-hover:text-white"
-                        icon={faChevronRight}
-                    />
+                    onClick={() => setPage(2)}>
+                    <span className="text-lg text-secondary group-hover:text-white">ถัดไป</span>
+                    <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronRight} />
                 </button>
             </div>
         </div>
@@ -200,59 +141,33 @@ const InputFirstPage = forwardRef((props, ref) => {
 });
 
 const InputSecondPage = forwardRef((props, ref) => {
-    const userinput = useUserinput();
-    const handleInput = useHandleUserinputUpdate();
+    const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
     const { setPage, handleOnRegSuccess } = props;
     return (
         <div className="flex-col-cen absolute w-full" ref={ref}>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">รหัสนักศึกษา</div>
-                <input
-                    type="text"
-                    value={userinput.studentID}
-                    onChange={handleInput}
-                    name={"studentID"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.studentID} onChange={handleInput} name={"studentID"} className="input-register" />
             </div>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">ภาควิชา</div>
-                <input
-                    type="text"
-                    value={userinput.department}
-                    onChange={handleInput}
-                    name={"department"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.department} onChange={handleInput} name={"department"} className="input-register" />
             </div>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
                 <div className="input-label  ">ชั้นปี</div>
-                <input
-                    type="text"
-                    value={userinput.year}
-                    onChange={handleInput}
-                    name={"year"}
-                    className="input-register"
-                />
+                <input type="text" value={userinput.year} onChange={handleInput} name={"year"} className="input-register" />
             </div>
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
                     className=" group flex h-12 w-[6.5rem]  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
-                    onClick={() => setPage(1)}
-                >
-                    <FontAwesomeIcon
-                        className="text-lg text-secondary group-hover:text-white"
-                        icon={faChevronLeft}
-                    />
-                    <span className="text-lg text-secondary group-hover:text-white">
-                        กลับ
-                    </span>
+                    onClick={() => setPage(1)}>
+                    <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronLeft} />
+                    <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                 </button>
                 <button
                     className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1"
-                    onClick={() => handleOnRegSuccess()}
-                >
+                    onClick={() => handleOnRegSuccess()}>
                     <span className="text-lg text-white">ลงทะเบียน</span>
                 </button>
             </div>

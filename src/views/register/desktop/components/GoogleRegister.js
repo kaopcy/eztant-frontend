@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as GoogleSVG } from "../../assets/logos/google.svg";
+import { ReactComponent as GoogleSVG } from "../../../../assets/logos/google.svg";
 
 const GoogleRegister = () => {
     return (
