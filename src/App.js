@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-import LoginDesktop from "./views/login/LoginDesktop";
-import LoginMobile from "./views/login/LoginMobile";
-import RegisterDesktop from "./views/register/RegisterDesktop";
-import RegisterMobile from "./views/register/RegisterMobile";
+import { LoginDesktop, LoginMobile } from "./views/login";
+import { RegisterDesktop, RegisterMobile } from "./views/register";
+
 import Home from "./views/home/Home";
 
 import Navbar from "./component/navbar/Navbar";
@@ -19,8 +18,7 @@ const App = () => {
 
     // prevent user access some route without background state
     useEffect(() => {
-        const isIllegalRoute =
-            location.pathname === "/register" || location.pathname === "/login";
+        const isIllegalRoute = location.pathname === "/register" || location.pathname === "/login";
         if (!state?.backgroundLocation && isIllegalRoute) {
             navigate("/");
         }
@@ -32,11 +30,7 @@ const App = () => {
             <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
 
             {/* this logic used for when not in mobile we want to render background for register */}
-            <Routes
-                location={
-                    !isMobile ? state?.backgroundLocation : null || location
-                }
-            >
+            <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
                 <Route path="/post" element={<RegisterMobile />} />
                 <Route index path="/" element={<Home />} />
                 {isMobile && (
