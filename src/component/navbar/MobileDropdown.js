@@ -59,11 +59,11 @@ const MobileDropdown = (props) => {
 
     return ReactDOM.createPortal(
         <div
-            className="fixed top-0 -left-full z-30 flex h-full w-full flex-col overflow-y-auto bg-white "
+            className="fixed top-0 -left-full z-30 flex h-full w-full flex-col overflow-y-auto bg-white shrink-0"
             ref={container}
         >
             <div
-                className="flex h-16 w-full items-center justify-end px-6"
+                className="flex h-16 w-full items-center justify-end px-6 shrink-0"
                 onClick={() => handleOnClose()}
             >
                 <FontAwesomeIcon
@@ -105,7 +105,7 @@ const MobileDropdown = (props) => {
 const Searchbar = (props) => {
     const { handleInput } = props;
     return (
-        <div className="flex w-full items-center space-x-6 px-6">
+        <div className="flex w-full items-center space-x-6 px-6 ">
             <input
                 type="text"
                 className="w-full rounded-md border border-gray-300 px-2 py-1 text-base"

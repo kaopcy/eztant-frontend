@@ -1,15 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
+import { useResponsive } from "../../composables/context/useResponsive";
 
 import { ReactComponent as EztantLogo } from "../../assets/logos/eztant.svg";
 
 import { faBell, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DEPARTMENT_LINK } from "../../generalConfig"; 
 
 import MobileDropdown from "./MobileDropdown";
 
-import { useResponsive } from "../../composables/context/useResponsive";
 import UserIcon from "./UserIcon";
+
+const links = [
+    {
+        name: "หน้าหลัก",
+        to: "/",
+    },
+    {
+        name: "โพสต์",
+        to: "post",
+        children: DEPARTMENT_LINK
+    },
+    {
+        name: "คอมมูนิตี้",
+        to: "register",
+        modal: true,
+    },
+    {
+        name: "เข้าสู่ระบบ",
+        to: "login",
+        modal: true,
+    },
+];
 
 const Navbar = ({ height }) => {
     const location = useLocation();
@@ -25,76 +48,7 @@ const Navbar = ({ height }) => {
         console.log(`isOpenDropdown: ${isOpenDropdown}`);
     }, [isOpenDropdown]);
 
-    const links = [
-        {
-            name: "หน้าหลัก",
-            to: "/",
-        },
-        {
-            name: "โพสต์",
-            to: "post",
-            children: [
-                {
-                    name: "รวมทุกภาควิชา",
-                    to: "/elec",
-                },
-                {
-                    name: "การเกษตร",
-                    to: "/elec",
-                },
-                {
-                    name: "คอมพิวเตอร์",
-                    to: "/elec",
-                },
-                {
-                    name: "เคมี",
-                    to: "/elec",
-                },
-                {
-                    name: "เครื่องกล",
-                    to: "/elec",
-                },
-                {
-                    name: "ชีวการแพทย์",
-                    to: "/elec",
-                },
-                {
-                    name: "ดนตรี",
-                    to: "/elec",
-                },
-                {
-                    name: "โทรคมนาคม",
-                    to: "/elec",
-                },
-                {
-                    name: "ไฟฟ้า",
-                    to: "/elec",
-                },
-                {
-                    name: "โยธา",
-                    to: "/elec",
-                },
-                {
-                    name: "อาหาร",
-                    to: "/elec",
-                },
-                {
-                    name: "อิเล็กโทรนิคส์",
-                    to: "/elec",
-                },
-            ],
-        },
-        {
-            name: "คอมมูนิตี้",
-            to: "register",
-            modal: true,
-        },
-        {
-            name: "เข้าสู่ระบบ",
-            to: "login",
-            modal: true,
-        },
-    ];
+    
     const isLogin = false;
     return (
         <div
@@ -103,17 +57,17 @@ const Navbar = ({ height }) => {
             {isMobile ? (
                 <MobileMenu location={location} isLogin={isLogin} toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} />
             ) : (
-                <DesktopMenu links={links} location={location} isLogin={isLogin} />
+                <DesktopMenu location={location} isLogin={isLogin} />
             )}
             {isOpenDropdown && isMobile && (
-                <MobileDropdown toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} location={location} links={links} />
+                <MobileDropdown links={links} toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} location={location}/>
             )}
         </div>
     );
 };
 
 const DesktopMenu = props => {
-    const { links, location, isLogin } = props;
+    const { location, isLogin } = props;
 
     return (
         <>
