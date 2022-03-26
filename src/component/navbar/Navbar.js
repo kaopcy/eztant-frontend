@@ -24,13 +24,13 @@ const links = [
     },
     {
         name: "คอมมูนิตี้",
+        mobile: true,
         to: "register",
-        modal: true,
     },
     {
         name: "เข้าสู่ระบบ",
+        mobile: true,
         to: "login",
-        modal: true,
     },
 ];
 
@@ -76,7 +76,7 @@ const DesktopMenu = props => {
                     <EztantLogo className="h-full" />
                 </Link>
                 <div className="flex h-full">
-                    {links.map(link => (
+                    {links.map(link => ( !link.mobile &&
                         <CustomLink to={link.to} state={link.modal ? { backgroundLocation: location } : null} key={link.name}>
                             {link.name}
                         </CustomLink>

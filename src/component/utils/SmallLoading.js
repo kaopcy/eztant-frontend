@@ -21,6 +21,12 @@ const SmallLoading = ({ children, isLoading, gap = 20 }) => {
         const loaderSize = loaderRef.current.offsetWidth;
 
         if (isLoading) {
+            gsap.set(loaderRef.current, {
+                rotation: "+=360",
+                duration: 1,
+                ease: "linear",
+                repeat: -1,
+            });
             tl.to(loaderRef.current, {
                 opacity: 1,
                 x: titleSize / 2 + gap,
