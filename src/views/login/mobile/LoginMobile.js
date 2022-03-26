@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import ArrowFatRight from "../../../component/utils/ArrowFatRight";
 import GoogleRegister from "../../register/desktop/components/GoogleRegister";
+import SmallLoading from "../../../component/utils/SmallLoading";
 
 const LoginMobile = props => {
     const navigate = useNavigate();
@@ -42,10 +43,16 @@ const LoginButton = ({ setIsLoginSuccess }) => {
         dispatch(AuthLogin(userinput, handleLoginSuccess));
     };
     return (
-        <div className="btn-orange flex-col-cen fixed bottom-0 h-16 w-full text-xl font-bold xs:text-2xl" onClick={() => login()}>
-            เข้าสุ่ระบบ
-            {isLoading && <div className="">loading</div>}
-        </div>
+        <SmallLoading isLoading={isLoading} gap={4}>
+            <div className="btn-orange flex-col-cen fixed bottom-0 h-16 w-full text-xl font-bold xs:text-2xl" onClick={() => login()}>
+                <SmallLoading.Title>
+                    <span>เข้าสุ่ระบบ</span>
+                </SmallLoading.Title>
+                <SmallLoading.Loader>
+                    <span>ควย</span>
+                </SmallLoading.Loader>
+            </div>
+        </SmallLoading>
     );
 };
 

@@ -8,12 +8,24 @@ export const fetchUser = async userinput => {
         setTimeout(async () => {
             const res = await axios.get(`https://randomuser.me/api/?seed=${userinput.email}`);
             resolve(res);
-        }, 2000);
+        }, 1000);
     });
     return data;
 };
 
-export const register = async userinput => {
-    const { email, password, firstname, lastname, phone } = userinput;
-    await axios.post(`${url}/post`, userinput);
+export const register = async (userinput, setIsLoading, setError) => {
+    // const { email, password, firstname, lastname, phone } = userinput;
+    setIsLoading(true);
+    try {
+        await new Promise(reject => {
+            setTimeout(() => {
+                alert(userinput)
+                reject();
+            }, 1000);
+        });
+        setIsLoading(false);
+    } catch (error) {
+        setIsLoading(false);
+        setError(error.message);
+    }
 };

@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 import GoogleRegister from "./GoogleRegister";
+import { register } from "../../../../api/authApi";
 import { InputContext } from "../../contexts/InputContext";
 import { useTwoComTransition } from "../../../../composables/animation/useTwoComTransition";
+import SmallLoading from "../../../../component/utils/SmallLoading";
 
 const TaInput = props => {
     const { role } = props;
@@ -30,31 +32,19 @@ const TaInput = props => {
     useEffect(() => {
         const tl = gsap.timeline();
         if (role === "student") {
-            tl.fromTo(
-                container.current,
-                {
-                    y: -container.current.offsetHeight * 1.2,
-                    position: "absolute",
-                },
-                {
-                    ease: "power4.out",
-                    duration: 1.5,
-                    y: 0,
-                }
-            );
+            tl.to(container.current, {
+                ease: "power4.out",
+                opacity: 1,
+                duration: 1.5,
+                y: 0,
+            });
         } else {
-            tl.fromTo(
-                container.current,
-                {
-                    y: "0",
-                    position: "absolute",
-                },
-                {
-                    duration: 1.5,
-                    ease: "power1",
-                    y: -container.current.offsetHeight * 1.2,
-                }
-            );
+            tl.to(container.current, {
+                opacity: 0,
+                duration: 1.5,
+                ease: "power1",
+                y: -container.current.offsetHeight * 1.2,
+            });
         }
     }, [role]);
 
@@ -142,7 +132,15 @@ const InputFirstPage = forwardRef((props, ref) => {
 
 const InputSecondPage = forwardRef((props, ref) => {
     const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
     const { setPage, handleOnRegSuccess } = props;
+
+    const handleSubmit = async e => {
+        await register(userinput, setIsLoading, setError);
+        e.preventDefault();
+        handleOnRegSuccess();
+    };
     return (
         <div className="flex-col-cen absolute w-full" ref={ref}>
             <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
@@ -165,11 +163,18 @@ const InputSecondPage = forwardRef((props, ref) => {
                     <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronLeft} />
                     <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                 </button>
-                <button
-                    className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1"
-                    onClick={() => handleOnRegSuccess()}>
-                    <span className="text-lg text-white">ลงทะเบียน</span>
-                </button>
+                <SmallLoading isLoading={isLoading} gap={4}>
+                    <button
+                        onClick={handleSubmit}
+                        className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1">
+                        <SmallLoading.Title>
+                            <span className="text-lg text-white">ลงทะเบียน</span>
+                        </SmallLoading.Title>
+                        <SmallLoading.Loader>
+                            <span>ควย</span>
+                        </SmallLoading.Loader>
+                    </button>
+                </SmallLoading>
             </div>
         </div>
     );

@@ -3,21 +3,37 @@ import gsap, { Back } from "gsap";
 import { useNavigate } from "react-router-dom";
 import { InputProvider, InputContext } from "../contexts/InputContext";
 import { useTwoComTransition } from "../../../composables/animation/useTwoComTransition";
+import { register } from "../../../api/authApi";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 import ArrowFatRight from "../../../component/utils/ArrowFatRight";
 import GoogleRegister from "../desktop/components/GoogleRegister";
+import SmallLoading from "../../../component/utils/SmallLoading";
 
 const RegisterMobile = props => {
+    return (
+        <InputProvider>
+            <Main {...props} />
+        </InputProvider>
+    );
+};
+
+const Main = props => {
     const [role, setRole] = useState("teacher");
     const navigate = useNavigate();
 
     const teacherInputContainer = useRef(null);
     const taInputContainer = useRef(null);
+
+    const { userinput, handleInputUpdate } = useContext(InputContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(false);
+
     const [isRegSuccess, setIsRegSuccess] = useState(false);
-    const handleOnRegSuccess = () => {
+    const handleOnRegSuccess = async () => {
+        await register(userinput, setIsLoading, setError);
         setIsRegSuccess(true);
     };
 
@@ -28,9 +44,8 @@ const RegisterMobile = props => {
         },
         role === "teacher"
     );
-
     return (
-        <InputProvider>
+        <>
             <div className="flex w-full flex-col items-center space-y-8 bg-white px-8 pb-24 text-text">
                 <ArrowFatRight className="mt-4 self-start" onClick={() => navigate(-1)} />
                 <RoleSelector role={role} setRole={setRole} />
@@ -40,12 +55,17 @@ const RegisterMobile = props => {
                     <TeacherInputField {...props} ref={teacherInputContainer} />
                     <TaInputField {...props} ref={taInputContainer} />
                 </div>
-                {isRegSuccess && <RegisterFinishedOverlay onClose={() => setIsRegSuccess(false)} />}
+                {isRegSuccess && <RegisterFinishedOverlay onClose={() => navigate('/login')} />}
             </div>
-            <div className="btn-orange flex-col-cen fixed bottom-0 h-16 w-full text-xl font-bold xs:text-2xl" onClick={() => handleOnRegSuccess()}>
-                ลงทะเบียน
-            </div>
-        </InputProvider>
+            <SmallLoading isLoading={isLoading} gap={4}>
+                <div
+                    className="btn-orange flex-col-cen fixed bottom-0 h-16 w-full text-xl font-bold xs:text-2xl"
+                    onClick={() => handleOnRegSuccess()}>
+                    <SmallLoading.Title>ลงทะเบียน</SmallLoading.Title>
+                    <SmallLoading.Loader>ควย</SmallLoading.Loader>
+                </div>
+            </SmallLoading>
+        </>
     );
 };
 

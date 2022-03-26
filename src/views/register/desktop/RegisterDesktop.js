@@ -7,6 +7,8 @@ import { useNonInitialEffect } from "../../../composables/useNonInitialEffect";
 
 import { ReactComponent as RegisterPeopleTA } from "../../../assets/images/register-people-ta.svg";
 import { ReactComponent as RegisterPeopleTeacher } from "../../../assets/images/register-people-teacher.svg";
+import { ReactComponent as EZtantLogo } from '../../../assets/logos/eztant.svg'
+
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InputProvider } from "../contexts/InputContext";
@@ -149,7 +151,9 @@ const RoleSelecter = ({ changeRole, role }) => {
     return (
         <div className="relative flex h-full w-[40px] shrink-0 flex-col items-center justify-between md:w-[70px]">
             {/* icon */}
-            <div className="h-[40px] w-full bg-blue-50"></div>
+            <div className="w-[80%] mt-3">
+                <EZtantLogo/>
+            </div>
             {/* role */}
             <div className="absolute bottom-[20px] flex h-full w-full flex-col items-center justify-end overflow-hidden">
                 <div
@@ -190,24 +194,19 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
     useEffect(() => {
         const offset = taPicture.current.height.animVal.value;
         const tl = gsap.timeline();
+        gsap.set(teacherPicture.current , {
+            y: offset,
+        })
         if (role === "student") {
-            tl.fromTo(
+            tl.to(
                 taPicture.current,
-                {
-                    y: offset,
-                    position: "absolute",
-                },
                 {
                     ease: Back.easeOut.config(1.4),
                     duration: 1,
                     y: 0,
                 }
-            ).fromTo(
+            ).to(
                 teacherPicture.current,
-                {
-                    y: 0,
-                    position: "absolute",
-                },
                 {
                     ease: Power4.easeOut,
                     duration: 1,
@@ -217,23 +216,15 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
             );
         }
         if (role === "teacher") {
-            tl.fromTo(
+            tl.to(
                 taPicture.current,
-                {
-                    y: 0,
-                    position: "absolute",
-                },
                 {
                     duration: 1,
                     ease: Power4.easeOut,
                     y: offset,
                 }
-            ).fromTo(
+            ).to(
                 teacherPicture.current,
-                {
-                    y: offset,
-                    position: "absolute",
-                },
                 {
                     ease: Back.easeOut.config(1.4),
                     duration: 1,
