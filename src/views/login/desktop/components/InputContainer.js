@@ -9,6 +9,7 @@ import GoogleRegister from "../../../register/desktop/components/GoogleRegister"
 
 // Context
 import { InputContext } from "../../contexts/inputContext";
+import SmallLoading from "../../../../component/utils/SmallLoading";
 import { useNonInitialEffect } from "../../../../composables/useNonInitialEffect";
 import { login as AuthLogin } from "../../../../store/actions/authAction";
 
@@ -16,49 +17,17 @@ const InputContainer = forwardRef((props, ref) => {
     const { onClose, finishedAnimation } = props;
     const navigate = useNavigate();
     const { isLoading } = useSelector(state => state.user);
-    const { userinput } = useContext(InputContext)
+    const { userinput } = useContext(InputContext);
 
     const loadingRef = useRef(null);
     const loadingTextRef = useRef(null);
-    
+
     const login = () => {
-        if (isLoading ) return
-        dispatch(AuthLogin(userinput ,finishedAnimation));
+        if (isLoading) return;
+        dispatch(AuthLogin(userinput, finishedAnimation));
     };
 
     const dispatch = useDispatch();
-
-    useNonInitialEffect(() => {
-        const tl2 = gsap.timeline({ repeat: -1 });
-        const tl = gsap.timeline();
-        if (isLoading) {
-            tl2.to(loadingRef.current, {
-                rotate: "+=360",
-                ease: "linear",
-            });
-            tl.to(loadingTextRef.current, {
-                x: -30,
-            }).to(
-                loadingRef.current,
-                {
-                    x: 30,
-                    opacity: 1,
-                },
-                "<"
-            );
-        } else {
-            tl.to(loadingTextRef.current, {
-                x: 0,
-            }).to(
-                loadingRef.current,
-                {
-                    x: 0,
-                    opacity: 0,
-                },
-                "<"
-            );
-        }
-    }, [isLoading]);
 
     return (
         <div className="flex-col-cen h-full w-[60%] shrink-0 space-y-6 rounded-l-3xl bg-white shadow-md" ref={ref}>
@@ -81,14 +50,18 @@ const InputContainer = forwardRef((props, ref) => {
                             <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronLeft} />
                             <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                         </button>
-                        <button className="btn-orange flex-cen group h-12 w-full  space-x-3 rounded-2xl border-4 px-6 py-1" onClick={() => login()}>
-                            <span className="flex-cen relative text-lg">
-                                <div ref={loadingTextRef}>เข้าสุ่ระบบ</div>
-                                <div
-                                    ref={loadingRef}
-                                    className="loading sp absolute h-4 w-4 self-center opacity-0 group-hover:border-secondary"></div>
-                            </span>
-                        </button>
+                        <div className="w-full">
+                            <SmallLoading isLoading={isLoading} gap={4}>
+                                <button
+                                    className="btn-orange flex-cen group h-12 w-full  space-x-3 rounded-2xl border-4 px-6 py-1"
+                                    onClick={() => login()}>
+                                    <SmallLoading.Title>
+                                        <div>เข้าสุ่ระบบ</div>
+                                    </SmallLoading.Title>
+                                    <SmallLoading.Loader>ควย</SmallLoading.Loader>
+                                </button>
+                            </SmallLoading>
+                        </div>
                     </div>
                 </div>
             </div>

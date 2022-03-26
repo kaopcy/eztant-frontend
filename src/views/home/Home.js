@@ -34,22 +34,12 @@ const ImageQuote = () => {
 
     return (
         <div className="flex flex-col items-center justify-center md:w-[55%] md:space-y-16 ">
-            {images.map((image) => (
-                <div
-                    className={`relative flex w-full ${image.pos}`}
-                    key={image.url}
-                >
+            {images.map(image => (
+                <div className={`relative flex w-full ${image.pos}`} key={image.url}>
                     <div className="relative flex w-1/3 items-center justify-center space-y-3 md:w-full md:space-x-6 md:space-y-0">
-                        <img
-                            src={image.url}
-                            alt=""
-                            className="w-[130px] object-cover md:w-[150px] lg:w-[160px] xl:w-[180px]"
-                            key={image.url}
-                        />
+                        <img src={image.url} alt="" className="w-[130px] object-cover md:w-[150px] lg:w-[160px] xl:w-[180px]" key={image.url} />
                         <div className="absolute top-full left-1/2 w-full -translate-x-1/2 px-4 text-center leading-[0] sm:leading-[1.3] md:relative md:top-0 md:left-0 md:max-w-md md:translate-x-0 md:px-0 md:text-left">
-                            <span className=" text-sm font-medium  tracking-wider text-text sm:text-base md:text-xl 2md:text-2xl ">
-                                {image.text}
-                            </span>
+                            <span className=" text-sm font-medium  tracking-wider text-text sm:text-base md:text-xl 2md:text-2xl ">{image.text}</span>
                         </div>
                     </div>
                 </div>
@@ -94,4 +84,3 @@ const BackgroundImage = () => {
 };
 
 export default Home;
-

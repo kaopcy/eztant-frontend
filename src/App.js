@@ -18,11 +18,12 @@ const App = () => {
 
     // prevent user access some route without background state
     useEffect(() => {
+        if(isMobile) return
         const isIllegalRoute = location.pathname === "/register" || location.pathname === "/login";
         if (!state?.backgroundLocation && isIllegalRoute) {
             navigate("/");
         }
-    }, [state?.backgroundLocation, location.pathname, navigate]);
+    }, [state?.backgroundLocation, location.pathname, navigate , isMobile]);
 
     return (
         <div className="m-0 flex flex-col bg-slate-50 p-0">

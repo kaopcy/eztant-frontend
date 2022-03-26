@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from "react";
+import React, { useRef, useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { InputContext } from "../../contexts/InputContext";
@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 import GoogleRegister from "./GoogleRegister";
+import SmallLoading from "../../../../component/utils/SmallLoading";
+import { register } from "../../../../api/authApi";
 
 const TeacherInput = props => {
     const { role, onClose, handleOnRegSuccess } = props;
@@ -15,9 +17,9 @@ const TeacherInput = props => {
 
     const container = useRef(null);
     useEffect(() => {
-        gsap.to(container.current, {
+        gsap.set(container.current, {
             position: "absolute",
-            y: container.current.offsetHeight,
+            y: container.current.offsetHeight * 1.2,
             opacity: 0,
             duration: 0.1,
         });
@@ -26,34 +28,32 @@ const TeacherInput = props => {
     useEffect(() => {
         const tl = gsap.timeline();
         if (role === "teacher") {
-            tl.fromTo(
-                container.current,
-                {
-                    y: container.current.offsetHeight * 1.2,
-                    position: "absolute",
-                    opacity: 1,
-                },
-                {
-                    ease: "power4.out",
-                    duration: 1.5,
-                    y: 0,
-                }
-            );
+            tl.to(container.current, {
+                opacity: 1,
+                ease: "power4.out",
+                duration: 1.5,
+                y: 0,
+            });
         } else {
-            tl.fromTo(
-                container.current,
-                {
-                    y: "0",
-                    position: "absolute",
-                },
-                {
-                    duration: 1.5,
-                    ease: "power1",
-                    y: container.current.offsetHeight * 1.2,
-                }
-            );
+            tl.to(container.current, {
+                position: "absolute",
+                opacity: 0,
+
+                duration: 1.5,
+                ease: "power1",
+                y: container.current.offsetHeight * 1.2,
+            });
         }
     }, [role]);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleSubmit = async e => {
+        await register(userinput, setIsLoading, setError);
+        e.preventDefault();
+        handleOnRegSuccess();
+    };
 
     return (
         <div ref={container} className="flex-col-cen h-full w-full">
@@ -65,7 +65,7 @@ const TeacherInput = props => {
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400"></span>
             </div>
 
-            <div className="flex-col-cen w-full">
+            <form onSubmit={handleSubmit} className="flex-col-cen w-full">
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
                     <div className="input-label  ">ชื่อ</div>
                     <input type="text" value={userinput.firstname} onChange={handleInput} name={"firstname"} className="input-register" />
@@ -94,11 +94,18 @@ const TeacherInput = props => {
                         <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronLeft} />
                         <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                     </button>
-                    <button
-                        className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1"
-                        onClick={() => handleOnRegSuccess()}>
-                        <span className="text-lg text-white">ลงทะเบียน</span>
-                    </button>
+                    <SmallLoading isLoading={isLoading} gap={4}>
+                        <button
+                            type="submit"
+                            className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1">
+                            <SmallLoading.Title>
+                                <span className="text-lg text-white">ลงทะเบียน</span>
+                            </SmallLoading.Title>
+                            <SmallLoading.Loader>
+                                <span>ควย</span>
+                            </SmallLoading.Loader>
+                        </button>
+                    </SmallLoading>
                 </div>
                 <div className="flex-cen mt-8 w-[80%] items-center justify-end space-x-1">
                     <span className="text-xs text-gray-400">มีบัญชีอยู่แล้ว?</span>
@@ -121,7 +128,7 @@ const TeacherInput = props => {
                         เข้าสู่ระบบ
                     </span>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };
