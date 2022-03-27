@@ -17,14 +17,14 @@ const PostSearch = () => {
 const Mobile = () => {
     return (
         <div className="mt-10 flex w-full items-center justify-between px-10 xs:px-14 sm:px-16 ">
-            <div className=" relative py-2 pr-12 text-3xl font-bold text-text">
-                <div className="flex space-x-4 ">
-                    <FontAwesomeIcon icon={faThumbsUp} className="text-yellow-300  " />
+            <div className=" relative py-2 pr-12 text-xl sm:text-3xl font-bold text-text ">
+                <div className="flex space-x-4 items-center">
+                    <FontAwesomeIcon icon={faThumbsUp} className="text-yellow-300 " />
                     <span>แนะนำ</span>
                 </div>
                 <div className="absolute bottom-0 left-0 h-[4px] w-full bg-yellow-200"></div>
             </div>
-            <FontAwesomeIcon icon={faSearch} className="text-4xl text-text-light" />
+            <FontAwesomeIcon icon={faSearch} className="text-xl sm:text-3xl  text-text-light" />
         </div>
     );
 };
