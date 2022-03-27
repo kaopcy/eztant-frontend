@@ -1,14 +1,14 @@
 import React from "react";
 import { ReactComponent as ManyPeopleSvg } from "../../assets/images/many-people.svg";
-
+import { default as Post } from "./Components/Post/Post";
 const Home = () => {
     return (
-        <div className="relative flex w-full flex-col bg-white ">
+        <div className="relative flex w-full flex-col bg-white pb-10">
             <div className="relative mb-10 flex min-h-[calc(100vh-80px)] w-full flex-col  bg-white px-6 md:flex-row md:px-10">
                 <WelcomQuote />
                 <ImageQuote />
             </div>
-            <BackgroundImage />
+            <Post/>
         </div>
     );
 };
