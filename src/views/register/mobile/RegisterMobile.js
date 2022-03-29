@@ -51,7 +51,7 @@ const Main = props => {
                 <RoleSelector role={role} setRole={setRole} />
                 <GoogleRegister />
                 <span className="text-lg font-bold text-secondary">ลงทะเบียน</span>
-                <div className="relative w-full overflow-hidden ">
+                <div className="relative w-full overflow-hidden mb-40">
                     <TeacherInputField {...props} ref={teacherInputContainer} />
                     <TaInputField {...props} ref={taInputContainer} />
                 </div>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useResponsive } from "../../../../composables/context/useResponsive";
+import { useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -14,13 +15,14 @@ const PostSearch = () => {
     );
 };
 
-const Mobile = () => {
+const Mobile = ()  => {
+    const { user } = useSelector(state=> state.user)
     return (
         <div className="mt-10 flex w-full items-center justify-between px-10 xs:px-14 sm:px-16 ">
             <div className=" relative py-2 pr-12 text-xl font-bold text-text sm:text-3xl ">
                 <div className="flex items-center space-x-4">
                     <FontAwesomeIcon icon={faThumbsUp} className="text-yellow-300 " />
-                    <span>แนะนำ</span>
+                    <span>{user ? 'แนะนำ' : 'โพสต์'}</span>
                 </div>
                 <div className="absolute bottom-0 left-0 h-[4px] w-full bg-yellow-200"></div>
             </div>

@@ -9,6 +9,7 @@ export const login = (userinput, cb) => async dispatch => {
         const { data } = await api.fetchUser({ email, password });
         const user = data.results[0] || null;
         if (!user) throw new Error();
+        user.role = 'teacher'
         localStorage.setItem("user", JSON.stringify(user));
         dispatch({ type: REQUEST_LOGIN_SUCCESS, payload: user });
         if (cb) cb();

@@ -82,7 +82,7 @@ const UserIcon = ({ height }) => {
                     leaveTo="transform opacity-0 scale-95">
                     <Menu.Items
                         as="div"
-                        className="absolute -right-2 top-[calc(100%)] flex flex-col items-center space-y-2 rounded-md bg-white py-2 px-3 font-medium shadow-xl">
+                        className="absolute -right-2 top-[calc(100%)] flex flex-col items-center space-y-2 rounded-md bg-white py-2 px-1 font-medium shadow-xl">
                         {/* <div className="triangle-clip absolute -top-1.5 right-3 h-4 w-4 rotate-[135deg] bg-primary"></div> */}
                         {user && loggedLink.map(link => <Link link={link} key={link.name} />)}
                         {!user && unlogLink.map(link => <Link link={link} key={link.name} />)}
@@ -99,7 +99,7 @@ const Link = ({ link }) => {
             {({ active }) => (
                 <div
                     onClick={link.onclick}
-                    className={`flex-cen w-36 cursor-pointer justify-start space-x-2 rounded-md  border-2 border-white px-2 py-2  transition-all duration-300 ${
+                    className={`flex-cen w-36 cursor-pointer justify-start space-x-2 rounded-md  border-2 border-white px-2 py-2  transition-all duration-100 ${
                         active ? " bg-text text-white" : "bg-white text-text"
                     }`}>
                     <FontAwesomeIcon icon={link.icon} />
