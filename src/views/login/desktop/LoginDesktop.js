@@ -129,20 +129,18 @@ const MainBody = forwardRef((props, ref) => {
     };
 
     useEffect(() => {
-        const mainConWidth = mainContainer.current.offsetWidth;
-        const inputConWidth = inputContainer.current.offsetWidth;
         const tl = gsap.timeline();
         tl.fromTo(
             inputContainer.current,
             {
-                width: `${mainConWidth}px`,
+                width: `100%`,
                 borderTopLeftRadius: 0,
                 borderBottomLeftRadius: 0,
             },
             {
                 borderTopLeftRadius: "1.5rem",
                 borderBottomLeftRadius: "1.5rem",
-                width: `${inputConWidth}px`,
+                width: `60%`,
                 duration: 1,
                 ease: "power3.inOut",
             },
@@ -164,9 +162,6 @@ const MainBody = forwardRef((props, ref) => {
                 },
                 "<0.1"
             )
-            .set(inputContainer.current, {
-                width: "60%",
-            });
     }, []);
 
     return (
