@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import PostSearch from "./PostSearch";
-import Carousel from "./Carousel";
+import SwiperCarousel from "./SwiperCarousel";
 import CarouselMobile from "./CarouselMobile";
 import { useResponsive } from "../../../../composables/context/useResponsive";
 
@@ -9,7 +9,7 @@ const Post = () => {
     return (
         <div className="w-full">
             <PostSearch />
-            {!isMobile && <Carousel />}
+            {!isMobile && <SwiperCarousel />}
             {isMobile && <CarouselMobile />}
         </div>
     );
