@@ -8,7 +8,7 @@ const Home = () => {
                 <WelcomQuote />
                 <ImageQuote />
             </div>
-            <Post/>
+            <Post />
         </div>
     );
 };
