@@ -11,6 +11,9 @@ export const InputProvider = ({ children }) => {
     const [userinput, setuserinput] = useState(initialInput);
 
     const handleInputUpdate = e => {
+        if (e.target.value.includes(" ")) {
+            e.target.value = e.target.value.replace(/\s/g, "");
+          }
         const { name, value } = e.target;
         setuserinput({ ...userinput, [name]: value });
     };

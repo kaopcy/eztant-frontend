@@ -50,8 +50,8 @@ const TeacherInput = props => {
     const [error, setError] = useState(null);
 
     const handleSubmit = async e => {
-        await register(userinput, setIsLoading, setError);
         e.preventDefault();
+        await register(userinput, setIsLoading, setError);
         handleOnRegSuccess();
     };
 
