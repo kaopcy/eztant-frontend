@@ -10,7 +10,7 @@ import { faUser, faCircleUser, faUserPlus, faArrowRightFromBracket, faUserPen } 
 
 import { logout } from "../../store/actions/authAction";
 
-const UserIcon = ({ height = 45 }) => {
+const UserIcon = ({ height }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.user);
@@ -110,18 +110,18 @@ const Link = ({ link }) => {
     );
 };
 
-const Icon = ({ height = 45 }) => {
+const Icon = ({ height }) => {
     const { user } = useSelector(state => state.user);
     useEffect(() => {
         console.log(user);
     }, [user]);
     return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-2 rounded-md outline-1 outline-offset-4 outline-gray-200 hover:outline">
             {user ? (
                 <img
                     src={user.picture.large}
                     alt="dwad"
-                    className="h-10 w-10 rounded-full bg-black object-cover shadow-sm"
+                    className="rounded-full bg-black object-cover shadow-sm"
                     style={{ height: `${height}px`, width: `${height}px` }}></img>
             ) : (
                 <NonUserImg height={height} />

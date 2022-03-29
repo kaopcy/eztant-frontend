@@ -11,6 +11,7 @@ import { DEPARTMENT_LINK } from "../../generalConfig";
 import MobileDropdown from "./MobileDropdown";
 
 import UserIcon from "./UserIcon";
+import UserlistDropdown from "./UserlistDropdown";
 
 const links = [
     {
@@ -86,7 +87,8 @@ const DesktopMenu = props => {
             <div className="flex h-full items-center space-x-5 2md:space-x-8 lg:space-x-10">
                 {!isLogin && <div className="rounded-md bg-secondary px-4 py-2 text-white">สร้างโพสต์</div>}
                 <FontAwesomeIcon icon={faBell} className="text-2xl text-gray-600" />
-                <UserIcon />
+                <UserlistDropdown />
+                <UserIcon height={40} />
             </div>
         </>
     );
