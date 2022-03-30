@@ -1,50 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 841.9 595.3" style="enable-background:new 0 0 841.9 595.3;" xml:space="preserve">
-<style type="text/css">
-	.st799{display:none;}
-	.st800{display:inline;fill:none;stroke:#010101;stroke-width:0.25;stroke-miterlimit:10;}
-	.st801{display:none;fill:#FFFFFF;}
-	.st802{fill:#FFFFFF;}
-	.st803{fill:#2B3590;stroke:#FFFFFF;stroke-width:1.5;stroke-miterlimit:10;}
-	.st804{fill:#EF4623;stroke:#FFFFFF;stroke-width:1.5;stroke-miterlimit:10;}
-	.st805{fill:none;}
-</style>
-<g id="Layer_1_1_" class="st799">
-	<line class="st800" x1="420.5" y1="261.3" x2="364.9" y2="261.3"/>
-	<line class="st800" x1="420.5" y1="333.4" x2="364.9" y2="323"/>
-	<line class="st800" x1="364.9" y1="260.8" x2="364.9" y2="323.5"/>
-	<line class="st800" x1="420.5" y1="261.3" x2="477.3" y2="261.4"/>
-	<line class="st800" x1="420.1" y1="333.5" x2="476.7" y2="322.6"/>
-	<line class="st800" x1="414.7" y1="277.7" x2="376.9" y2="277"/>
-	<line class="st800" x1="415.2" y1="316.9" x2="377" y2="310.6"/>
-	<line class="st800" x1="415.5" y1="302.5" x2="388.3" y2="300.1"/>
-	<line class="st800" x1="414.7" y1="277.7" x2="454.3" y2="277.4"/>
-	<line class="st800" x1="414.9" y1="316.8" x2="453.9" y2="277.4"/>
-	<line class="st800" x1="476.8" y1="308.8" x2="433.6" y2="317.3"/>
-	<line class="st800" x1="476.9" y1="273.7" x2="433.6" y2="317.3"/>
-	<line class="st800" x1="364.9" y1="261.3" x2="416.5" y2="261.3"/>
-	<line class="st800" x1="476.9" y1="261.3" x2="476.9" y2="323"/>
-	<line class="st800" x1="414.9" y1="316.8" x2="420.5" y2="333.4"/>
-	<line class="st800" x1="416.8" y1="277.4" x2="427.5" y2="261.3"/>
-	<line class="st800" x1="415.9" y1="288.9" x2="388.8" y2="287.8"/>
-	<line class="st800" x1="415.9" y1="288.9" x2="443.6" y2="287.7"/>
-	<line class="st800" x1="415.5" y1="302.5" x2="429.8" y2="301.8"/>
-	<line class="st800" x1="388.8" y1="288.4" x2="388.8" y2="277.2"/>
-	<line class="st800" x1="388.8" y1="312.5" x2="388.8" y2="300.6"/>
-	<line class="st800" x1="416.5" y1="288.8" x2="416.5" y2="302.4"/>
-	<line class="st800" x1="376.9" y1="276.6" x2="377" y2="311"/>
-</g>
-<g id="Layer_2_1_">
-	<polygon class="st801" points="85.7,116.4 677.1,116.4 656.3,412.4 85.7,396.1 	"/>
-	<polygon class="st802" points="2.3,7 835.6,7 834.1,463 416,543.4 2.3,466 	"/>
-	<polygon class="st803" points="468.1,7 388.4,126.8 91.6,123.8 92.4,373.8 374.3,419.9 416,543.4 2.3,466 2.3,7 	"/>
-	<polygon class="st804" points="468.1,7 388.4,126.8 664.4,126.8 374.3,419.9 416,543.4 834.1,463 834.8,360.4 513.4,423.6 
-		835.6,99.3 835.6,7 	"/>
-	<line class="st805" x1="835.6" y1="99.3" x2="834.8" y2="360.4"/>
-	<polygon class="st803" points="386.2,312.8 386.2,211.6 180.1,204.1 180.1,125.3 91.6,123.8 92.4,373.8 180.1,387.9 180.1,304.6 	"/>
-	<polygon class="st804" points="570,390.1 836.3,124.5 834.8,340.3 769.3,352.2 	"/>
-	<path class="st802" d="M620.6,396.1"/>
-</g>
+<svg id="bd1524d9-c245-4615-8b9b-e175effaa0d5" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 874 576">
+  <title>eztant</title>
+  <g id="b840499b-d08c-42b3-b285-da0cc036cfce" data-name="Layer 2">
+    <polygon points="0 0 874 0 874 499 440 576 0 499 0 0" style="fill: #fff"/>
+    <path d="M489,23.3q-39.5,58-79,116H113v250l282,47,42,123.1L23,482.3V23.3Z" transform="translate(-3 -3.29999)" style="fill: #2b3590"/>
+    <path d="M501,23.3q-39.5,58-79,116H726q-159.5,148.5-319,297l42,123,408-77v-93l-320,47q160-148.5,320-297V23.3Z" transform="translate(-3 -3.29999)" style="fill: #ef4623"/>
+    <path d="M407.2,328.8V227.6l-206.1-7.5q.45-31.9.9-63.8H133v219l69,12q-.45-33.35-.9-66.7Z" transform="translate(-3 -3.29999)" style="fill: #2b3590"/>
+    <path d="M594,407.3q131.5-120.5,263-241v197Z" transform="translate(-3 -3.29999)" style="fill: #ef4623"/>
+  </g>
 </svg>
