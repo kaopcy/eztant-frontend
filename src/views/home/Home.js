@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { ReactComponent as ManyPeopleSvg } from "../../assets/images/many-people.svg";
-import { ReactComponent as EztantSvg } from "../../assets/logos/eztant.svg";
 import { default as Post } from "./Components/Post/Post";
 const Home = () => {
     return (
