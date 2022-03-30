@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { ReactComponent as EztantLogo } from "../../../assets/logos/eztant.svg";
 import { ReactComponent as DecorationImage } from "../../../assets/images/login-decoration.svg";
-import { InputProvider } from '../contexts/inputContext'
+import { InputProvider } from "../contexts/inputContext";
 
 import InputContainer from "./components/InputContainer";
 
@@ -63,105 +63,40 @@ const MainBody = forwardRef((props, ref) => {
     const mainContainer = useRef(null);
 
     const finishedAnimation = () => {
-        console.log('now finish');
+        console.log("now finish");
         const tl = gsap.timeline();
         tl.to(inputContainer.current, {
             xPercent: 100,
             duration: 1.3,
             ease: "power4.inOut",
-            onComplete: ()=> gsap.set(inputContainer.current , {
-                display: "none"
-            })
+            onComplete: () => gsap.set(inputContainer.current, { display: "none" }),
         })
             .fromTo(
                 mainContainer.current,
-                {
-                    width: `${mainContainer.current.offsetWidth}px`,
-                },
-                {
-                    width: `${mainContainer.current.offsetWidth * 0.5}px`,
-                    ease: "power2.inOut",
-                },
+                { width: `${mainContainer.current.offsetWidth}px` },
+                { width: `${mainContainer.current.offsetWidth * 0.5}px`, ease: "power2.inOut" },
                 "-=0.5"
             )
             .to(
                 decorationContainer.current,
-                {
-                    width: mainContainer.current.offsetWidth * 0.5,
-                    position: "absolute",
-                    xPercent: -50,
-                    left: "50%",
-                    ease: "power4.inOut",
-                },
+                { width: mainContainer.current.offsetWidth * 0.5, position: "absolute", xPercent: -50, left: "50%", ease: "power4.inOut" },
                 "<"
             )
-            .to(
-                decorationContainer.current,
-                {
-                    yPercent: 100,
-                    ease: "power4.in",
-                },
-                "-=0.75"
-            )
-            .to(
-                "#finished-overlay",
-                {
-                    yPercent: 100,
-                    ease: "power4.inOut",
-                },
-                "-=0.4"
-            )
-            .fromTo(
-                ".stagger-animation",
-                {
-                    y: e => (5 - e) * -400,
-                },
-                {
-                    y: 0,
-                    duration: 0.8,
-                    ease: "power4.out",
-                    stagger: {
-                        amount: 0.3,
-                    },
-                },
-                "<"
-            );
+            .to(decorationContainer.current, { yPercent: 100, ease: "power4.in" }, "-=0.75")
+            .to("#finished-overlay", { yPercent: 100, ease: "power4.inOut" }, "-=0.4")
+            .fromTo(".stagger-animation", { y: e => (5 - e) * -400 }, { y: 0, duration: 0.8, ease: "power4.out", stagger: { amount: 0.3 } }, "<");
     };
 
     useEffect(() => {
         const tl = gsap.timeline();
         tl.fromTo(
             inputContainer.current,
-            {
-                width: `100%`,
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-            },
-            {
-                borderTopLeftRadius: "1.5rem",
-                borderBottomLeftRadius: "1.5rem",
-                width: `60%`,
-                duration: 1,
-                ease: "power3.inOut",
-            },
+            { width: `100%`, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 },
+            { borderTopLeftRadius: "1.5rem", borderBottomLeftRadius: "1.5rem", width: `60%`, duration: 1, ease: "power3.inOut" },
             "<0.5"
         )
-            .from(
-                ".animated-text",
-                {
-                    yPercent: 150,
-                    ease: "power4.out",
-                },
-                "<0.6"
-            )
-            .from(
-                ".animated-text-2",
-                {
-                    yPercent: 150,
-                    ease: "power4.out",
-                },
-                "<0.1"
-            )
+            .from(".animated-text", { yPercent: 150, ease: "power4.out" }, "<0.6")
+            .from(".animated-text-2", { yPercent: 150, ease: "power4.out" }, "<0.1");
     }, []);
 
     return (
@@ -192,8 +127,6 @@ const MainBody = forwardRef((props, ref) => {
 });
 
 const DecorationContainer = forwardRef((_, ref) => {
-    useEffect(() => {}, []);
-
     const Text = ({ children, animatedClass }) => {
         return (
             <div className="overflow-hidden">

@@ -7,7 +7,7 @@ import { useNonInitialEffect } from "../../../composables/useNonInitialEffect";
 
 import { ReactComponent as RegisterPeopleTA } from "../../../assets/images/register-people-ta.svg";
 import { ReactComponent as RegisterPeopleTeacher } from "../../../assets/images/register-people-teacher.svg";
-import { ReactComponent as EZtantLogo } from '../../../assets/logos/eztant.svg'
+import { ReactComponent as EZtantLogo } from "../../../assets/logos/eztant.svg";
 
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -151,8 +151,8 @@ const RoleSelecter = ({ changeRole, role }) => {
     return (
         <div className="relative flex h-full w-[40px] shrink-0 flex-col items-center justify-between md:w-[70px]">
             {/* icon */}
-            <div className="w-[80%] mt-3">
-                <EZtantLogo/>
+            <div className="mt-3 w-[80%]">
+                <EZtantLogo />
             </div>
             {/* role */}
             <div className="absolute bottom-[20px] flex h-full w-full flex-col items-center justify-end overflow-hidden">
@@ -178,58 +178,50 @@ const RoleSelecter = ({ changeRole, role }) => {
 };
 
 const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
+    const navigate = useNavigate();
+
     // handle onChangeRole event animation
     const taPicture = useRef(null);
     const teacherPicture = useRef(null);
     const container = useRef(null);
-
-    const navigate = useNavigate();
     const finishedOverlay = useRef(null);
-    useEffect(() => {
-        gsap.set(finishedOverlay.current, {
-            yPercent: -100,
+
+    const handleNavigateToLogin = async () => {
+        await navigate("/");
+        await navigate("/login", {
+            state: {
+                backgroundLocation: {
+                    pathname: "/",
+                    search: "",
+                    hash: "",
+                    state: null,
+                    key: "vgcp8l3i",
+                },
+            },
         });
+    };
+
+    useEffect(() => {
+        gsap.set(finishedOverlay.current, { yPercent: -100 });
     }, []);
 
     useEffect(() => {
         const offset = taPicture.current.height.animVal.value;
         const tl = gsap.timeline();
-        gsap.set(teacherPicture.current , {
-            y: offset,
-        })
+        gsap.set(teacherPicture.current, { y: offset });
+
         if (role === "student") {
-            tl.to(
-                taPicture.current,
-                {
-                    ease: Back.easeOut.config(1.4),
-                    duration: 1,
-                    y: 0,
-                }
-            ).to(
+            tl.to(taPicture.current, { ease: Back.easeOut.config(1.4), duration: 1, y: 0 }).to(
                 teacherPicture.current,
-                {
-                    ease: Power4.easeOut,
-                    duration: 1,
-                    y: offset,
-                },
+                { ease: Power4.easeOut, duration: 1, y: offset },
                 "<"
             );
         }
+
         if (role === "teacher") {
-            tl.to(
-                taPicture.current,
-                {
-                    duration: 1,
-                    ease: Power4.easeOut,
-                    y: offset,
-                }
-            ).to(
+            tl.to(taPicture.current, { duration: 1, ease: Power4.easeOut, y: offset }).to(
                 teacherPicture.current,
-                {
-                    ease: Back.easeOut.config(1.4),
-                    duration: 1,
-                    y: 0,
-                },
+                { ease: Back.easeOut.config(1.4), duration: 1, y: 0 },
                 "<"
             );
         }
@@ -237,39 +229,9 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
 
     useNonInitialEffect(() => {
         const tl = gsap.timeline();
-        tl.to(
-            container.current,
-            {
-                y: "100%",
-                duration: 1,
-                ease: "power4.inOut",
-            },
-            "+=1"
-        )
-            .to(
-                finishedOverlay.current,
-                {
-                    yPercent: 0,
-                    duration: 1,
-                    ease: Back.easeInOut.config(2),
-                },
-                "<"
-            )
-            .fromTo(
-                ".stagger-animation",
-                {
-                    y: e => (5 - e) * -100,
-                },
-                {
-                    y: 0,
-                    duration: 0.6,
-                    ease: "power4.inOut",
-                    stagger: {
-                        amount: 0.4,
-                    },
-                },
-                "<"
-            );
+        tl.to(container.current, { y: "100%", duration: 1, ease: "power4.inOut" }, "+=1")
+            .to(finishedOverlay.current, { yPercent: 0, duration: 1, ease: Back.easeInOut.config(2) }, "<")
+            .fromTo(".stagger-animation", { y: e => (5 - e) * -100 }, { y: 0, duration: 0.6, ease: "power4.inOut", stagger: { amount: 0.4 } }, "<");
     }, [isRegSuccess]);
 
     return (
@@ -294,20 +256,7 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
                 <FontAwesomeIcon className="stagger-animation text-[80px]" icon={faCheckCircle} />
                 <div
                     className="stagger-animation flex-cen w-2/3 cursor-pointer rounded-full border-4 border-white bg-white py-4 text-xl text-primary hover:border-white hover:bg-primary hover:text-white"
-                    onClick={async () => {
-                        await navigate("/");
-                        await navigate("/login", {
-                            state: {
-                                backgroundLocation: {
-                                    pathname: "/",
-                                    search: "",
-                                    hash: "",
-                                    state: null,
-                                    key: "vgcp8l3i",
-                                },
-                            },
-                        });
-                    }}>
+                    onClick={() => handleNavigateToLogin()}>
                     เข้าสุ่ระบบ
                 </div>
             </div>
