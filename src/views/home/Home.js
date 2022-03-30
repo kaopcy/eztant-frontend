@@ -15,6 +15,7 @@ const Home = () => {
                 <ImageQuote />
             </div>
             <Post />
+            <div className="h-screen "></div>
         </div>
     );
 };
@@ -46,9 +47,7 @@ const ImageQuote = () => {
             delay: 2,
             duration: 1,
             ease: "power4.out",
-            stagger: {
-                amount: 0.2,
-            },
+            stagger: { amount: 0.2 },
         });
     }, []);
 
@@ -77,40 +76,11 @@ const WelcomQuote = () => {
 
     useEffect(() => {
         const tl = gsap.timeline({ delay: 0.3 });
-        tl.to(fadeBackgroundRef.current, {
-            yPercent: 100,
-            autoAlpha: 1,
-            ease: "power2.inOut",
-
-            duration: 1,
-        })
-            .from(".welcome-quote-animation", {
-                xPercent: 250,
-                duration: 0.8,
-                ease: "power1.in",
-                // stagger: {
-
-                //     amount: -0.1,
-                // },
-            })
-            .to(
-                fadeBackgroundRef.current,
-                {
-                    width: 0,
-                    transformOrigin: "0% 100%",
-                    autoAlpha: 0,
-                    ease: "power2.in",
-                    duration: 0.8,
-                },
-                "<"
-            )
-            .from(".welcome-name-animation", {
-                yPercent: -100,
-            });
-
-        return ()=>{
-            tl.kill()
-        }
+        tl.to(fadeBackgroundRef.current, { yPercent: 100, autoAlpha: 1, ease: "power2.inOut", duration: 1 })
+            .from(".welcome-quote-animation", { xPercent: 250, duration: 0.8, ease: "power1.in" })
+            .to(fadeBackgroundRef.current, { width: 0, transformOrigin: "0% 100%", autoAlpha: 0, ease: "power2.in", duration: 0.8 }, "<")
+            .from(".welcome-name-animation", { yPercent: -130 });
+        return () => tl.kill();
     }, []);
 
     const Text = ({ children }) => {
@@ -122,9 +92,9 @@ const WelcomQuote = () => {
     };
     return (
         <div className="relative flex flex-col items-center  justify-center self-end py-14 md:w-[45%] md:self-center">
-            <div className="relative flex justify-center  space-x-4 md:w-[500px] overflow-hidden">
-                <div ref={fadeBackgroundRef} className="flex-cen absolute -translate-y-full h-full inset-0 overflow-hidden">
-                    <img className="h-full" src={require('../../assets/logos/eztant.png')} alt="" />
+            <div className="relative flex justify-center  space-x-4 overflow-hidden md:w-[500px]">
+                <div ref={fadeBackgroundRef} className="flex-cen absolute inset-0 h-full -translate-y-full overflow-hidden">
+                    <img className="h-full" src={require("../../assets/logos/eztant.png")} alt="" />
                 </div>
                 <div className="flex flex-col overflow-hidden">
                     <div className="welcome-quote-animation text-text">
