@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 const posts = [
     {
@@ -54,16 +57,24 @@ const posts = [
 ];
 
 const CarouselMobile = () => {
+    useEffect(() => {
+        ScrollTrigger.batch(".card-animation", {
+            onEnter: batch => gsap.fromTo(batch, { yPercent: 20 }, { autoAlpha: 1, yPercent: 0, stagger: 0.15, overwrite: true }),
+            onLeave: batch => gsap.set(batch, { autoAlpha: 0, overwrite: true }),
+            onEnterBack: batch => gsap.to(batch, { autoAlpha: 1, stagger: 0.15, overwrite: true }),
+            onLeaveBack: batch => gsap.set(batch, { autoAlpha: 0, overwrite: true }),
+        });
+    }, []);
     return (
-        <div className="flex-col-cen mt-6 w-full space-y-4 px-4 sm:px-12">
-            {posts.map((post, index) => (index < 3 ? <Card key={post.subjectID} post={post} /> : ""))}
+        <div id="trigger-el" className="flex-col-cen mt-6 w-full space-y-4 px-4 sm:px-12">
+            {posts.map((post, index) => (index < 5 ? <Card key={post.subjectID} post={post} /> : ""))}
         </div>
     );
 };
 
 const Card = ({ post }) => {
     return (
-        <div className="flex w-full space-x-3 rounded-md border px-4 py-6 ">
+        <div className="card-animation flex w-full space-x-3 rounded-md border px-4 py-6 opacity-0 ">
             <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full shadow-md sm:h-16 sm:w-16">
                 <img src={post.authorAvatar} alt="" className="h-full w-full object-cover" />
             </div>
