@@ -4,17 +4,19 @@ import gsap from "gsap";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { ReactComponent as ManyPeopleSvg } from "../../assets/images/many-people.svg";
+import ManyPeople from "../../assets/images/ManyPeople";
 import { default as Post } from "./Components/Post/Post";
+
 const Home = () => {
     return (
         <div className="relative flex w-full flex-col bg-white pb-10">
-            <div className="relative mb-10 flex min-h-[calc(100vh-80px)] w-full flex-col  bg-white px-6 md:flex-row md:px-10">
+            <div className="first relative mb-10 flex min-h-[calc(100vh-80px)] w-full flex-col  bg-white px-6 md:flex-row md:px-10">
                 <WelcomQuote />
                 <ImageQuote />
             </div>
             <Post />
-            <div className="h-screen "></div>
+            <div className="last h-screen"></div>
+            <BackgroundImage/>
         </div>
     );
 };
@@ -152,7 +154,7 @@ const WelcomQuote = () => {
 const BackgroundImage = () => {
     return (
         <div className="relative min-h-[200px] w-full overflow-x-hidden">
-            <ManyPeopleSvg className="min-w-[100vw] bg-white" />
+            <ManyPeople className="min-w-[100vw] bg-white" />
         </div>
     );
 };

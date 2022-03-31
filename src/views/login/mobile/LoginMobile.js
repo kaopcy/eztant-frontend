@@ -57,12 +57,12 @@ const LoginButton = ({ setIsLoginSuccess }) => {
 };
 
 const Input = props => {
-    const { type, label } = props;
+    const { type, label , inputType } = props;
     const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
     return (
         <div className="flex-col-cen mb-2 w-full">
             <div className="self-start ">{label}</div>
-            <input type="text" value={userinput[type]} onChange={e => handleInput(e)} name={type} className="input-register w-full text-xl" />
+            <input type={inputType ?? "text"} value={userinput[type]} onChange={e => handleInput(e)} name={type} className="input-register w-full text-xl" />
         </div>
     );
 };
@@ -72,7 +72,7 @@ const InputField = props => {
     return (
         <div className="flex w-[95%] flex-col items-center pt-4 xs:w-[85%] ">
             <Input {...props} type="email" label="อีเมล์" />
-            <Input {...props} type="password" label="รหัสผ่าน" />
+            <Input {...props} inputType="password" type="password" label="รหัสผ่าน" />
             <div className="cursor-pointer self-end text-sm text-primary underline hover:text-red-600">ลืมรหัสผ่าน?</div>
             <div className="mt-8 flex space-x-2 self-center">
                 <div className="text-sm text-text">ยังไม่มีบัญชี ?</div>

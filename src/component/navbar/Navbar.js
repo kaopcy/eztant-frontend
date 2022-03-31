@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 import { useResponsive } from "../../composables/context/useResponsive";
 
-import { ReactComponent as EztantLogo } from "../../assets/logos/eztant.svg";
+import EztantLogo from "../../assets/logos/Eztant";
 
 import { faBell, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

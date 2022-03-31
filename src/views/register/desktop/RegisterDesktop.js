@@ -7,7 +7,7 @@ import { useNonInitialEffect } from "../../../composables/useNonInitialEffect";
 
 import { ReactComponent as RegisterPeopleTA } from "../../../assets/images/register-people-ta.svg";
 import { ReactComponent as RegisterPeopleTeacher } from "../../../assets/images/register-people-teacher.svg";
-import { ReactComponent as EZtantLogo } from "../../../assets/logos/eztant.svg";
+import { default as EZtantLogo } from "../../../assets/logos/Eztant";
 
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
