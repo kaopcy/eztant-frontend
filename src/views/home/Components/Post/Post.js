@@ -7,7 +7,7 @@ import { useResponsive } from "../../../../composables/context/useResponsive";
 const Post = () => {
     const isMobile = useResponsive();
     return (
-        <div className="w-full">
+        <div className="w-full flex-col-cen">
             <PostSearch />
             {!isMobile && <SwiperCarousel />}
             {isMobile && <CarouselMobile />}

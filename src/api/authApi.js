@@ -19,7 +19,7 @@ export const register = async (userinput, setIsLoading, setError) => {
     try {
         await new Promise(reject => {
             setTimeout(() => {
-                alert(userinput)
+                alert(userinput);
                 reject();
             }, 1000);
         });
@@ -28,4 +28,14 @@ export const register = async (userinput, setIsLoading, setError) => {
         setIsLoading(false);
         setError(error.message);
     }
+};
+
+export const checkDuplicateEmail = async email => {
+    const randomFlag = Math.round(Math.random() * 100) % 2 === 0;
+    const isDuplicate = await new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(randomFlag ? true : false);
+        }, 1000);
+    });
+    return isDuplicate
 };

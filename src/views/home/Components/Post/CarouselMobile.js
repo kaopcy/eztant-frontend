@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -57,7 +57,7 @@ const posts = [
 ];
 
 const CarouselMobile = () => {
-    useEffect(() => {
+    useLayoutEffect(() => {
         ScrollTrigger.batch(".card-animation", {
             onEnter: batch => gsap.fromTo(batch, { yPercent: 20 }, { autoAlpha: 1, yPercent: 0, stagger: 0.15, overwrite: true }),
             onLeave: batch => gsap.set(batch, { autoAlpha: 0, overwrite: true }),

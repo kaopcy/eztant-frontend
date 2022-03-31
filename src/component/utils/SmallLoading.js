@@ -10,8 +10,6 @@ const SmallLoading = ({ children, isLoading, gap = 20 }) => {
     const loaderRef = useRef(null);
 
     useEffect(() => {
-        console.log(isLoading);
-
         gsap.set(loaderRef.current, {
             right: "50%",
             xPercent: 50,

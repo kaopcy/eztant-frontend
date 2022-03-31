@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -70,7 +70,9 @@ const SwiperCarousel = () => {
     const [triggerUpdate, setTriggerUpdate] = useState(true);
     const nextEl = useRef(null);
     const prevEl = useRef(null);
-
+    useEffect(()=>{
+        console.log('rerender');
+    })
     const enterAnim = direction => {
         gsap.fromTo(
             ".card-animation",
@@ -81,7 +83,8 @@ const SwiperCarousel = () => {
     const hideAnim = () => {
         gsap.set(".card-animation", { autoAlpha: 0, overwrite: true });
     };
-    useEffect(() => {
+    useLayoutEffect(() => {
+        console.log('kuay');
         ScrollTrigger.create({
             trigger: "#swiper-wrapper",
             onEnter: () => enterAnim(1),
