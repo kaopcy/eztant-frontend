@@ -1,6 +1,11 @@
 import { createContext, useState } from "react";
+import * as api from "../../../api/authApi";
 
-export const InputContext = createContext();
+export const InputContext = createContext({
+    userinput: {},
+    handleInputUpdate: () => {},
+    handleOnBlur: () => {},
+});
 
 export const InputProvider = ({ children }) => {
     const initialInput = {
@@ -21,5 +26,13 @@ export const InputProvider = ({ children }) => {
         setuserinput({ ...userinput, [name]: value });
     };
 
-    return <InputContext.Provider value={{ userinput, handleInputUpdate }}>{children}</InputContext.Provider>;
+    const handleOnBlur = async e => {
+        const { value } = e.target;
+        if (!value || value.length < 0) {
+            const res = await api.checkDuplicateEmail("kao");
+            console.log(res);
+        }
+    };
+
+    return <InputContext.Provider value={{ userinput, handleInputUpdate, handleOnBlur }}>{children}</InputContext.Provider>;
 };

@@ -27,7 +27,7 @@ const Main = props => {
     const teacherInputContainer = useRef(null);
     const taInputContainer = useRef(null);
 
-    const { userinput, handleInputUpdate } = useContext(InputContext);
+    const { userinput } = useContext(InputContext);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
 
@@ -71,11 +71,11 @@ const Main = props => {
 
 const Input = props => {
     const { type, label } = props;
-    const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
+    const { userinput, handleInputUpdate: handleInput, handleOnBlur } = useContext(InputContext);
     return (
         <div className="flex-col-cen input-group mb-2 w-[95%] items-start xs:w-[85%]">
             <div className="input-label  ">{label}</div>
-            <input type="text" value={userinput[type]} onChange={handleInput} name={type} className="input-register py2 text-xl" />
+            <input type="text"  onChange={handleInput} onBlurCapture={handleOnBlur} name={type} className="input-register py2 text-xl" />
         </div>
     );
 };

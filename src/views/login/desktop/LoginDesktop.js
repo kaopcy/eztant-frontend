@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { ReactComponent as EztantLogo } from "../../../assets/logos/eztant.svg";
+import { default as EztantLogo } from "../../../assets/logos/Eztant";
 import { ReactComponent as DecorationImage } from "../../../assets/images/login-decoration.svg";
 import { InputProvider } from "../contexts/inputContext";
 

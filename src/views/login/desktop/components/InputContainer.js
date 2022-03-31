@@ -41,7 +41,7 @@ const InputContainer = forwardRef((props, ref) => {
             <div className="flex w-full flex-col items-center">
                 <div className="flex-col-cen input-group mb-2 w-[95%] max-w-[380px] items-start xs:w-[85%]">
                     <Input type="email" label="อีเมล์" />
-                    <Input type="password" label="รหัสผ่าน" />
+                    <Input type="password" inputType="password" label="รหัสผ่าน" />
                     <div className="mt-2 mb-6 self-end text-xs text-primary underline ">ลืมรหัสผ่าน</div>
                     <div className="input-group mt-4 flex w-full items-center justify-center space-x-8">
                         <button
@@ -91,12 +91,12 @@ const InputContainer = forwardRef((props, ref) => {
 });
 
 const Input = props => {
-    const { type, label } = props;
+    const { type, label , inputType } = props;
     const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
     return (
         <>
             <div className="input-label  ">{label}</div>
-            <input type="text" value={userinput[type]} onChange={handleInput} name={type} className="input-register py-1 text-xl" />
+            <input type={inputType ?? "text"} value={userinput[type]} onChange={handleInput} name={type} className="input-register py-1 text-xl" />
         </>
     );
 };

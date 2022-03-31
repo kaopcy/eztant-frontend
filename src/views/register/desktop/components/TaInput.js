@@ -79,8 +79,17 @@ const TaInput = props => {
     );
 };
 
+const InputField = ({ type, label }) => {
+    const { userinput, handleInputUpdate: handleInput, handleOnBlur } = useContext(InputContext);
+    return (
+        <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
+            <div className="input-label  ">{label}</div>
+            <input type="text" value={userinput[type]} onBlur={handleOnBlur} onChange={handleInput} name={type} className="input-register" />
+        </div>
+    );
+};
+
 const InputFirstPage = forwardRef((props, ref) => {
-    const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
     const { onClose, setPage } = props;
     return (
         <div className="flex-col-cen w-full" ref={ref}>
@@ -91,26 +100,11 @@ const InputFirstPage = forwardRef((props, ref) => {
                 <span className="text-[13px] text-gray-500">หรือ</span>
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400"></span>
             </div>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">ชื่อ</div>
-                <input type="text" value={userinput.firstname} onChange={handleInput} name={"firstname"} className="input-register" />
-            </div>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">นามสกุล</div>
-                <input type="text" value={userinput.lastname} onChange={handleInput} name={"lastname"} className="input-register" />
-            </div>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">อีเมล์</div>
-                <input type="text" value={userinput.email} onChange={handleInput} name={"email"} className="input-register" />
-            </div>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">รหัสผ่าน</div>
-                <input type="text" value={userinput.password} onChange={handleInput} name={"password"} className="input-register" />
-            </div>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">เบอร์โทรศัพท์</div>
-                <input type="text" value={userinput.phone} onChange={handleInput} name={"phone"} className="input-register" />
-            </div>
+            <InputField type={"firstname"} label={"ชื่อ"} />
+            <InputField type={"lastname"} label={"นามสกุล"} />
+            <InputField type={"email"} label={"อีเมล์"} />
+            <InputField type={"password"} label={"รหัสผ่าน"} />
+            <InputField type={"phone"} label={"เบอร์โทรศัพท์"} />
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
@@ -131,7 +125,7 @@ const InputFirstPage = forwardRef((props, ref) => {
 });
 
 const InputSecondPage = forwardRef((props, ref) => {
-    const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
+    const { userinput } = useContext(InputContext);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const { setPage, handleOnRegSuccess } = props;
@@ -143,18 +137,9 @@ const InputSecondPage = forwardRef((props, ref) => {
     };
     return (
         <div className="flex-col-cen absolute w-full" ref={ref}>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">รหัสนักศึกษา</div>
-                <input type="text" value={userinput.studentID} onChange={handleInput} name={"studentID"} className="input-register" />
-            </div>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">ภาควิชา</div>
-                <input type="text" value={userinput.department} onChange={handleInput} name={"department"} className="input-register" />
-            </div>
-            <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-                <div className="input-label  ">ชั้นปี</div>
-                <input type="text" value={userinput.year} onChange={handleInput} name={"year"} className="input-register" />
-            </div>
+            <InputField type={"studentID"} label={"รหัสนักศึกษา"} />
+            <InputField type={"department"} label={"ภาควิชา"} />
+            <InputField type={"year"} label={"ชั้นปี"} />
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
