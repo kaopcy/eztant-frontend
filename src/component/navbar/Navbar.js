@@ -20,7 +20,7 @@ const links = [
     },
     {
         name: "โพสต์",
-        to: "post",
+        to: "post-list",
         children: DEPARTMENT_LINK
     },
     {

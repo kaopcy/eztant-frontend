@@ -6,6 +6,7 @@ import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
 
 import Home from "./views/home/Home";
+import { PostList } from "./views/mainpost";
 
 import Navbar from "./component/navbar/Navbar";
 import { useResponsive } from "./composables/context/useResponsive";
@@ -18,12 +19,12 @@ const App = () => {
 
     // prevent user access some route without background state
     useEffect(() => {
-        if(isMobile) return
+        if (isMobile) return;
         const isIllegalRoute = location.pathname === "/register" || location.pathname === "/login";
         if (!state?.backgroundLocation && isIllegalRoute) {
             navigate("/");
         }
-    }, [state?.backgroundLocation, location.pathname, navigate , isMobile]);
+    }, [state?.backgroundLocation, location.pathname, navigate, isMobile]);
 
     return (
         <div className="m-0 flex flex-col bg-slate-50 p-0">
@@ -34,6 +35,8 @@ const App = () => {
             <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
                 <Route path="/post" element={<RegisterMobile />} />
                 <Route index path="/" element={<Home />} />
+                <Route path="/post-list" element={<PostList />} />
+
                 {isMobile && (
                     <>
                         <Route path="/register" element={<RegisterMobile />} />

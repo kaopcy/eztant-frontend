@@ -1,60 +1,10 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
 
-const posts = [
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMNICATION NAJA",
-        subjectID: "0100123",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/400",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100124",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/399",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100125",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100126",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100127",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-    },
-];
+import { POSTS as posts} from '../../.../../../../generalConfig'
+
+gsap.registerPlugin(ScrollTrigger);
 
 const CarouselMobile = () => {
     useLayoutEffect(() => {

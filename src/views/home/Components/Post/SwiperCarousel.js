@@ -11,60 +11,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleRight, faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 import { Pagination, Navigation } from "swiper";
+import { POSTS as posts } from "../../../../generalConfig";
 
 gsap.registerPlugin(ScrollTrigger);
-const posts = [
-    {
-        author: "พรหมพิริยะ เจริญพานทองดี",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMNICATION NAJA",
-        subjectID: "0100123",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/400",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100124",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/399",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100125",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100126",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100127",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-    },
-];
 
 const SwiperCarousel = () => {
     const [triggerUpdate, setTriggerUpdate] = useState(true);
