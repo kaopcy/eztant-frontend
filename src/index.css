@@ -32,6 +32,10 @@
         @apply text-xs;
     }
 
+    .ellipsis {
+        @apply overflow-hidden text-ellipsis whitespace-nowrap
+    }
+
     .flex-col-cen {
         @apply flex flex-col items-center justify-center;
     }
