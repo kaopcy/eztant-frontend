@@ -65,6 +65,7 @@ const Desktop = () => {
             toggleActions: "play none play reverse",
             end: "top 20%",
             start: "top 100%",
+            scrub: 2,
         });
     }, []);
 
