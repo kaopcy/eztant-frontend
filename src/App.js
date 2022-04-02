@@ -35,7 +35,9 @@ const App = () => {
             <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
                 <Route path="/post" element={<RegisterMobile />} />
                 <Route index path="/" element={<Home />} />
-                <Route path="/post-list" element={<PostList />} />
+                <Route path="/post-list" element={<PostList />}>
+                    <Route path=":id" element={<PostList />} />
+                </Route>
 
                 {isMobile && (
                     <>

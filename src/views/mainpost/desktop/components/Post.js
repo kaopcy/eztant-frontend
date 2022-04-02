@@ -7,9 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useNonInitialEffect } from "../../../../composables/useNonInitialEffect";
 
+import TeachTable from "./TeachTable";
+
 const Post = ({ post }) => {
     return (
-        <div className="min-h-[500px] min-w-[768px] max-w-[1000px] rounded-md px-10 py-8 text-xl shadow-md">
+        <div className="min-h-[500px] shrink-0 min-w-[768px]  rounded-md px-10 py-8 text-xl shadow-md">
             <Header post={post} />
             <Detail post={post} />
         </div>
@@ -70,6 +72,10 @@ const Detail = ({ post }) => {
         };
         setSize();
         window.addEventListener("resize", setSize);
+
+        return () => {
+            window.removeEventListener("resize", setSize);
+        };
     }, []);
 
     useNonInitialEffect(() => {
@@ -81,37 +87,40 @@ const Detail = ({ post }) => {
     }, [showMore]);
 
     const text = ({ label, detail, className = "" }) => (
-        <div className={`${className} flex min-w-0 items-center whitespace-nowrap text-lg `}>
+        <div className={`${className} flex min-w-0 items-start whitespace-nowrap text-base `}>
             <span className="w-28 font-semibold">{label}</span>
-            <span className="ellipsis ">{detail}</span>
+            <span className="max-w-[220px]  whitespace-pre-line">{detail}</span>
         </div>
     );
     return (
-        <div className="mt-8  flex flex-col space-y-4">
-            {text({ label: "ชื่อวิชา", detail: post.subjectName })}
-            {text({ label: "รหัสวิชา", detail: post.subjectID })}
-            {text({ label: "ค่าตอบแทน", detail: `${post.wage} บาท/ชั่วโมง` })}
-            {text({ label: "ชั้นปีที่รับ", detail: post.year })}
-            <div className={`flex min-w-0 items-center whitespace-nowrap text-lg `}>
-                <span className="mr-6 font-semibold">เกรดรายวิชาไม่ต่ำกว่า</span>
-                <span className="ellipsis ">{post.minGrade}</span>
-            </div>
-            <div className={`flex min-w-0 flex-col whitespace-nowrap text-lg `}>
-                <div className="mr-6 font-semibold">หน้าที่</div>
-                <div className="whitespace-pre-line px-5 py-4 ">
-                    <div ref={moreDetailRef} className="leading-[28px]">
-                        <div ref={textRef} className="w-full">
-                            {post.moreDetail}
+        <div className="mt-8 flex justify-between items-start ">
+            <div className="flex flex-col space-y-4 ">
+                {text({ label: "ชื่อวิชา", detail: post.subjectName })}
+                {text({ label: "รหัสวิชา", detail: post.subjectID })}
+                {text({ label: "ค่าตอบแทน", detail: `${post.wage} บาท/ชั่วโมง` })}
+                {text({ label: "ชั้นปีที่รับ", detail: post.year })}
+                <div className={`flex min-w-0 items-center whitespace-nowrap text-lg `}>
+                    <span className="mr-6 font-semibold">เกรดรายวิชาไม่ต่ำกว่า</span>
+                    <span className="ellipsis ">{post.minGrade}</span>
+                </div>
+                <div className={`flex min-w-0 flex-col whitespace-nowrap text-lg `}>
+                    <div className="mr-6 font-semibold">หน้าที่</div>
+                    <div className="whitespace-pre-line px-5 py-4 ">
+                        <div ref={moreDetailRef} className="leading-[28px]">
+                            <div ref={textRef} className="w-full">
+                                {post.moreDetail}
+                            </div>
                         </div>
+                        <br />
+                        {isMore && (
+                            <div className="cursor-pointer text-sm underline" onClick={() => setShowMore(e => !e)}>
+                                ...ดูเพิ่มเติม
+                            </div>
+                        )}
                     </div>
-                    <br />
-                    {isMore && (
-                        <div className="cursor-pointer text-sm underline" onClick={() => setShowMore(e => !e)}>
-                            ...ดูเพิ่มเติม
-                        </div>
-                    )}
                 </div>
             </div>
+            <TeachTable />
         </div>
     );
 };

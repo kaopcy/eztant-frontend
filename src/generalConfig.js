@@ -1,51 +1,51 @@
 export const DEPARTMENT_LINK = [
     {
         name: "รวมทุกภาควิชา",
-        to: "/elec",
+        to: "",
     },
     {
         name: "การเกษตร",
-        to: "/elec",
+        to: "การเกษตร",
     },
     {
         name: "คอมพิวเตอร์",
-        to: "/elec",
+        to: "คอมพิวเตอร์",
     },
     {
         name: "เคมี",
-        to: "/elec",
+        to: "เคมี",
     },
     {
         name: "เครื่องกล",
-        to: "/elec",
+        to: "เครื่องกล",
     },
     {
         name: "ชีวการแพทย์",
-        to: "/elec",
+        to: "ชีวการแพทย์",
     },
     {
         name: "ดนตรี",
-        to: "/elec",
+        to: "ดนตรี",
     },
     {
         name: "โทรคมนาคม",
-        to: "/elec",
+        to: "โทรคมนาคม",
     },
     {
         name: "ไฟฟ้า",
-        to: "/elec",
+        to: "ไฟฟ้า",
     },
     {
         name: "โยธา",
-        to: "/elec",
+        to: "โยธา",
     },
     {
         name: "อาหาร",
-        to: "/elec",
+        to: "อาหาร",
     },
     {
         name: "อิเล็กโทรนิคส์",
-        to: "/elec",
+        to: "อิเล็กโทรนิคส์",
     },
 ];
 
@@ -53,13 +53,13 @@ export const POSTS = [
     {
         author: "พรหมพิริยะ เจริญพานทองดี",
         department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMNICATION NAJA",
+        subjectName: "DATA STRUCTURE & ALGORYTHM",
         subjectID: "0100123",
         wage: "600",
         year: "2,3,4",
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/400",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n"
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -70,7 +70,7 @@ export const POSTS = [
         year: "2,3,4",
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/399",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n"
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -81,7 +81,7 @@ export const POSTS = [
         year: "2,3,4",
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/398",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n"
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -92,7 +92,7 @@ export const POSTS = [
         year: "2,3,4",
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/398",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n"
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -103,6 +103,6 @@ export const POSTS = [
         year: "2,3,4",
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/398",
-        moreDetail: "-"
+        moreDetail: "-",
     },
 ];

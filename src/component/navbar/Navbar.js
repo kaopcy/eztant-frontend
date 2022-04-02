@@ -6,7 +6,7 @@ import EztantLogo from "../../assets/logos/Eztant";
 
 import { faBell, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { DEPARTMENT_LINK } from "../../generalConfig"; 
+import { DEPARTMENT_LINK } from "../../generalConfig";
 
 import MobileDropdown from "./MobileDropdown";
 
@@ -21,7 +21,7 @@ const links = [
     {
         name: "โพสต์",
         to: "post-list",
-        children: DEPARTMENT_LINK
+        children: DEPARTMENT_LINK,
     },
     {
         name: "คอมมูนิตี้",
@@ -49,7 +49,6 @@ const Navbar = ({ height }) => {
         console.log(`isOpenDropdown: ${isOpenDropdown}`);
     }, [isOpenDropdown]);
 
-    
     const isLogin = false;
     return (
         <div
@@ -61,7 +60,7 @@ const Navbar = ({ height }) => {
                 <DesktopMenu location={location} isLogin={isLogin} />
             )}
             {isOpenDropdown && isMobile && (
-                <MobileDropdown links={links} toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} location={location}/>
+                <MobileDropdown links={links} toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} location={location} />
             )}
         </div>
     );
@@ -77,11 +76,18 @@ const DesktopMenu = props => {
                     <EztantLogo className="h-full" />
                 </Link>
                 <div className="flex h-full">
-                    {links.map(link => ( !link.mobile &&
-                        <CustomLink to={link.to} state={link.modal ? { backgroundLocation: location } : null} key={link.name}>
-                            {link.name}
-                        </CustomLink>
-                    ))}
+                    {links.map(
+                        link =>
+                            !link.mobile && (
+                                <CustomLink
+                                    name={link.name}
+                                    to={link.to}
+                                    state={link.modal ? { backgroundLocation: location } : null}
+                                    key={link.name}>
+                                    {link.name}
+                                </CustomLink>
+                            )
+                    )}
                 </div>
             </div>
             <div className="flex h-full items-center space-x-5 2md:space-x-8 lg:space-x-10">
@@ -111,9 +117,9 @@ const MobileMenu = props => {
     );
 };
 
-const CustomLink = ({ children, to, ...props }) => {
+const CustomLink = ({name, children, to, ...props }) => {
     const { pathname: path } = useResolvedPath(to);
-    const match = useMatch({ path, end: true });
+    const match = useMatch({ path, end: name === "โพสต์" ? false : true });
     return (
         <Link
             className={`flex h-full shrink-0 items-center justify-center border-b-[3px] px-4 text-base font-semibold text-gray-600 2md:px-6 2md:text-xl lg:px-8  ${
