@@ -86,7 +86,7 @@ const SwiperCarousel = () => {
 
     return (
         <>
-            <div className="relative w-[90%] max-w-[1200px] ">
+            <div className="relative w-[90%] max-w-[1200px] mt-12">
                 <Swiper {...swiperOption} navigation={{ nextEl: nextEl.current, prevEl: prevEl.current }} id="swiper-wrapper" className="">
                     {posts.map(post => (
                         <SwiperSlide

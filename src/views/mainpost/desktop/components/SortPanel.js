@@ -13,7 +13,7 @@ const RightSideBar = () => {
     }, [sortBy]);
     return (
         <SortContext.Provider value={{ sortBy, setSortBy, orderBy, setOrderBy }}>
-            <div className="w-[230px] bg-[#f5f5f5] px-3 py-8 text-lg text-text shadow-md sticky top-[80px]">
+            <div className="w-[230px] bg-[#f2f2f2] px-3 py-8 text-lg text-text shadow-md sticky top-[80px]">
                 <div className="flex flex-col space-y-4">
                     <SearchBar setSearchValue={setSearchValue} />
                     <div className="font-bold">จัดเรียง</div>

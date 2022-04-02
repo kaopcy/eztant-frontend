@@ -3,6 +3,7 @@ import { useResponsive } from "../../../../composables/context/useResponsive";
 import { useSelector } from "react-redux";
 
 import gsap from "gsap";
+import { Observer } from 'gsap/Observer'
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 

@@ -9,7 +9,7 @@ const LeftSideBar = () => {
     }
 
     return (
-        <div className="w-[230px] bg-[#f5f5f5] text-lg text-text shadow-md sticky top-[80px]">
+        <div className="w-[230px] bg-[#f2f2f2] text-lg text-text shadow-md sticky top-[80px]">
             <div className="flex flex-col py-8 ">
                 {DEPARTMENT_LINK.map((departmentLink, i) => 
                     <NavLink name={departmentLink.name} to={departmentLink.to} key={uuidv4()} className={i === 0 ? "underline text-primary-dark font-bold" : "" }/>
