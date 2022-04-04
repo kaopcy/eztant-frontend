@@ -21,9 +21,9 @@ const PostListDesktop = ({ postList, isLoading, getPostList }) => {
     //     await gsap.set(PostList.current, { clear: true });
     // };
 
-    // const scrollToTop = ()=>{
-    //     gsap.to(window , { duration: 1, scrollTo: 0 , ease: 'expo.inOut', onComplete: ()=> getPostList()  } )
-    // }
+    const scrollToTop = ()=>{
+        gsap.to(window , { duration: 1, scrollTo: 0 , ease: 'expo.inOut', onComplete: ()=> getPostList()  } )
+    }
 
     // useNonInitialEffect(() => {
     //     console.log("...clear");
@@ -65,11 +65,11 @@ const PostListDesktop = ({ postList, isLoading, getPostList }) => {
                         CLikc to decrease
                     </div>
                 }
-                {/* {
+                {
                     <div className="btn-orange px-4 py-2" onClick={() => scrollToTop()}>
                         Click to scroll to top
                     </div>
-                } */}
+                }
             </div>
             {!isHideSortPanel && <SortPanel />}
         </div>

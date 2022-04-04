@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { POSTS as posts} from '../../../../generalConfig'
+import { POSTS as posts } from "../../../../generalConfig";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,10 +15,10 @@ const CarouselMobile = () => {
             onEnterBack: batch => gsap.to(batch, { autoAlpha: 1, stagger: 0.15, overwrite: true }),
             onLeaveBack: batch => gsap.set(batch, { autoAlpha: 0, overwrite: true }),
         });
-        ScrollTrigger.refresh()
+        ScrollTrigger.refresh();
     }, []);
     return (
-        <div className="flex-col-cen mt-6 w-full space-y-4 px-4 sm:px-12" >
+        <div className="flex-col-cen mt-6 w-full space-y-4 px-4 sm:px-12">
             {posts.map((post, index) => (index < 5 ? <Card key={post.subjectID} post={post} /> : ""))}
         </div>
     );
@@ -26,26 +26,26 @@ const CarouselMobile = () => {
 
 const Card = ({ post }) => {
     return (
-        <div className="card-animation flex w-full space-x-3 rounded-md border px-4 py-6 opacity-0 cursor-pointer hover:border-gray-500">
+        <div className="card-animation flex w-full cursor-pointer space-x-3 rounded-md border px-4 py-6 opacity-0 hover:border-gray-500">
             <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full shadow-md sm:h-16 sm:w-16">
                 <img src={post.authorAvatar} alt="" className="h-full w-full object-cover" />
             </div>
-            <div className="flex w-full flex-col text-base text-text min-w-0">
+            <div className="xs:text-md flex w-full min-w-0 flex-col text-xs text-text md:text-xl">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-wrap font-semibold leading-tight tracking-wide">
                         <div className="mr-2">{post.author}</div>
                         <div className="">({post.department})</div>
                     </div>
-                    <div className="shrink-0 whitespace-nowrap text-xs font-medium text-text-light sm:text-sm">2 ชม.ที่แล้ว</div>
+                    <div className=" shrink-0 whitespace-nowrap text-[10px] font-medium text-text-light xs:text-xs sm:text-sm">2 ชม.ที่แล้ว</div>
                 </div>
-                <div className="text-lg font-bold tracking-wide sm:text-xl whitespace-nowrap overflow-x-hidden text-ellipsis">{post.subjectName}</div>
-                <div className="mt-2 flex flex-col space-y-4">
+                <div className="ellipsis font-bold tracking-tight text-sm">{post.subjectName}</div>
+                <div className="mt-2 flex flex-col space-y-2">
                     <div className="flex items-center text-sm font-medium">
-                        <div className="w-24 shrink-0">ค่าตอบแทน</div>
+                        <div className="w-20 sm:w-24 shrink-0">ค่าตอบแทน</div>
                         <div className="">{post.wage} บาท/ชั่วโมง</div>
                     </div>
                     <div className="flex items-center text-sm font-medium">
-                        <div className="w-24 shrink-0">ชั้นปีที่รับ</div>
+                        <div className="w-20 sm:w-24 shrink-0">ชั้นปีที่รับ</div>
                         <div className="">{post.year}</div>
                     </div>
                     <div className="flex items-center text-sm font-medium">

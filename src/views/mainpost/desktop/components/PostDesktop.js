@@ -86,23 +86,23 @@ const Detail = ({ post }) => {
     }, [showMore]);
 
     const text = ({ label, detail, className = "" }) => (
-        <div className={`${className} flex min-w-0 items-start whitespace-nowrap text-base `}>
+        <div className={`${className} flex min-w-0 items-start whitespace-nowrap `}>
             <span className="w-28 font-semibold">{label}</span>
             <span className="max-w-[220px]  whitespace-pre-line">{detail}</span>
         </div>
     );
     return (
         <div className="mt-8 flex items-start justify-between ">
-            <div className="flex flex-col space-y-4 ">
+            <div className="flex flex-col space-y-4  text-lg">
                 {text({ label: "ชื่อวิชา", detail: post.subjectName })}
                 {text({ label: "รหัสวิชา", detail: post.subjectID })}
                 {text({ label: "ค่าตอบแทน", detail: `${post.wage} บาท/ชั่วโมง` })}
                 {text({ label: "ชั้นปีที่รับ", detail: post.year })}
-                <div className={`flex min-w-0 items-center whitespace-nowrap text-lg `}>
+                <div className={`flex min-w-0 items-center whitespace-nowrap `}>
                     <span className="mr-6 font-semibold">เกรดรายวิชาไม่ต่ำกว่า</span>
                     <span className="ellipsis ">{post.minGrade}</span>
                 </div>
-                <div className={`flex min-w-0 flex-col whitespace-nowrap text-lg `}>
+                <div className={`flex min-w-0 flex-col whitespace-nowrap `}>
                     <div className="mr-6 font-semibold">หน้าที่</div>
                     <div className="whitespace-pre-line px-5 py-4 ">
                         <div ref={moreDetailRef} className="leading-[28px]">
@@ -113,7 +113,7 @@ const Detail = ({ post }) => {
                         <br />
                         {isMore && (
                             <div className="cursor-pointer text-sm underline" onClick={() => setShowMore(e => !e)}>
-                                ...ดูเพิ่มเติม
+                                {showMore ? "...ดูน้อยลง" : "...ดูเพิ่มเติม"}
                             </div>
                         )}
                     </div>
