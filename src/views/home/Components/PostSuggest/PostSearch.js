@@ -3,6 +3,8 @@ import { useResponsive } from "../../../../composables/context/useResponsive";
 import { useSelector } from "react-redux";
 
 import gsap from "gsap";
+import { Observer } from 'gsap/Observer'
+
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +12,6 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 
 gsap.registerPlugin(ScrollTrigger);
-
 const PostSearch = () => {
     const isMobile = useResponsive();
     return (
@@ -65,6 +66,7 @@ const Desktop = () => {
             toggleActions: "play none play reverse",
             end: "top 20%",
             start: "top 100%",
+            scrub: 2,
         });
     }, []);
 
@@ -75,7 +77,7 @@ const Desktop = () => {
     return (
         <>
             <div ref={triggerRef} className="m-auto h-[330px] w-[90%] max-w-[1200px] ">
-                <div ref={container} className="flex-col-cen h-[calc(90%-150px)] w-full overflow-hidden bg-text px-20  text-white">
+                <div ref={container} className="flex-col-cen h-[calc(100%-150px)] w-full overflow-hidden bg-text px-20  text-white">
                     <div className="flex-col-cen mt-16 mb-8 w-full space-y-7">
                         <div ref={postText} className="text-4xl font-semibold">
                             โพสต์

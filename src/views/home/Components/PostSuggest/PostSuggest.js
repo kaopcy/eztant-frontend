@@ -4,7 +4,7 @@ import SwiperCarousel from "./SwiperCarousel";
 import CarouselMobile from "./CarouselMobile";
 import { useResponsive } from "../../../../composables/context/useResponsive";
 
-const Post = () => {
+const PostSuggest = () => {
     const isMobile = useResponsive();
     return (
         <div className="w-full flex-col-cen">
@@ -15,4 +15,4 @@ const Post = () => {
     );
 };
 
-export default Post;
+export default PostSuggest;

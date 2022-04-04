@@ -1,50 +1,151 @@
 export const DEPARTMENT_LINK = [
     {
         name: "รวมทุกภาควิชา",
-        to: "/elec",
+        engName: "All Department",
+        to: "/post-list/all-department",
     },
     {
         name: "การเกษตร",
-        to: "/elec",
+        engName: "Agricultural",
+        to: "/post-list/agricultural",
     },
     {
         name: "คอมพิวเตอร์",
-        to: "/elec",
+        engName: "Computer",
+        to: "/post-list/computer",
     },
     {
         name: "เคมี",
-        to: "/elec",
+        engName: "Chemistry",
+        to: "/post-list/chemistry",
     },
     {
         name: "เครื่องกล",
-        to: "/elec",
+        engName: "Mechanical",
+        to: "/post-list/mechanical",
+    },
+    {
+        name: "อุตสาหการ",
+        engName: "Industial",
+        to: "/post-list/industial",
     },
     {
         name: "ชีวการแพทย์",
-        to: "/elec",
-    },
-    {
-        name: "ดนตรี",
-        to: "/elec",
+        engName: "Biomedical",
+        to: "/post-list/biomedical",
     },
     {
         name: "โทรคมนาคม",
-        to: "/elec",
+        engName: "Telecommunications",
+        to: "/post-list/telecommunications",
     },
     {
         name: "ไฟฟ้า",
-        to: "/elec",
+        engName: "Electrical",
+        to: "/post-list/electrical",
     },
     {
         name: "โยธา",
-        to: "/elec",
+        engName: "Civil",
+        to: "/post-list/civil",
     },
     {
         name: "อาหาร",
-        to: "/elec",
+        engName: "Food",
+        to: "/post-list/food",
     },
     {
         name: "อิเล็กโทรนิคส์",
-        to: "/elec",
+        engName: "Electronic",
+        to: "/post-list/electronic",
+    },
+];
+
+export const SORT_TYPE = [
+    {
+        label: "ตามชื่อผู้สอน",
+        value: "teacherName",
+    },
+    {
+        label: "ตามจำนวนเงิน",
+        value: "wage",
+    },
+    {
+        label: "ตามชื่อวิชา",
+        value: "subjectName",
+    },
+    {
+        label: "ตามรหัสวิชา",
+        value: "subjectID",
+    },
+];
+
+export const ORDER_TYPE =[
+    {
+        label: "น้อยไปมาก",
+        value: "ascending",
+    },
+    {
+        label: "มากไปน้อย",
+        value: "descending",
+    },
+
+]
+
+export const POSTS = [
+    {
+        author: "พรหมพิริยะ เจริญพานทองดี",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA STRUCTURE & ALGORYTHM",
+        subjectID: "0100123",
+        wage: "600",
+        year: "2,3,4",
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/400",
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION NAJA",
+        subjectID: "0100124",
+        wage: "600",
+        year: "2,3,4",
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/399",
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION NAJA",
+        subjectID: "0100125",
+        wage: "600",
+        year: "2,3,4",
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION NAJA",
+        subjectID: "0100126",
+        wage: "600",
+        year: "2,3,4",
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION NAJA",
+        subjectID: "0100127",
+        wage: "600",
+        year: "2,3,4",
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        moreDetail: "-",
     },
 ];

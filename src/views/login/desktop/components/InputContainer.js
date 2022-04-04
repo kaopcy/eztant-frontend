@@ -1,5 +1,4 @@
 import React, { forwardRef, useContext, useRef } from "react";
-import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,7 +9,6 @@ import GoogleRegister from "../../../register/desktop/components/GoogleRegister"
 // Context
 import { InputContext } from "../../contexts/inputContext";
 import SmallLoading from "../../../../component/utils/SmallLoading";
-import { useNonInitialEffect } from "../../../../composables/useNonInitialEffect";
 import { login as AuthLogin } from "../../../../store/actions/authAction";
 
 const InputContainer = forwardRef((props, ref) => {
