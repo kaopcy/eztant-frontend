@@ -20,6 +20,7 @@ const PostListMobile = ({ postList, isLoading, getPostList }) => {
     //     });
     // }, []);
 
+    
     return (
         <div className="flex min-h-[5000px] w-full flex-col">
             <ControlBar ref={controlBarRef} />
