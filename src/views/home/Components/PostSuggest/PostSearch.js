@@ -33,7 +33,7 @@ const Mobile = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 h-[4px] w-full bg-primary"></div>
             </div>
-            <FontAwesomeIcon icon={faSearch} className="text-xl text-text-light  sm:text-3xl" />
+            <FontAwesomeIcon icon={faSearch} className="text-2xl text-text-light  sm:text-3xl" />
         </div>
     );
 };

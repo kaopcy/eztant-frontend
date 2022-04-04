@@ -9,7 +9,7 @@ import { SORT_TYPE, ORDER_TYPE } from "../../../../generalConfig";
 import DisclosureAnimate from "../../../../component/utils/DisclosureAnimate";
 const ControlBar = forwardRef((_, ref) => {
     return (
-        <div ref={ref} className="fixed top-[60px] z-10 flex w-full items-center justify-between space-x-2 border-b bg-white px-2 py-3 text-text">
+        <div ref={ref} className="fixed top-[60px] z-10 flex w-full items-center space-x-2 border-b bg-white px-2 py-3 text-text">
             <FontAwesomeIcon icon={faArrowLeft} />
             <SearchBar />
             <SortBar />
@@ -41,7 +41,7 @@ const SearchBar = () => {
             <input
                 ref={inputRef}
                 type="text"
-                className="ellipsis w-full rounded-md px-2 py-1 text-xs outline outline-1 outline-text-light focus:outline-text "
+                className="ellipsis rounded-md px-2 py-1 text-xs outline outline-1 outline-text-light focus:outline-text "
                 onChange={e => setSearchValue(e.target.value)}
             />
             <FontAwesomeIcon icon={faSearch} className="text-text-light" />
@@ -61,7 +61,7 @@ const SortBar = () => {
                         className="relative flex w-full min-w-0 cursor-pointer items-center justify-between space-x-2 rounded-md bg-white px-2 py-1 outline outline-1 outline-text-light"
                         onClick={() => setOpen(e => !e)}>
                         <span className="ellipsis text-xs">{SORT_TYPE.filter(e => sortBy === e.value)[0].label} </span>
-                        <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
+                        <FontAwesomeIcon icon={faChevronDown} className="text-[10px]" />
                         <div className="absolute top-[calc(100%+1px)] -left-2 w-full ">
                             <div className="relative w-full self-end overflow-hidden " ref={childRelativeContainer}>
                                 <div ref={childAbsoluteContainer} className="absolute bottom-0 left-0 flex w-full flex-col border bg-white py-2">

@@ -125,7 +125,7 @@ const Detail = forwardRef(({ post }, ref) => {
 
     const text = ({ label, detail, className = "" }) => (
         <div className={`${className} flex min-w-0 items-start whitespace-nowrap`}>
-            <span className="w-20 shrink-0 font-semibold text-black">{label}</span>
+            <span className="w-20 shrink-0 font-semibold ">{label}</span>
             <span className="  whitespace-pre-line ">{detail}</span>
         </div>
     );

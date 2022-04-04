@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 const TeachTable = () => {
     return (
-        <div className="flex-col-cen  rounded-md bg-stone-200 px-6 py-5 text-base">
+        <div className="flex-col-cen justify-start rounded-md bg-stone-200 px-6 py-5 text-base">
             <div className="mb-3 flex text-xl font-semibold underline">ตารางเรียน</div>
             <div className="flex-col-cen space-y-2">
-                <Day sec="101" day="monday"/>
-                <Day sec="102" day="tuesday"/>
-                <Day sec="103" day="wednesday"/>
-                <Day sec="104" day="thursday"/>
-                <Day sec="105" day="friday"/>
+                <Day sec="101" day="monday" />
+                <Day sec="102" day="tuesday" />
+                <Day sec="103" day="wednesday" />
+                <Day sec="104" day="thursday" />
             </div>
         </div>
     );
@@ -25,7 +24,7 @@ const Day = ({ day, sec, time }) => {
         friday: "#0065fb",
         saturnday: "#6600ce",
     };
-    
+
     const shortDays = {
         sunday: "อา.",
         monday: "จ.",
@@ -34,14 +33,16 @@ const Day = ({ day, sec, time }) => {
         thursday: "พฤ.",
         friday: "ศ.",
         saturnday: "ส.",
-    }
+    };
 
     return (
         <div className="flex items-center justify-start overflow-hidden rounded-full text-sm lg:text-base">
-            <div className="flex-cen h-full py-3 w-12 " style={{ backgroundColor: color[day] }}>{ shortDays[day] }</div>
+            <div className="flex-cen h-full w-12 py-2 " style={{ backgroundColor: color[day] }}>
+                {shortDays[day]}
+            </div>
             <div className="flex-cen space-x-2 bg-[#FCFCFC] px-2">
-                <div className="whitespace-nowrap rounded-full  bg-text  px-3 text-white">เซค {sec}</div>
-                <div className="py-3 whitespace-nowrap">09:00 - 12:00 น.</div>
+                <div className="whitespace-nowrap rounded-full  bg-text px-3 text-white">เซค {sec}</div>
+                <div className="whitespace-nowrap py-2">09:00 - 12:00 น.</div>
             </div>
         </div>
     );

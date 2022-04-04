@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
     @font-face {
         font-family: "Thonburi";
@@ -23,6 +22,11 @@
         font-family: "Thonburi", system-ui, sans-serif;
     }
 }
+@layer base {
+    input {
+        @apply outline outline-1 outline-text-light;
+    }
+}
 
 @layer components {
     .input-register {
@@ -34,7 +38,7 @@
     }
 
     .ellipsis {
-        @apply overflow-hidden text-ellipsis whitespace-nowrap
+        @apply overflow-hidden text-ellipsis whitespace-nowrap;
     }
 
     .flex-col-cen {
@@ -63,7 +67,7 @@
     box-sizing: border-box;
 }
 
-input{
+input {
     border: none;
     outline: none;
 }
@@ -76,8 +80,8 @@ input{
     transform: scaleX(-1) scaleY(-1);
 }
 
-html, body {
+html,
+body {
     scroll-behavior: auto;
-    -webkit-overflow-scrolling:touch;
+    -webkit-overflow-scrolling: touch;
 }
-
