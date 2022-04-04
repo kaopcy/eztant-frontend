@@ -23,12 +23,12 @@ const Inside = () => {
     const isMobile = useResponsive();
     const { id } = useParams();
     const { page } = useContext(PageContext);
-    const { postList, isLoading , getPostList } = usePostList(page, id);
-    
+    const { postList, isLoading, getPostList } = usePostList(page, id);
+
     return (
         <div className="min-h-screen w-full">
-            {!isMobile && <PostListDesktop postList={postList} isLoading={isLoading} getPostList={getPostList}/>}
-            { isMobile && <PostListMobile />}
+            {!isMobile && <PostListDesktop postList={postList} isLoading={isLoading} getPostList={getPostList} />}
+            {isMobile && <PostListMobile postList={postList} isLoading={isLoading} getPostList={getPostList} />}
         </div>
     );
 };
