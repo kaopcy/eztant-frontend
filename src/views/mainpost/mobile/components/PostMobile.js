@@ -10,12 +10,19 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import TeachTable from "../../desktop/components/TeachTable";
 
 const PostMobile = ({ post }) => {
+    gsap.registerPlugin(Observer)
     const containerRef = useRef(null);
     const detailRef = useRef(null);
     const teachTableRef = useRef(null);
     const [isTeachTable, setIsTeachTable] = useState(false);
     const openTeachTable = useRef(() => {});
     const closeTeachTable = useRef(() => {});
+
+    useEffect(()=>{
+        console.log('mounted')
+    },[])
+
+
     useEffect(() => {
         const animate = gsap.to(teachTableRef.current, { paused: true, xPercent: -100 });
         openTeachTable.current = () => {
@@ -119,7 +126,7 @@ const Detail = forwardRef(({ post }, ref) => {
     const text = ({ label, detail, className = "" }) => (
         <div className={`${className} flex min-w-0 items-start whitespace-nowrap`}>
             <span className="w-20 shrink-0 font-semibold text-black">{label}</span>
-            <span className="max-w-[220px]  whitespace-pre-line ">{detail}</span>
+            <span className="  whitespace-pre-line ">{detail}</span>
         </div>
     );
     return (
