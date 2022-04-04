@@ -1,53 +1,96 @@
 export const DEPARTMENT_LINK = [
     {
         name: "รวมทุกภาควิชา",
-        to: "",
+        engName: "All Department",
+        to: "/post-list/all-department",
     },
     {
         name: "การเกษตร",
-        to: "การเกษตร",
+        engName: "Agricultural",
+        to: "/post-list/agricultural",
     },
     {
         name: "คอมพิวเตอร์",
-        to: "คอมพิวเตอร์",
+        engName: "Computer",
+        to: "/post-list/computer",
     },
     {
         name: "เคมี",
-        to: "เคมี",
+        engName: "Chemistry",
+        to: "/post-list/chemistry",
     },
     {
         name: "เครื่องกล",
-        to: "เครื่องกล",
+        engName: "Mechanical",
+        to: "/post-list/mechanical",
+    },
+    {
+        name: "อุตสาหการ",
+        engName: "Industial",
+        to: "/post-list/industial",
     },
     {
         name: "ชีวการแพทย์",
-        to: "ชีวการแพทย์",
-    },
-    {
-        name: "ดนตรี",
-        to: "ดนตรี",
+        engName: "Biomedical",
+        to: "/post-list/biomedical",
     },
     {
         name: "โทรคมนาคม",
-        to: "โทรคมนาคม",
+        engName: "Telecommunications",
+        to: "/post-list/telecommunications",
     },
     {
         name: "ไฟฟ้า",
-        to: "ไฟฟ้า",
+        engName: "Electrical",
+        to: "/post-list/electrical",
     },
     {
         name: "โยธา",
-        to: "โยธา",
+        engName: "Civil",
+        to: "/post-list/civil",
     },
     {
         name: "อาหาร",
-        to: "อาหาร",
+        engName: "Food",
+        to: "/post-list/food",
     },
     {
         name: "อิเล็กโทรนิคส์",
-        to: "อิเล็กโทรนิคส์",
+        engName: "Electronic",
+        to: "/post-list/electronic",
     },
 ];
+
+export const SORT_TYPE = [
+    {
+        label: "ตามชื่อผู้สอน",
+        value: "teacherName",
+    },
+    {
+        label: "ตามจำนวนเงิน",
+        value: "wage",
+    },
+    {
+        label: "ตามชื่อวิชา",
+        value: "subjectName",
+    },
+    {
+        label: "ตามรหัสวิชา",
+        value: "subjectID",
+    },
+];
+
+export const ORDER_TYPE =[
+    {
+        label: "น้อยไปมาก",
+        value: "ascending",
+    },
+    {
+        label: "มากไปน้อย",
+        value: "descending",
+    },
+
+]
 
 export const POSTS = [
     {

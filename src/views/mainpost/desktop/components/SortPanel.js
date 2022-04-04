@@ -1,36 +1,29 @@
-import React, { createContext, useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import SearchIcon from "../../../../component/utils/SearchIcon";
+import { SortContext, SearchContext } from "../../context/ControlContext";
+import { SORT_TYPE, ORDER_TYPE } from "../../../../generalConfig";
 
-const SortContext = createContext({ sortBy: "teacherName", setSortBy: () => {}, orderBy: "", setOrderBy: () => {} });
+const SortPanel = () => {
+    const { setSearchValue } = useContext(SearchContext);
 
-const RightSideBar = () => {
-    const [searchValue, setSearchValue] = useState("");
-    const [sortBy, setSortBy] = useState("teacherName");
-    const [orderBy, setOrderBy] = useState("ascending");
-
-    useEffect(() => {
-        console.log(sortBy);
-    }, [sortBy]);
     return (
-        <SortContext.Provider value={{ sortBy, setSortBy, orderBy, setOrderBy }}>
-            <div className="w-[230px] bg-[#f2f2f2] px-3 py-8 text-lg text-text shadow-md sticky top-[80px]">
+        <div className="sticky top-[80px] w-[230px] bg-[#f2f2f2] px-3 py-8 text-lg text-text shadow-md">
+            <div className="flex flex-col space-y-4">
+                <SearchBar setSearchValue={setSearchValue} />
+                <div className="font-bold">จัดเรียง</div>
                 <div className="flex flex-col space-y-4">
-                    <SearchBar setSearchValue={setSearchValue} />
-                    <div className="font-bold">จัดเรียง</div>
-                    <div className="flex flex-col space-y-4">
-                        <SortCheckBox label="ตามชื่อผู้สอน" value="teacherName" />
-                        <SortCheckBox label="ตามจำนวนเงิน" value="wage" />
-                        <SortCheckBox label="ตามชื่อวิชา" value="subjectName" />
-                        <SortCheckBox label="ตามรหัสวิชา" value="subjectID" />
-                    </div>
-                    <div className="font-bold">เรียงจาก</div>
-                    <div className="flex flex-col space-y-4">
-                        <OrderCheckBox label="น้อยไปมาก" value="ascending" />
-                        <OrderCheckBox label="มากไปน้อย" value="descending" />
-                    </div>
+                    {SORT_TYPE.map(e => (
+                        <SortCheckBox key={e.label} label={e.label} value={e.value} />
+                    ))}
+                </div>
+                <div className="font-bold">เรียงจาก</div>
+                <div className="flex flex-col space-y-4">
+                    {ORDER_TYPE.map(e => (
+                        <OrderCheckBox key={e.label} label={e.label} value={e.value} />
+                    ))}
                 </div>
             </div>
-        </SortContext.Provider>
+        </div>
     );
 };
 
@@ -78,4 +71,4 @@ const SearchBar = ({ setSearchValue }) => {
     );
 };
 
-export default RightSideBar;
+export default SortPanel;

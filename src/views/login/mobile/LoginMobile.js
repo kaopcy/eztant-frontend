@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import gsap, { Back } from "gsap";
@@ -57,12 +57,18 @@ const LoginButton = ({ setIsLoginSuccess }) => {
 };
 
 const Input = props => {
-    const { type, label , inputType } = props;
+    const { type, label, inputType } = props;
     const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
     return (
         <div className="flex-col-cen mb-2 w-full">
             <div className="self-start ">{label}</div>
-            <input type={inputType ?? "text"} value={userinput[type]} onChange={e => handleInput(e)} name={type} className="input-register w-full text-xl" />
+            <input
+                type={inputType ?? "text"}
+                value={userinput[type]}
+                onChange={e => handleInput(e)}
+                name={type}
+                className="input-register w-full text-xl"
+            />
         </div>
     );
 };
@@ -102,8 +108,9 @@ const LoginFinishedOverlay = ({ onClose }) => {
     const finishedOverlay = useRef(null);
     const container = useRef(null);
     const navigate = useNavigate();
-    useLayoutEffect(() => {
-        const tl = gsap.timeline();
+    const tl = useRef(null);
+    useEffect(() => {
+        tl.current = gsap.timeline();
         gsap.set(finishedOverlay.current, {
             yPercent: -100,
         });
@@ -111,40 +118,14 @@ const LoginFinishedOverlay = ({ onClose }) => {
             yPercent: 100,
             opacity: 0,
         });
-        tl.to(
-            container.current,
-            {
-                yPercent: 0,
-                opacity: 1,
-                ease: "power2.inOut",
-            },
-            "<"
-        )
-            .to(
-                finishedOverlay.current,
-                {
-                    yPercent: 0,
-                    duration: 1,
-                    ease: Back.easeInOut.config(2),
-                },
-                "<"
-            )
-            .fromTo(
-                ".stagger-animation",
-                {
-                    y: e => (5 - e) * -100,
-                },
-                {
-                    y: 0,
-                    duration: 0.6,
-                    ease: "power4.inOut",
-                    stagger: {
-                        amount: 0.4,
-                    },
-                },
-                "<"
-            );
-    });
+        tl.current
+            .to(container.current, { yPercent: 0, opacity: 1, ease: "power2.inOut" }, "<")
+            .to(finishedOverlay.current, { yPercent: 0, duration: 1, ease: Back.easeInOut.config(2) }, "<")
+            .fromTo(".stagger-animation", { y: e => (5 - e) * -100 }, { y: 0, duration: 0.6, ease: "power4.inOut", stagger: { amount: 0.4 } }, "<");
+        return () => {
+            tl.current.kill();
+        };
+    }, []);
     return (
         <>
             <div

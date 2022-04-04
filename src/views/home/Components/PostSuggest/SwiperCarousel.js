@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -12,33 +12,25 @@ import { faChevronCircleRight, faChevronCircleLeft } from "@fortawesome/free-sol
 
 import { Pagination, Navigation } from "swiper";
 import { POSTS as posts } from "../../../../generalConfig";
-
-gsap.registerPlugin(ScrollTrigger);
+import { usePostSuggestApi } from '../../../../api/Post/postSuggest'
 
 const SwiperCarousel = () => {
+    gsap.registerPlugin(ScrollTrigger);
+    const { isLoading , postSuggest } = usePostSuggestApi() 
+
     const [triggerUpdate, setTriggerUpdate] = useState(true);
     const nextEl = useRef(null);
     const prevEl = useRef(null);
-    const enterAnim = direction => {
-        gsap.fromTo(
-            ".card-animation",
-            { yPercent: 10 * direction, autoAlpha: 0 },
-            { yPercent: 0, duration: 0.5, autoAlpha: 1, stagger: { amount: 0.5 }, overwrite: true, delay: 0 }
-        );
-    };
-    const hideAnim = () => {
-        gsap.set(".card-animation", { autoAlpha: 0, overwrite: true });
-    };
-    useLayoutEffect(() => {
-        if (!document.querySelector(".card-animation")) return;
-        ScrollTrigger.create({
-            trigger: "#swiper-wrapper",
-            start: "-70 bottom",
-            onEnter: () => enterAnim(1),
-            onEnterBack: () => enterAnim(-1),
-            onLeaveBack: () => hideAnim(),
-            onLeave: () => hideAnim(),
-        });
+
+    const triggerContainer = useRef(null);
+
+    useEffect(()=>{
+        if(postSuggest){
+            gsap.fromTo(triggerContainer.current, { y: 100, opacity: 0 }, { y: 0, opacity: 1, scrollTrigger: { trigger: triggerContainer.current } });
+        }
+    },[postSuggest])
+    useEffect(() => {
+        ScrollTrigger.refresh();
     }, [triggerUpdate]);
 
     const swiperOption = {
@@ -86,12 +78,13 @@ const SwiperCarousel = () => {
 
     return (
         <>
-            <div className="relative w-[90%] max-w-[1200px] mt-12">
-                <Swiper {...swiperOption} navigation={{ nextEl: nextEl.current, prevEl: prevEl.current }} id="swiper-wrapper" className="">
-                    {posts.map(post => (
+            <div className="relative mt-12 w-[90%] max-w-[1200px]">
+                <Swiper {...swiperOption} navigation={{ nextEl: nextEl.current, prevEl: prevEl.current }} ref={triggerContainer}>
+                    {isLoading && <Loading/>}
+                    {postSuggest.map(post => (
                         <SwiperSlide
                             key={post.subjectID}
-                            className="card-animation flex-col-cen invisible w-[350px] justify-start overflow-hidden rounded-lg border-[2px] bg-white opacity-0 ">
+                            className="flex-col-cen w-[350px] justify-start overflow-hidden rounded-lg border-[2px] bg-white ">
                             <div className="flex-cen h-32 w-full justify-start space-x-4 bg-primary-dark px-3 leading-none text-white">
                                 <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-white bg-orange-200">
                                     <img src={post?.authorAvatar} className="h-full w-full" alt="" />
@@ -136,4 +129,11 @@ const SwiperCarousel = () => {
         </>
     );
 };
+
+const Loading = ()=>{
+    return (
+        <div className="">Loading...</div>
+    )
+}
+
 export default SwiperCarousel;

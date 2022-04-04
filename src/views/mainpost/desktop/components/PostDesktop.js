@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Moment from "react-moment";
 import "moment/locale/th";
@@ -9,14 +9,14 @@ import { useNonInitialEffect } from "../../../../composables/useNonInitialEffect
 
 import TeachTable from "./TeachTable";
 
-const Post = ({ post }) => {
+const PostDesktop = forwardRef(({ post }, ref) => {
     return (
-        <div className="min-h-[500px] shrink-0 min-w-[768px]  rounded-md px-10 py-8 text-xl shadow-md">
+        <div ref={ref} className="min-h-[500px] min-w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
             <Header post={post} />
             <Detail post={post} />
         </div>
     );
-};
+});
 
 const Header = ({ post }) => {
     const left = () => (
@@ -59,7 +59,6 @@ const Detail = ({ post }) => {
         const setSize = () => {
             const containerHeight = textRef.current.offsetHeight;
             const lineHeight = 28;
-            console.log(containerHeight);
             if (containerHeight > lineHeight * 3) {
                 setIsMore(true);
                 moreDetailRef.current.style.height = `${28 * 3}px`;
@@ -93,7 +92,7 @@ const Detail = ({ post }) => {
         </div>
     );
     return (
-        <div className="mt-8 flex justify-between items-start ">
+        <div className="mt-8 flex items-start justify-between ">
             <div className="flex flex-col space-y-4 ">
                 {text({ label: "ชื่อวิชา", detail: post.subjectName })}
                 {text({ label: "รหัสวิชา", detail: post.subjectID })}
@@ -125,4 +124,4 @@ const Detail = ({ post }) => {
     );
 };
 
-export default Post;
+export default PostDesktop;

@@ -21,8 +21,7 @@ const LeftSideBar = () => {
 
 const NavLink = ({ name, to, className }) => {
     const { pathname: path } = useResolvedPath(to);
-    const match = useMatch({ path});
-    console.log(path);
+    const match = useMatch({ path , end: true});
     return (
         <Link  className={`${match && "underline text-primary-dark font-bold"}  px-7 py-2 hover:text-primary-dark`} to={to}>
             {name} 

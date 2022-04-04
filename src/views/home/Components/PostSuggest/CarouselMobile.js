@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { POSTS as posts} from '../../.../../../../generalConfig'
+import { POSTS as posts} from '../../../../generalConfig'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +15,7 @@ const CarouselMobile = () => {
             onEnterBack: batch => gsap.to(batch, { autoAlpha: 1, stagger: 0.15, overwrite: true }),
             onLeaveBack: batch => gsap.set(batch, { autoAlpha: 0, overwrite: true }),
         });
+        ScrollTrigger.refresh()
     }, []);
     return (
         <div className="flex-col-cen mt-6 w-full space-y-4 px-4 sm:px-12" >

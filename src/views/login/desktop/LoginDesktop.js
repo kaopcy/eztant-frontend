@@ -58,19 +58,21 @@ const LoginDesktop = props => {
 const MainBody = forwardRef((props, ref) => {
     const navigate = useNavigate();
 
+    const tl = useRef(null);
+    const tl2 = useRef(null);
+
     const decorationContainer = useRef(null);
     const inputContainer = useRef(null);
     const mainContainer = useRef(null);
 
     const finishedAnimation = () => {
-        console.log("now finish");
-        const tl = gsap.timeline();
-        tl.to(inputContainer.current, {
-            xPercent: 100,
-            duration: 1.3,
-            ease: "power4.inOut",
-            onComplete: () => gsap.set(inputContainer.current, { display: "none" }),
-        })
+        tl.current
+            .to(inputContainer.current, {
+                xPercent: 100,
+                duration: 1.3,
+                ease: "power4.inOut",
+                onComplete: () => gsap.set(inputContainer.current, { display: "none" }),
+            })
             .fromTo(
                 mainContainer.current,
                 { width: `${mainContainer.current.offsetWidth}px` },
@@ -88,15 +90,22 @@ const MainBody = forwardRef((props, ref) => {
     };
 
     useEffect(() => {
-        const tl = gsap.timeline();
-        tl.fromTo(
-            inputContainer.current,
-            { width: `100%`, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 },
-            { borderTopLeftRadius: "1.5rem", borderBottomLeftRadius: "1.5rem", width: `60%`, duration: 1, ease: "power3.inOut" },
-            "<0.5"
-        )
+        tl.current = gsap.timeline();
+        tl2.current = gsap.timeline();
+
+        tl2.current
+            .fromTo(
+                inputContainer.current,
+                { width: `100%`, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 },
+                { borderTopLeftRadius: "1.5rem", borderBottomLeftRadius: "1.5rem", width: `60%`, duration: 1, ease: "power3.inOut" },
+                "<0.5"
+            )
             .from(".animated-text", { yPercent: 150, ease: "power4.out" }, "<0.6")
             .from(".animated-text-2", { yPercent: 150, ease: "power4.out" }, "<0.1");
+        return () => {
+            tl.current.kill();
+            tl2.current.kill();
+        };
     }, []);
 
     return (

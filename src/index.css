@@ -28,6 +28,7 @@
     .input-register {
         @apply w-full rounded-md border px-2 py-[0.45rem] text-xs outline-none focus:border-gray-300;
     }
+
     .input-lable {
         @apply text-xs;
     }
@@ -62,6 +63,11 @@
     box-sizing: border-box;
 }
 
+input{
+    border: none;
+    outline: none;
+}
+
 .vertical-text {
     writing-mode: vertical-lr;
     -webkit-writing-mode: vertical-lr;
@@ -69,3 +75,9 @@
     text-orientation: mixed;
     transform: scaleX(-1) scaleY(-1);
 }
+
+html, body {
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling:touch;
+}
+
