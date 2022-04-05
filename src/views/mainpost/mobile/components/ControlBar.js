@@ -24,7 +24,7 @@ const SearchBar = () => {
     useEffect(() => {
         const animate = gsap.to(inputRef.current, {
             paused: true,
-            width: "87vw",
+            width: "86vw",
             onReverseComplete: () => {
                 gsap.set(inputRef.current, { width: "100%" });
             },

@@ -1,67 +1,54 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useContext, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useMediaQuery } from "react-responsive";
+import { PageContext } from "../context/PageContext";
 
-import PostDesktop from "./components/PostDesktop";
+import PostDesktop, { PostFallBack } from "./components/PostDesktop";
 import DepartmentPanel from "./components/DepartmentPanel";
 import SortPanel from "./components/SortPanel";
-import { useNonInitialEffect } from "../../../composables/useNonInitialEffect";
+import Pagination from "../../../component/Pagination";
 
 const PostListDesktop = ({ postList, isLoading, getPostList }) => {
-    gsap.registerPlugin(ScrollToPlugin)
+    gsap.registerPlugin(ScrollToPlugin);
 
     const isHideSortPanel = useMediaQuery({ query: "(max-width: 1180px)" });
     const isDepartmentPanel = useMediaQuery({ query: "(max-width: 980px)" });
-    const PostList = useRef([]);
 
-    // const clear = async () => {
-    //     await ScrollTrigger.getAll("trigger1").forEach(e => e.kill(true));
-    //     await gsap.set(PostList.current, { clear: true });
-    // };
+    const scrollToTop = () => {
+        gsap.to(window, { duration: 1, scrollTo: 0, ease: "expo.inOut", onComplete: () => getPostList() });
+    };
 
-    const scrollToTop = ()=>{
-        gsap.to(window , { duration: 1, scrollTo: 0 , ease: 'expo.inOut', onComplete: ()=> getPostList()  } )
-    }
+    const scrollThenNextPage = e => {
+        gsap.to(window, { duration: 1, scrollTo: 0, ease: "expo.inOut", onComplete: () => setPage(e) });
+        return page;
+    };
 
-    // useNonInitialEffect(() => {
-    //     console.log("...clear");
-    //     const haha = async () => {
-    //         await clear();
-    //         await add();
-    //     };
-    //     haha();
-    // }, [postList]);
+    const scrollThenCallback = (cb = () => {}) => {
+        var body = document.body,
+            html = document.documentElement;
 
-    // const add = () => {
-    //     console.log("...");
-    //     PostList.current.forEach((post, i) => {
-    //         gsap.to(post, {
-    //             y: -200,
-    //             scale: 0.9,
-    //             scrollTrigger: {
-    //                 id: "trigger1",
-    //                 trigger: post,
-    //                 start: "top 80px",
-    //                 end: "bottom top",
-    //                 scrub: true,
-    //                 pin: true,
-    //                 pinSpacing: false,
-    //             },
-    //         });
-    //     });
-    // };
+        var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+        console.log(window.scrollY / height);
+        gsap.to(window, { duration: window.scrollY < 300 ? (window.scrollY / height) : 1, scrollTo: 0, ease: "expo.inOut", onComplete: () => cb() });
+    };
 
+    const { setPage, page } = useContext(PageContext);
     return (
-        <div className="flex mt-10  w-full items-start justify-center space-x-4 ">
-            {!isDepartmentPanel && <DepartmentPanel />}
+        <div className="mt-10 flex  w-full items-start justify-center space-x-4 ">
+            {!isDepartmentPanel && <DepartmentPanel onChangeDepartment={scrollThenCallback} />}
             <div className="flex-col-cen space-y-4 text-text">
-                {postList.map((post, i) => (
-                    <PostDesktop ref={e => (PostList.current[i] = e)} post={post} key={post.subjectID} />
-                ))}
+                {isLoading ? (
+                    <>
+                        <PostFallBack />
+                        <PostFallBack />
+                        <PostFallBack />
+                    </>
+                ) : (
+                    postList.map((post, i) => <PostDesktop post={post} key={post.subjectID} />)
+                )}
                 {
-                    <div className="btn-white px-4 py-2" onClick={() => getPostList()}>
+                    <div className="btn-white px-4 py-2" onClick={() => scrollThenCallback()}>
                         CLikc to decrease
                     </div>
                 }
@@ -70,6 +57,7 @@ const PostListDesktop = ({ postList, isLoading, getPostList }) => {
                         Click to scroll to top
                     </div>
                 }
+                {<Pagination currentPage={page} setPage={scrollThenNextPage} />}
             </div>
             {!isHideSortPanel && <SortPanel />}
         </div>
