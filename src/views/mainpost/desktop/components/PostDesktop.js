@@ -42,8 +42,9 @@ const Header = ({ post }) => {
         </div>
     );
 
-    const right = () => (
+    const right = (post) => (
         <div className="flex-cen space-x-3">
+            <div className="">{post.page}</div>
             <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow>
                 {new Date("2022-04-01T08:30-0500")}
             </Moment>

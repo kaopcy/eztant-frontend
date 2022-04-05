@@ -1,11 +1,14 @@
 import React from "react";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSearchParams } from "react-router-dom";
 
-const Pagination = ({ Page, currentPage = 20, setPage, totalPage = 2}) => {
+const Pagination = ({ setPage, totalPage = 10 }) => {
+    const [searchParams , setSearchParams] = useSearchParams()
+    const currentPage = searchParams.get('page') || 1
+    console.log(`currentPage: ${currentPage}`);
     let startPage = currentPage - 3;
     let endPage = currentPage + 3;
-    // const index = [1,2,3,4,5,6,7]
 
     if (startPage <= 0) {
         endPage -= startPage - 1;
@@ -18,27 +21,27 @@ const Pagination = ({ Page, currentPage = 20, setPage, totalPage = 2}) => {
 
     return (
         <div className=" flex items-center space-x-3 text-sm font-bold text-text">
-            <Chevron reverse setPage={setPage} />
+            <Chevron reverse setPage={setPage} totalPage={totalPage} />
             <div className="cursor-pointer rounded-md p-2 hover:bg-slate-100" onClick={() => setPage(e => (e > 1 ? e - 1 : e))}>
                 PREV
             </div>
             <div className="flex items-center space-x-1 ">
                 {numbers.map(number => (
-                    <Number setPage={setPage} number={number} active={currentPage === number} key={number} />
+                    <Number setPage={setPage} number={number} active={number === (parseInt(currentPage))} key={number} />
                 ))}
             </div>
             <div className="cursor-pointer rounded-md p-2 hover:bg-slate-100" onClick={() => setPage(e => (e < totalPage ? e + 1 : e))}>
                 NEXT
             </div>
-            <Chevron setPage={setPage} />
+            <Chevron setPage={setPage} totalPage={totalPage} />
         </div>
     );
 };
 
-const Chevron = ({ reverse, setPage }) => {
+const Chevron = ({ reverse, setPage , totalPage }) => {
     return (
         <div
-            onClick={() => setPage(e => (reverse ? e - 1 : e + 1))}
+            onClick={() => setPage(reverse ? 1 : totalPage)}
             className={`flex-cen h-8 w-8 cursor-pointer -space-x-1 rounded-md hover:bg-slate-100 ${reverse && "rotate-180"}`}>
             <FontAwesomeIcon icon={faChevronRight} />
             <FontAwesomeIcon icon={faChevronRight} />

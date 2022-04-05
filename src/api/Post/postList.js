@@ -11,7 +11,7 @@ export const usePostList = (page, id ) => {
 
     useEffect(() => {
         getPostList();
-    }, [page, id]);
+    }, [page, id,]);
 
     useEffect(() => {
         console.log(`trigger isLoading: ${isLoading}`);
@@ -31,7 +31,7 @@ export const usePostList = (page, id ) => {
                     );
                 }
                 setTimeout(() => {
-                    resolve(POSTS.map(e=> ({ ...e , subjectID: uuidv4() })));
+                    resolve(POSTS.map(e=> ({ ...e , subjectID: uuidv4() , page })));
                 }, 500);
             });
             setIsLoading(false);
