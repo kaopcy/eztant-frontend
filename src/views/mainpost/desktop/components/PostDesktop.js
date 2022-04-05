@@ -1,32 +1,43 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Moment from "react-moment";
 import "moment/locale/th";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis , faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useNonInitialEffect } from "../../../../composables/useNonInitialEffect";
 
 import TeachTable from "./TeachTable";
 
-const PostDesktop = forwardRef(({ post }, ref) => {
+const PostDesktop = ({ post }, ref) => {
+    const container = useRef(null)
+    useLayoutEffect(()=>{
+        gsap.from(container.current, {
+            autoAlpha: 0,
+            yPercent: 100,
+            scale: 0.8,
+            duration: 1,
+            ease: 'power4.inOut'
+        })
+    },[ref])
+
     return (
-        <div ref={ref} className="min-h-[500px] min-w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
+        <div ref={container} className="mypost min-h-[500px] min-w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
             <Header post={post} />
             <Detail post={post} />
         </div>
     );
-});
+};
 
 const Header = ({ post }) => {
     const left = () => (
         <div className="flex-cen w-full justify-start space-x-4">
             <div className="h-16 w-16 overflow-hidden rounded-full">
-                <img src={post.authorAvatar} alt="" className="h-full w-full " />
+                <img src={post?.authorAvatar} alt="" className="h-full w-full " />
             </div>
             <div className="flex flex-col ">
-                <span className="font-semibold">{post.author}</span>
-                <span className="text-sm text-text-light">{post.department}</span>
+                <span className="font-semibold">{post?.author}</span>
+                <span className="text-sm text-text-light">{post?.department}</span>
             </div>
         </div>
     );
@@ -120,6 +131,85 @@ const Detail = ({ post }) => {
                 </div>
             </div>
             <TeachTable />
+        </div>
+    );
+};
+
+export const PostFallBack = () => {
+    return (
+        <div className="min-h-[500px] min-w-[768px] relative shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
+            <div className="flex-cen w-full mb-10">
+                <div className="flex-cen w-full justify-start space-x-4">
+                    <div className="h-20 w-20 overflow-hidden rounded-full">
+                        <div className="h-full w-full bg-slate-200"></div>
+                    </div>
+                    <div className="flex flex-col space-y-3">
+                        <div className="flex items-center space-x-3">
+                            <span className="h-6 w-8 bg-gray-200"></span>
+                            <span className="h-6 w-[225px] bg-gray-200"></span>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                            <span className="h-6 w-8 bg-gray-200"></span>
+                            <span className="h-6 w-[225px] bg-gray-200"></span>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex-cen space-x-3">
+                    <div className="w-[100px] h-7 bg-zinc-100"></div>
+                    <FontAwesomeIcon icon={faEllipsis} className="text-lg bg-zinc-50 h-7 text-gray-300 px-4 " />
+                </div>
+            </div>
+            <div className="w-full flex space-x-5">
+                <div className="w-full bg-white py-6 px-6">
+                    <div className="flex flex-col w-full space-y-3">
+                        <div className="flex items-center space-x-1">
+                            <div className="w-[130px] h-7 shrink-0">
+                                <div className="h-full w-3/4 bg-gray-300"></div>
+                            </div>
+                            <div className="w-full h-7 bg-gray-200"></div>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <div className="w-[130px] h-7 shrink-0">
+                                <div className="h-full w-2/5 bg-gray-300"></div>
+                            </div>
+                            <div className="w-full h-7 bg-gray-200"></div>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <div className="w-[130px] h-7 shrink-0">
+                                <div className="h-full w-3/5 bg-gray-300"></div>
+                            </div>
+                            <div className="w-full h-7 bg-gray-200"></div>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <div className="w-[130px] h-7 shrink-0">
+                                <div className="h-full w-[70%] bg-gray-300"></div>
+                            </div>
+                            <div className="w-full h-7 bg-gray-200"></div>
+                        </div>
+                    </div>
+                </div>
+                <div className="shrink-0 w-[300px] py-4 bg-[#E7E7E7] flex-col-cen space-y-3">
+                    <div className="flex w-3/4 items-center space-x-3">
+                        <div className="shrink-0 w-10 rounded-l-3xl h-8 bg-yellow-100"></div>
+                        <div className="w-full h-8 bg-white"></div>
+                    </div>
+                    <div className="flex w-3/4 items-center space-x-3">
+                        <div className="shrink-0 w-10 rounded-l-3xl h-8 bg-pink-200"></div>
+                        <div className="w-full h-8 bg-white"></div>
+                    </div>
+                    <div className="flex w-3/4 items-center space-x-3">
+                        <div className="shrink-0 w-10 rounded-l-3xl h-8 bg-green-200"></div>
+                        <div className="w-full h-8 bg-white"></div>
+                    </div>
+                    <div className="flex w-3/4 items-center space-x-3">
+                        <div className="shrink-0 w-10 rounded-l-3xl h-8 bg-orange-200"></div>
+                        <div className="w-full h-8 bg-white"></div>
+                    </div>
+                </div>
+            </div>
+            <div className="absolute bottom-8 right-16 text-gray-300 text-3xl">
+                <FontAwesomeIcon icon={faHeart} />
+            </div>
         </div>
     );
 };

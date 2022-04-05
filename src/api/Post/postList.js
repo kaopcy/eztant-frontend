@@ -7,7 +7,7 @@ export const usePostList = (page, id ) => {
 
     useEffect(() => {
         clearPostList();
-    }, [id]);
+    }, [id , page]);
 
     useEffect(() => {
         getPostList();
@@ -32,7 +32,7 @@ export const usePostList = (page, id ) => {
                 }
                 setTimeout(() => {
                     resolve(POSTS.map(e=> ({ ...e , subjectID: uuidv4() })));
-                }, 3000);
+                }, 500);
             });
             setIsLoading(false);
             setPostList(prev => [...prev, ...data]);
