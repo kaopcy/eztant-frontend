@@ -8,6 +8,8 @@ import { RegisterDesktop, RegisterMobile } from "./views/register";
 
 import Home from "./views/home/Home";
 import { PostList } from "./views/mainpost";
+import UserTeacherList from './views/userList/UserTeacherList'
+import UserStudentList from './views/userList/UserStudentList'
 
 import Navbar from "./component/navbar/Navbar";
 
@@ -37,6 +39,8 @@ const App = () => {
                 <Route index path="/" element={<Home />} />
                 
                 <Route path="/post-list/:id" element={<PostList />} />
+                <Route path="/user-teacher-list" element={<UserTeacherList />} />
+                <Route path="/user-student-list" element={<UserStudentList />} />
                 <Route path="/post-list/" element={ <Navigate to="/post-list/all-department" replace /> } />
                 {isMobile && (
                     <>
