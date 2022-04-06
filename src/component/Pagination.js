@@ -2,7 +2,7 @@ import React from "react";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
-import gsap from 'gsap'
+const iboom = 'iboom'
 const Pagination = ({ setPage, totalPage = 10 }) => {
     const [searchParams , setSearchParams] = useSearchParams()
     const currentPage = searchParams.get('page') || 1
