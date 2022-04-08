@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useResponsive } from "../../composables/context/useResponsive";
 
 import { ControlProvider } from "./context/ControlContext";
-import { PageProvider, PageContext } from "./context/PageContext";
+import { PageProvider } from "./context/PageContext";
 import { usePostList } from "../../api/Post/postList";
+import useSearchQuery from "../../composables/useSearchQuery";
 
 import PostListDesktop from "./desktop/PostListDesktop";
 import PostListMobile from "./mobile/PostListMobile";
@@ -23,19 +24,15 @@ const Inside = () => {
     const isMobile = useResponsive();
     const { id } = useParams();
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const { query } = useSearchQuery();
 
-    const page = searchParams.get("page") || 1;
-    console.log(page);
-    const { postList, isLoading, getPostList } = usePostList(page, id);
+    const page = query?.page || 1;
 
+    const { postList, isLoading } = usePostList(page, id);
     return (
         <div className="min-h-screen w-full">
-            {!isMobile && <PostListDesktop postList={postList} isLoading={isLoading} getPostList={getPostList} />}
-            {isMobile && <PostListMobile postList={postList} isLoading={isLoading} getPostList={getPostList} />}
-            <div className="btn-orange rounded-md px-4 py-1" onClick={() => setSearchParams({ page: page +1 })}>
-                Clikc to add {page}
-            </div>
+            {!isMobile && <PostListDesktop postList={postList} isLoading={isLoading} />}
+            {isMobile && <PostListMobile postList={postList} isLoading={isLoading} />}
         </div>
     );
 };

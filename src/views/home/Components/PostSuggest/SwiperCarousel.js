@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, forwardRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,11 +12,11 @@ import { faChevronCircleRight, faChevronCircleLeft } from "@fortawesome/free-sol
 
 import { Pagination, Navigation } from "swiper";
 import { POSTS as posts } from "../../../../generalConfig";
-import { usePostSuggestApi } from '../../../../api/Post/postSuggest'
+import { usePostSuggestApi } from "../../../../api/Post/postSuggest";
 
 const SwiperCarousel = () => {
     gsap.registerPlugin(ScrollTrigger);
-    const { isLoading , postSuggest } = usePostSuggestApi() 
+    const { isLoading, postSuggest } = usePostSuggestApi();
 
     const [triggerUpdate, setTriggerUpdate] = useState(true);
     const nextEl = useRef(null);
@@ -24,11 +24,11 @@ const SwiperCarousel = () => {
 
     const triggerContainer = useRef(null);
 
-    useEffect(()=>{
-        if(postSuggest){
+    useEffect(() => {
+        if (postSuggest) {
             gsap.fromTo(triggerContainer.current, { y: 100, opacity: 0 }, { y: 0, opacity: 1, scrollTrigger: { trigger: triggerContainer.current } });
         }
-    },[postSuggest])
+    }, [postSuggest]);
     useEffect(() => {
         ScrollTrigger.refresh();
     }, [triggerUpdate]);
@@ -56,31 +56,11 @@ const SwiperCarousel = () => {
         },
     };
 
-    const prevBtn = () => {
-        return (
-            <div
-                ref={prevEl}
-                className=" flex-col-cen absolute -left-8 top-0 h-full cursor-pointer text-2xl text-text hover:text-text-light 2md:-left-10 xl:-left-14 xl:text-4xl">
-                <FontAwesomeIcon icon={faChevronCircleLeft} />
-            </div>
-        );
-    };
-
-    const nextBtn = () => {
-        return (
-            <div
-                ref={nextEl}
-                className=" flex-col-cen absolute -right-8 top-0 h-full cursor-pointer text-2xl text-text hover:text-text-light 2md:-right-10 xl:-right-14 xl:text-4xl">
-                <FontAwesomeIcon icon={faChevronCircleRight} />
-            </div>
-        );
-    };
-
     return (
         <>
             <div className="relative mt-12 w-[90%] max-w-[1200px]">
                 <Swiper {...swiperOption} navigation={{ nextEl: nextEl.current, prevEl: prevEl.current }} ref={triggerContainer}>
-                    {isLoading && <Loading/>}
+                    {isLoading && <Loading />}
                     {postSuggest.map(post => (
                         <SwiperSlide
                             key={post.subjectID}
@@ -122,18 +102,36 @@ const SwiperCarousel = () => {
                         </SwiperSlide>
                     ))}
                 </Swiper>
-                {nextBtn()}
-                {prevBtn()}
+                <NextBtn ref={nextEl} />
+                <PrevBtn ref={prevEl} />
                 <div className="mt-6 cursor-pointer text-right text-base text-text underline">...ดูเพิ่มเติม</div>
             </div>
         </>
     );
 };
 
-const Loading = ()=>{
+const PrevBtn = forwardRef((_, ref) => {
     return (
-        <div className="">Loading...</div>
-    )
-}
+        <div
+            ref={ref}
+            className=" flex-col-cen absolute -left-8 top-0 h-full cursor-pointer text-2xl text-text hover:text-text-light 2md:-left-10 xl:-left-14 xl:text-4xl">
+            <FontAwesomeIcon icon={faChevronCircleLeft} />
+        </div>
+    );
+});
+
+const NextBtn = forwardRef((_, ref) => {
+    return (
+        <div
+            ref={ref}
+            className=" flex-col-cen absolute -right-8 top-0 h-full cursor-pointer text-2xl text-text hover:text-text-light 2md:-right-10 xl:-right-14 xl:text-4xl">
+            <FontAwesomeIcon icon={faChevronCircleRight} />
+        </div>
+    );
+});
+
+const Loading = () => {
+    return <div className="">Loading...</div>;
+};
 
 export default SwiperCarousel;

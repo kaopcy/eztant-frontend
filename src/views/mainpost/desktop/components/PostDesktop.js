@@ -14,10 +14,10 @@ const PostDesktop = ({ post }, ref) => {
     useLayoutEffect(()=>{
         gsap.from(container.current, {
             autoAlpha: 0,
-            yPercent: 100,
+            yPercent: 50,
             scale: 0.8,
             duration: 1,
-            ease: 'power4.inOut'
+            ease: 'expo.inOut'
         })
     },[ref])
 

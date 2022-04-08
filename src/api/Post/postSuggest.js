@@ -7,22 +7,30 @@ export const usePostSuggestApi = () => {
     const [postSuggest, setPostSuggest] = useState([]);
 
     useEffect(() => {
+        let isSubscribe = true;
         const getData = async () => {
-            setIsLoading(true)
+            setIsLoading(true);
             try {
                 const data = await new Promise((resolve, reject) => {
                     setTimeout(() => {
                         resolve(POSTS);
                     }, 2000);
                 });
-                setIsLoading(false)
-                setPostSuggest(data)
+                if (isSubscribe) {
+                    setIsLoading(false);
+                    setPostSuggest(data);
+                }
             } catch (error) {
-                setError(error)
+                if (isSubscribe) {
+                    setError(error);
+                }
             }
         };
         getData();
-    },[]);
+        return () => {
+            isSubscribe = false;
+        };
+    }, []);
 
-    return { isLoading , error , postSuggest }
+    return { isLoading, error, postSuggest };
 };

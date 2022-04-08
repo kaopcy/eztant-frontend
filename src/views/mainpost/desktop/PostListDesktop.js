@@ -1,19 +1,21 @@
-import React, { useContext, useRef } from "react";
+import React from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+
+import useSearchQuery from "../../../composables/useSearchQuery";
 import { useMediaQuery } from "react-responsive";
-import { PageContext } from "../context/PageContext";
 
 import PostDesktop, { PostFallBack } from "./components/PostDesktop";
 import DepartmentPanel from "./components/DepartmentPanel";
 import SortPanel from "./components/SortPanel";
 import Pagination from "../../../component/Pagination";
-import { useSearchParams } from "react-router-dom";
 
-const PostListDesktop = ({ postList, isLoading, getPostList }) => {
+const PostListDesktop = ({ postList, isLoading }) => {
     gsap.registerPlugin(ScrollToPlugin);
-    const [searchParams,setSearchParams] = useSearchParams()
-    const page = searchParams.get('page') || 1
+
+    const { appendQuery, query } = useSearchQuery();
+    const page = query.page || 1;
+
     const isHideSortPanel = useMediaQuery({ query: "(max-width: 1180px)" });
     const isDepartmentPanel = useMediaQuery({ query: "(max-width: 980px)" });
 
@@ -23,12 +25,12 @@ const PostListDesktop = ({ postList, isLoading, getPostList }) => {
         return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     };
 
-    const scrollThenNextPage = e => {
+    const scrollThenNextPage = newPage => {
         gsap.to(window, {
             duration: window.scrollY < 300 ? window.scrollY / documentHeight() : 1,
             scrollTo: 0,
             ease: "expo.inOut",
-            onComplete: () => setSearchParams({ page: e }),
+            onComplete: () => appendQuery({ page: newPage }),
         });
         return page;
     };
@@ -57,7 +59,7 @@ const PostListDesktop = ({ postList, isLoading, getPostList }) => {
                 )}
                 {<Pagination currentPage={page} setPage={scrollThenNextPage} />}
             </div>
-            {!isHideSortPanel && <SortPanel />}
+            {!isHideSortPanel && <SortPanel setPage={scrollThenCallback} />}
         </div>
     );
 };
