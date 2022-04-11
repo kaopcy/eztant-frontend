@@ -1,11 +1,11 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PostSuggestMobile = ({ isLoading , postSuggest }) => {
-    useLayoutEffect(() => {
+const PostSuggestMobile = ({ isLoading, postSuggest }) => {
+    useEffect(() => {
         if (!document.querySelector(".card-animation")) return;
         ScrollTrigger.batch(".card-animation", {
             onEnter: batch => gsap.fromTo(batch, { yPercent: 20 }, { autoAlpha: 1, yPercent: 0, stagger: 0.15, overwrite: true }),
@@ -14,11 +14,11 @@ const PostSuggestMobile = ({ isLoading , postSuggest }) => {
             onLeaveBack: batch => gsap.set(batch, { autoAlpha: 0, overwrite: true }),
         });
         ScrollTrigger.refresh();
-    }, []);
-    return (
-        <div className="flex-col-cen mt-6 w-full space-y-4 px-4 sm:px-12">
-            {postSuggest.map((post, index) => (index < 5 ? <Card key={post.subjectID} post={post} /> : ""))}
-        </div>
+    }, [postSuggest]);
+    return isLoading ? (
+        <div className="">Loading</div>
+    ) : (
+        postSuggest.map((post, index) => (index < 5 ? <Card key={post.subjectID} post={post} /> : ""))
     );
 };
 

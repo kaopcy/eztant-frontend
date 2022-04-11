@@ -11,24 +11,27 @@ import DisclosureAnimate from "../utils/DisclosureAnimate";
 const MobileDropdown = props => {
     gsap.registerPlugin(Draggable);
     const { toggleMobileDropdown, links, location } = props;
-
     const [searchValue, setSearchValue] = useState("");
+
+    const tl1 = useRef(null);
+    const tl2 = useRef(null);
+    const container = useRef(null);
+    const overlayRef = useRef(null);
+    const mainContainer = useRef(null);
+
     const handleInput = e => {
         const { value } = e.target.value;
         setSearchValue(value);
         console.log(searchValue);
     };
 
-    const tl1 = useRef(null);
-    const tl2 = useRef(null);
-
     useEffect(() => {
         let lastSnap = 0;
-        Draggable.create(container.current, {
+        Draggable.create(mainContainer.current, {
             type: "x",
             onDragEnd: () => {
-                const proxyWidth = gsap.getProperty(container.current, "width");
-                const proxyX = gsap.getProperty(container.current, "x");
+                const proxyWidth = gsap.getProperty(mainContainer.current, "width");
+                const proxyX = gsap.getProperty(mainContainer.current, "x");
                 const snapValue = proxyX > lastSnap ? -((proxyWidth * 3) / 4) : -((proxyWidth * 1) / 4);
                 const destinationX = proxyX > snapValue ? 0 : -proxyWidth;
                 lastSnap = destinationX;
@@ -40,7 +43,7 @@ const MobileDropdown = props => {
                         },
                     });
                 }
-                gsap.to(container.current, {
+                gsap.to(mainContainer.current, {
                     duration: 1,
                     x: destinationX,
                     ease: "power4.out",
@@ -53,8 +56,6 @@ const MobileDropdown = props => {
         };
     }, [toggleMobileDropdown]);
 
-    const container = useRef(null);
-    const overlayRef = useRef(null);
     useEffect(() => {
         document.body.style.overflow = "hidden";
         tl1.current = gsap.timeline({});
@@ -80,27 +81,33 @@ const MobileDropdown = props => {
 
     return ReactDOM.createPortal(
         <>
-            <div className=" fixed inset-0 z-[99] bg-black opacity-0" ref={overlayRef}></div>
-            <div className="fixed top-0 z-[100] flex h-full w-[100%] max-w-[300px] shrink-0 flex-col overflow-y-auto bg-white" ref={container}>
-                <div className="flex h-16 w-full shrink-0 items-center justify-end px-6" onClick={() => handleOnClose()}>
-                    <FontAwesomeIcon icon={faChevronLeft} className="text-gray-700" />
-                </div>
-                <Searchbar handleInput={handleInput} />
-                <div className="mt-10 flex w-full flex-col items-center">
-                    {links.map(link =>
-                        link.children ? (
-                            <DisclosureDropdown key={link.name} link={link} handleOnClose={handleOnClose} />
-                        ) : (
-                            <CustomLink
-                                className="w-[90%] shrink-0 rounded-md px-10 py-3 text-xl font-medium text-gray-600"
-                                to={link.to}
-                                state={link.modal ? { backgroundLocation: location } : null}
-                                key={link.name}
-                                handleOnClose={handleOnClose}>
-                                {link.name}
-                            </CustomLink>
-                        )
-                    )}
+            <div className=" fixed inset-0 z-[98] ">
+                <div className="absolute  inset-0 bg-black opacity-0 " ref={overlayRef}></div>
+                <div className=" fixed inset-0 z-[99]" ref={mainContainer}>
+                    <div
+                        className="fixed top-0 z-[100] flex h-full w-[100%] max-w-[300px] shrink-0 flex-col overflow-y-auto bg-white"
+                        ref={container}>
+                        <div className="flex h-16 w-full shrink-0 items-center justify-end px-6" onClick={() => handleOnClose()}>
+                            <FontAwesomeIcon icon={faChevronLeft} className="text-gray-700" />
+                        </div>
+                        <Searchbar handleInput={handleInput} />
+                        <div className="mt-10 flex w-full flex-col items-center">
+                            {links.map(link =>
+                                link.children ? (
+                                    <DisclosureDropdown key={link.name} link={link} handleOnClose={handleOnClose} />
+                                ) : (
+                                    <CustomLink
+                                        className="w-[90%] shrink-0 rounded-md px-10 py-3 text-xl font-medium text-gray-600"
+                                        to={link.to}
+                                        state={link.modal ? { backgroundLocation: location } : null}
+                                        key={link.name}
+                                        handleOnClose={handleOnClose}>
+                                        {link.name}
+                                    </CustomLink>
+                                )
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </>,
