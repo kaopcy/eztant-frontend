@@ -36,7 +36,7 @@ const Day = ({ day, sec, time }) => {
     };
 
     return (
-        <div className="flex items-center justify-start overflow-hidden rounded-full text-sm lg:text-base">
+        <div className="flex items-center justify-start overflow-hidden rounded-full tracking-[-1px] xs:tracking-normal text-xs xs:text-sm lg:text-base">
             <div className="flex-cen h-full w-12 py-2 " style={{ backgroundColor: color[day] }}>
                 {shortDays[day]}
             </div>

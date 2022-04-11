@@ -23,9 +23,6 @@
     }
 }
 @layer base {
-    input {
-        @apply outline outline-1 outline-text-light;
-    }
 }
 
 @layer components {
@@ -78,11 +75,6 @@
 ::-webkit-scrollbar-thumb {
     background-color: #8d8d8d;
     border-radius: 10px;
-}
-
-input {
-    border: none;
-    outline: none;
 }
 
 .vertical-text {

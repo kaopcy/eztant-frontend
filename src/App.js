@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation, useNavigate , Navigate, Link } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate, Navigate, Link } from "react-router-dom";
 import { useResponsive } from "./composables/context/useResponsive";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,8 +8,16 @@ import { RegisterDesktop, RegisterMobile } from "./views/register";
 
 import Home from "./views/home/Home";
 import { PostList } from "./views/mainpost";
+import UserTeacherList from "./views/userList/UserTeacherList";
+import UserStudentList from "./views/userList/UserStudentList";
 
 import Navbar from "./component/navbar/Navbar";
+import { useSelector } from "react-redux";
+
+const ProtectedRoute = ({ isAuth, children }) => {
+    const { user } = useSelector(state => state.user);
+    return user ? children : <Navigate to="/" />;
+};
 
 const App = () => {
     const location = useLocation();
@@ -19,7 +27,7 @@ const App = () => {
 
     // prevent user access some route without background state
     useEffect(() => {
-        ScrollTrigger.refresh()
+        ScrollTrigger.refresh();
         if (isMobile) return;
         const isIllegalRoute = location.pathname === "/register" || location.pathname === "/login";
         if (!state?.backgroundLocation && isIllegalRoute) {
@@ -33,11 +41,48 @@ const App = () => {
             <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
             {/* this logic used for when not in mobile we want to render background for register */}
             <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
-                <Route path="/post" element={<RegisterMobile />} />
+                <Route
+                    path="/post"
+                    element={
+                        <ProtectedRoute>
+                            <RegisterMobile />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route index path="/" element={<Home />} />
-                
-                <Route path="/post-list/:id" element={<PostList />} />
-                <Route path="/post-list/" element={ <Navigate to="/post-list/all-department" replace /> } />
+
+                <Route
+                    path="/post-list/:id"
+                    element={
+                        <ProtectedRoute>
+                            <PostList />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/user-teacher-list"
+                    element={
+                        <ProtectedRoute>
+                            <UserTeacherList />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/user-student-list"
+                    element={
+                        <ProtectedRoute>
+                            <UserStudentList />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/post-list/"
+                    element={
+                        <ProtectedRoute>
+                            <Navigate to="/post-list/all-department" replace />
+                        </ProtectedRoute>
+                    }
+                />
                 {isMobile && (
                     <>
                         <Route path="/register" element={<RegisterMobile />} />

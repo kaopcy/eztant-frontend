@@ -52,7 +52,7 @@ const Navbar = ({ height }) => {
     const isLogin = false;
     return (
         <div
-            className={`fixed z-10 flex w-full items-center justify-between  border-b-[1.5px] bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10 `}
+            className={`fixed z-50 flex w-full items-center justify-between  border-b-[1.5px] bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10 `}
             style={{ height: isMobile ? `${height - 20}px` : `${height}px` }}>
             {isMobile ? (
                 <MobileMenu location={location} isLogin={isLogin} toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} />

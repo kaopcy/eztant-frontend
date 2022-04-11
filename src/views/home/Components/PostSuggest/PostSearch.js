@@ -1,10 +1,8 @@
-import React, { forwardRef, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { useResponsive } from "../../../../composables/context/useResponsive";
 import { useSelector } from "react-redux";
 
 import gsap from "gsap";
-import { Observer } from 'gsap/Observer'
-
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -63,10 +61,9 @@ const Desktop = () => {
         ScrollTrigger.create({
             animation: tl,
             trigger: triggerRef.current,
-            toggleActions: "play none play reverse",
+            toggleActions: "play none none none",
             end: "top 20%",
             start: "top 100%",
-            scrub: 2,
         });
     }, []);
 

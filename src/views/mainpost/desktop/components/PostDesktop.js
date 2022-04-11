@@ -14,10 +14,10 @@ const PostDesktop = ({ post }, ref) => {
     useLayoutEffect(()=>{
         gsap.from(container.current, {
             autoAlpha: 0,
-            yPercent: 100,
+            yPercent: 50,
             scale: 0.8,
             duration: 1,
-            ease: 'power4.inOut'
+            ease: 'expo.inOut'
         })
     },[ref])
 
@@ -44,7 +44,6 @@ const Header = ({ post }) => {
 
     const right = (post) => (
         <div className="flex-cen space-x-3">
-            <div className="">{post.page}</div>
             <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow>
                 {new Date("2022-04-01T08:30-0500")}
             </Moment>
@@ -119,7 +118,7 @@ const Detail = ({ post }) => {
                     <div className="whitespace-pre-line px-5 py-4 ">
                         <div ref={moreDetailRef} className="leading-[28px]">
                             <div ref={textRef} className="w-full">
-                                {post.moreDetail}
+                                {post?.moreDetail.trim() || '-' }
                             </div>
                         </div>
                         <br />

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, forwardRef } from "react";
 import Moment from "react-moment";
-import { Observer } from "gsap/Observer";
 import gsap from "gsap";
+import { Draggable } from "gsap/Draggable";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
@@ -10,45 +10,45 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import TeachTable from "../../desktop/components/TeachTable";
 
 const PostMobile = ({ post }) => {
-    gsap.registerPlugin(Observer)
-    const containerRef = useRef(null);
-    const detailRef = useRef(null);
-    const teachTableRef = useRef(null);
+    gsap.registerPlugin(Draggable)
+    const dragProxy = useRef(null);
     const [isTeachTable, setIsTeachTable] = useState(false);
     const openTeachTable = useRef(() => {});
     const closeTeachTable = useRef(() => {});
 
-    useEffect(()=>{
-        console.log('mounted')
-    },[])
-
-
     useEffect(() => {
-        const animate = gsap.to(teachTableRef.current, { paused: true, xPercent: -100 });
-        openTeachTable.current = () => {
-            setIsTeachTable(true);
-            animate.play();
-        };
-        closeTeachTable.current = () => {
-            setIsTeachTable(false);
-            animate.reverse();
-        };
-        Observer.create({
-            target: containerRef.current,
-            tolerance: 20,
-            type: "touch",
-            onLeft: () => openTeachTable.current(),
-            onRight: () => closeTeachTable.current(),
+        let lastSnap = 0;
+        Draggable.create(dragProxy.current, {
+            type: "x",
+            onDragEnd: () => {
+                const proxyWidth = gsap.getProperty(dragProxy.current, "width");
+                const proxyX = gsap.getProperty(dragProxy.current, "x");
+                const snapValue = proxyX > lastSnap ? -((proxyWidth * 3) / 4) : -((proxyWidth * 1) / 4);
+                const destinationX = proxyX > snapValue ? 0 : -proxyWidth;
+                lastSnap = destinationX;
+                if (destinationX === 0) {
+                    setIsTeachTable(false)
+                } else {
+                    setIsTeachTable(true)
+                }
+                gsap.to(dragProxy.current, {
+                    duration: 1,
+                    x: destinationX,
+                    ease: "power4.out",
+                });
+            },
         });
+
     }, []);
 
     return (
-        <div ref={containerRef} className="relative min-h-[500px] w-[95%] shrink-0 rounded-md  border bg-white px-6 py-8 text-xl shadow-md">
+        <div className="relative min-h-[500px] w-[95%] shrink-0 rounded-md  border bg-white px-6 py-8 text-xl shadow-md">
             <Header post={post} />
             <div className="overflow-hidden">
-                <div className="flex" ref={teachTableRef}>
-                    <Detail post={post} ref={detailRef} />
-                    <div className="flex-col-cen w-full shrink-0">
+
+                <div className="flex" ref={dragProxy}>
+                    <Detail post={post} />
+                    <div className="flex-col-cen w-full shrink-0 my-10">
                         <TeachTable />
                     </div>
                 </div>
