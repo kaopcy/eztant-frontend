@@ -3,7 +3,7 @@ import { POSTS } from "../../generalConfig";
 
 import useSearchQuery from "../../composables/useSearchQuery";
 
-export const usePostList = (page, id) => {
+export default function usePostListFetch(page, id){
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [postList, setPostList] = useState([]);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { POSTS } from "../../generalConfig";
 
-export const usePostSuggestApi = () => {
+export default function usePostSuggestApi() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [postSuggest, setPostSuggest] = useState([]);
@@ -33,4 +33,4 @@ export const usePostSuggestApi = () => {
     }, []);
 
     return { isLoading, error, postSuggest };
-};
+}

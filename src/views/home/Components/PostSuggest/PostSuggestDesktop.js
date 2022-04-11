@@ -11,12 +11,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleRight, faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 import { Pagination, Navigation } from "swiper";
-import { POSTS as posts } from "../../../../generalConfig";
-import { usePostSuggestApi } from "../../../../api/Post/postSuggest";
 
-const SwiperCarousel = () => {
+const PostSuggestDesktop = ({ isLoading , postSuggest }) => {
     gsap.registerPlugin(ScrollTrigger);
-    const { isLoading, postSuggest } = usePostSuggestApi();
 
     const [triggerUpdate, setTriggerUpdate] = useState(true);
     const nextEl = useRef(null);
@@ -134,4 +131,4 @@ const Loading = () => {
     return <div className="">Loading...</div>;
 };
 
-export default SwiperCarousel;
+export default PostSuggestDesktop;

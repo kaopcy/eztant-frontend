@@ -2,11 +2,9 @@ import React, { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { POSTS as posts } from "../../../../generalConfig";
-
 gsap.registerPlugin(ScrollTrigger);
 
-const CarouselMobile = () => {
+const PostSuggestMobile = ({ isLoading , postSuggest }) => {
     useLayoutEffect(() => {
         if (!document.querySelector(".card-animation")) return;
         ScrollTrigger.batch(".card-animation", {
@@ -19,7 +17,7 @@ const CarouselMobile = () => {
     }, []);
     return (
         <div className="flex-col-cen mt-6 w-full space-y-4 px-4 sm:px-12">
-            {posts.map((post, index) => (index < 5 ? <Card key={post.subjectID} post={post} /> : ""))}
+            {postSuggest.map((post, index) => (index < 5 ? <Card key={post.subjectID} post={post} /> : ""))}
         </div>
     );
 };
@@ -38,14 +36,14 @@ const Card = ({ post }) => {
                     </div>
                     <div className=" shrink-0 whitespace-nowrap text-[10px] font-medium text-text-light xs:text-xs sm:text-sm">2 ชม.ที่แล้ว</div>
                 </div>
-                <div className="ellipsis font-bold tracking-tight text-sm">{post.subjectName}</div>
+                <div className="ellipsis text-sm font-bold tracking-tight">{post.subjectName}</div>
                 <div className="mt-2 flex flex-col space-y-2">
                     <div className="flex items-center text-sm font-medium">
-                        <div className="w-20 sm:w-24 shrink-0">ค่าตอบแทน</div>
+                        <div className="w-20 shrink-0 sm:w-24">ค่าตอบแทน</div>
                         <div className="">{post.wage} บาท/ชั่วโมง</div>
                     </div>
                     <div className="flex items-center text-sm font-medium">
-                        <div className="w-20 sm:w-24 shrink-0">ชั้นปีที่รับ</div>
+                        <div className="w-20 shrink-0 sm:w-24">ชั้นปีที่รับ</div>
                         <div className="">{post.year}</div>
                     </div>
                     <div className="flex items-center text-sm font-medium">
@@ -58,4 +56,4 @@ const Card = ({ post }) => {
     );
 };
 
-export default CarouselMobile;
+export default PostSuggestMobile;
