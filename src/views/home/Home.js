@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import ManyPeople from "../../assets/images/ManyPeople";
-import PostSuggest from "./Components/PostSuggest/PostSuggest";
-import Test from "./Components/Test";
+import PostSuggest from "./Components/PostSuggest";
 
 const Home = () => {
     return (
@@ -17,7 +16,6 @@ const Home = () => {
             </div>
             <PostSuggest />
             <div className="last h-screen"></div>
-            <Test />
             {/* <BackgroundImage /> */}
         </div>
     );
