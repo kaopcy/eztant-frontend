@@ -10,7 +10,7 @@ import DisclosureAnimate from "../../../../component/utils/DisclosureAnimate";
 const ControlBar = forwardRef((_, ref) => {
     return (
         <div ref={ref} className="fixed top-[60px] z-10 flex w-full items-center space-x-2 border-b bg-white px-2 py-3 text-text">
-            <FontAwesomeIcon icon={faArrowLeft} />
+            <FontAwesomeIcon icon={faArrowLeft} className="flex-cen py-2 px-0 xs:px-2 cursor-pointer rounded-full hover:bg-slate-100" />
             <SearchBar />
             <SortBar />
         </div>
@@ -24,10 +24,12 @@ const SearchBar = () => {
     useEffect(() => {
         const animate = gsap.to(inputRef.current, {
             paused: true,
-            width: "86vw",
-            onReverseComplete: () => {
-                gsap.set(inputRef.current, { width: "100%" });
-            },
+            yoyo: true,
+            width: gsap.getProperty(inputRef.current , 'x') + 200,
+            backgroundColor: 'black',
+            onReverseComplete: ()=>{
+                inputRef.current.style.width = '100%'
+            }
         });
         inputRef.current.addEventListener("focus", () => {
             animate.play();
@@ -41,10 +43,10 @@ const SearchBar = () => {
             <input
                 ref={inputRef}
                 type="text"
-                className="ellipsis rounded-md px-2 py-1 text-xs outline outline-1 outline-text-light focus:outline-text "
+                className="ellipsis w-full rounded-md px-2 py-1 outline outline-1 outline-text-light focus:outline-text "
                 onChange={e => setSearchValue(e.target.value)}
             />
-            <FontAwesomeIcon icon={faSearch} className="text-text-light" />
+            <FontAwesomeIcon icon={faSearch} className="text-text-light shrink-0" />
         </div>
     );
 };
@@ -58,10 +60,10 @@ const SortBar = () => {
             <DisclosureAnimate toggle={open}>
                 {({ childRelativeContainer, childAbsoluteContainer }) => (
                     <div
-                        className="relative flex w-full min-w-0 cursor-pointer items-center justify-between space-x-2 rounded-md bg-white px-2 py-1 outline outline-1 outline-text-light"
+                        className="relative flex w-[130px] cursor-pointer items-center justify-between space-x-2 rounded-md bg-white px-2 py-1 outline outline-1 outline-text-light"
                         onClick={() => setOpen(e => !e)}>
-                        <span className="ellipsis text-xs">{SORT_TYPE.filter(e => sortBy === e.value)[0].label} </span>
-                        <FontAwesomeIcon icon={faChevronDown} className="text-[10px]" />
+                        <span className="ellipsis ">{SORT_TYPE.filter(e => sortBy === e.value)[0].label} </span>
+                        <FontAwesomeIcon icon={faChevronDown} className="" />
                         <div className="absolute top-[calc(100%+1px)] -left-2 w-full ">
                             <div className="relative w-full self-end overflow-hidden " ref={childRelativeContainer}>
                                 <div ref={childAbsoluteContainer} className="absolute bottom-0 left-0 flex w-full flex-col border bg-white py-2">
@@ -69,7 +71,7 @@ const SortBar = () => {
                                         const active = e.value === sortBy;
                                         return (
                                             <div
-                                                className={`w-full text-xs py-1 px-2  ${active ? "bg-primary text-white " : "hover:bg-gray-100 "} `}
+                                                className={`w-full  py-1 px-2  ${active ? "bg-primary text-white " : "hover:bg-gray-100 "} `}
                                                 onClick={() => setSortBy(e.value)}
                                                 key={e.label}>
                                                 {e.label}
@@ -86,10 +88,10 @@ const SortBar = () => {
             <div
                 className="flex cursor-pointer items-center rounded-full bg-white px-1 py-2 hover:bg-gray-100"
                 onClick={() => setOrderBy(prev => (prev === "ascending" ? "descending" : "ascending"))}>
-                <FontAwesomeIcon icon={faDownLong} className="text-xs" />
+                <FontAwesomeIcon icon={faDownLong} className="" />
                 <FontAwesomeIcon
                     icon={faSignal}
-                    className={` text-[10px] sm:text-xs transition-transform ${orderBy === "descending" ? "rotate-90 scale-y-100" : "-rotate-90 -scale-y-100"}`}
+                    className={`text-[12px] transition-transform ${orderBy === "descending" ? "rotate-90 scale-y-100" : "-rotate-90 -scale-y-100"}`}
                 />
             </div>
         </div>

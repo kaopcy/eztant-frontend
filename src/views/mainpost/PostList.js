@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { useResponsive } from "../../composables/context/useResponsive";
 
 import { ControlProvider } from "./context/ControlContext";
 import { PageProvider } from "./context/PageContext";
-import { usePostList } from "../../api/Post/postList";
+import usePostList from "../../api/Post/usePostListFetch";
 import useSearchQuery from "../../composables/useSearchQuery";
 
 import PostListDesktop from "./desktop/PostListDesktop";

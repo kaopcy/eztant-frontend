@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
 const Pagination = ({ setPage, totalPage = 10 }) => {
     const [searchParams , setSearchParams] = useSearchParams()
     const currentPage = searchParams.get('page') || 1
-    console.log(`currentPage: ${currentPage}`);
+    useEffect(()=>{
+        console.log(`effect`);
+    },[])
     let startPage = currentPage - 3;
     let endPage = currentPage + 3;
 
@@ -15,7 +17,6 @@ const Pagination = ({ setPage, totalPage = 10 }) => {
     }
     if (endPage > totalPage) endPage = totalPage;
 
-    console.log(`start: ${startPage}, end: ${endPage}`);
     const numbers = [...Array.from(Array(endPage - startPage + 1)).keys()].map(i => i + startPage);
 
     return (

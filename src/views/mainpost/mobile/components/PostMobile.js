@@ -45,9 +45,10 @@ const PostMobile = ({ post }) => {
         <div className="relative min-h-[500px] w-[95%] shrink-0 rounded-md  border bg-white px-6 py-8 text-xl shadow-md">
             <Header post={post} />
             <div className="overflow-hidden">
+
                 <div className="flex" ref={dragProxy}>
                     <Detail post={post} />
-                    <div className="flex-col-cen w-full shrink-0">
+                    <div className="flex-col-cen w-full shrink-0 my-10">
                         <TeachTable />
                     </div>
                 </div>

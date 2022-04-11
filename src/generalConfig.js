@@ -80,7 +80,7 @@ export const SORT_TYPE = [
     },
 ];
 
-export const ORDER_TYPE =[
+export const ORDER_TYPE = [
     {
         label: "น้อยไปมาก",
         value: "ascending",
@@ -89,8 +89,7 @@ export const ORDER_TYPE =[
         label: "มากไปน้อย",
         value: "descending",
     },
-
-]
+];
 
 export const POSTS = [
     {
@@ -102,7 +101,7 @@ export const POSTS = [
         year: "2,3,4",
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/400",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        moreDetail: "",
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
