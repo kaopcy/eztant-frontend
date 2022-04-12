@@ -9,8 +9,8 @@ import { SORT_TYPE, ORDER_TYPE } from "../../../../generalConfig";
 import DisclosureAnimate from "../../../../component/utils/DisclosureAnimate";
 const ControlBar = forwardRef((_, ref) => {
     return (
-        <div ref={ref} className="fixed top-[60px] z-10 flex w-full items-center space-x-2 border-b bg-white px-2 py-3 text-text">
-            <FontAwesomeIcon icon={faArrowLeft} className="flex-cen py-2 px-0 xs:px-2 cursor-pointer rounded-full hover:bg-slate-100" />
+        <div ref={ref} className="fixed top-[60px] z-100 flex w-full items-center space-x-2 border-b bg-white px-2 py-3 text-text">
+            <FontAwesomeIcon icon={faArrowLeft} className="flex-cen cursor-pointer rounded-full py-2 px-0 hover:bg-slate-100 xs:px-2" />
             <SearchBar />
             <SortBar />
         </div>
@@ -20,16 +20,15 @@ const ControlBar = forwardRef((_, ref) => {
 const SearchBar = () => {
     const { setSearchValue } = useContext(SearchContext);
     const inputRef = useRef(null);
-
     useEffect(() => {
+        const searchWidth = inputRef.current.clientWidth
         const animate = gsap.to(inputRef.current, {
             paused: true,
             yoyo: true,
-            width: gsap.getProperty(inputRef.current , 'x') + 200,
-            backgroundColor: 'black',
-            onReverseComplete: ()=>{
-                inputRef.current.style.width = '100%'
-            }
+            width: searchWidth > 200 ? searchWidth : 200,
+            onReverseComplete: () => {
+                inputRef.current.style.width = "100%";
+            },
         });
         inputRef.current.addEventListener("focus", () => {
             animate.play();
@@ -46,7 +45,7 @@ const SearchBar = () => {
                 className="ellipsis w-full rounded-md px-2 py-1 outline outline-1 outline-text-light focus:outline-text "
                 onChange={e => setSearchValue(e.target.value)}
             />
-            <FontAwesomeIcon icon={faSearch} className="text-text-light shrink-0" />
+            <FontAwesomeIcon icon={faSearch} className="shrink-0 text-text-light" />
         </div>
     );
 };

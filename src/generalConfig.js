@@ -101,7 +101,8 @@ export const POSTS = [
         year: "2,3,4",
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/400",
-        moreDetail: "",
+        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -148,3 +149,33 @@ export const POSTS = [
         moreDetail: "-",
     },
 ];
+
+export const DAY_COLOR = {
+    sunday: "#FF1B1B",
+    monday: "#FFE600",
+    tuesday: "#F72FB4",
+    wednesday: "#48A847",
+    thursday: "#FB4214",
+    friday: "#0065fb",
+    saturnday: "#6600ce",
+};
+
+export const DAY_SHORT_TH = {
+    sunday: "อา.",
+    monday: "จ.",
+    tuesday: "อ.",
+    wednesday: "พ.",
+    thursday: "พฤ.",
+    friday: "ศ.",
+    saturnday: "ส.",
+};
+
+export const DAY_SHORT_EN = {
+    sunday: "SUN",
+    monday: "MON",
+    tuesday: "TUE",
+    wednesday: "WED",
+    thursday: "THU",
+    friday: "FRI",
+    saturnday: "SAT",
+};
