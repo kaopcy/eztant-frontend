@@ -55,7 +55,7 @@ const PostSuggestDesktop = ({ isLoading , postSuggest }) => {
 
     return (
         <>
-            <div className="relative mt-12 w-[90%] max-w-[1200px]">
+            <div className="relative w-[90%] max-w-[1200px]">
                 <Swiper {...swiperOption} navigation={{ nextEl: nextEl.current, prevEl: prevEl.current }} ref={triggerContainer}>
                     {isLoading && <Loading />}
                     {postSuggest.map(post => (

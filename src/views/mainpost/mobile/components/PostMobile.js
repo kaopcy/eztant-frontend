@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, forwardRef } from "react";
+import React, { useState, useRef, useEffect, forwardRef, useMemo } from "react";
 import Moment from "react-moment";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
@@ -9,12 +9,37 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 
 import TeachTable from "../../desktop/components/TeachTable";
 
-const PostMobile = ({ post }) => {
-    gsap.registerPlugin(Draggable)
+const PostMobile = ({ post, setSelectedPost }) => {
+    gsap.registerPlugin(Draggable);
     const dragProxy = useRef(null);
     const [isTeachTable, setIsTeachTable] = useState(false);
     const openTeachTable = useRef(() => {});
     const closeTeachTable = useRef(() => {});
+
+    // Show-Hide overflow content
+    const detailRef = useRef(null);
+    const animateDetail = useRef(null);
+    const [isOverflow, setIsOverflow] = useState(false);
+    const [isShowMore, setIsShowMore] = useState(false);
+
+    const handleClick = () => {
+        animateDetail.current.reversed() ? animateDetail.current.play() : animateDetail.current.reverse();
+    };
+
+    useEffect(() => {
+        setIsOverflow(detailRef.current?.scrollHeight > detailRef.current?.clientHeight);
+        animateDetail.current = gsap.to(detailRef.current, {
+            height: "auto",
+            paused: true,
+            reversed: true,
+            onComplete: () => {
+                setIsShowMore(true);
+            },
+            onReverseComplete: () => {
+                setIsShowMore(false);
+            },
+        });
+    }, []);
 
     useEffect(() => {
         let lastSnap = 0;
@@ -27,9 +52,9 @@ const PostMobile = ({ post }) => {
                 const destinationX = proxyX > snapValue ? 0 : -proxyWidth;
                 lastSnap = destinationX;
                 if (destinationX === 0) {
-                    setIsTeachTable(false)
+                    setIsTeachTable(false);
                 } else {
-                    setIsTeachTable(true)
+                    setIsTeachTable(true);
                 }
                 gsap.to(dragProxy.current, {
                     duration: 1,
@@ -38,30 +63,40 @@ const PostMobile = ({ post }) => {
                 });
             },
         });
-
     }, []);
 
     return (
-        <div className="relative min-h-[500px] w-[95%] shrink-0 rounded-md  border bg-white px-6 py-8 text-xl shadow-md">
+        <div className="relative  w-[95%] shrink-0 rounded-md  border bg-white px-6 py-8 text-xl shadow-md">
             <Header post={post} />
-            <div className="overflow-hidden">
-
-                <div className="flex" ref={dragProxy}>
+            <div className="relative h-[300px] overflow-hidden " ref={detailRef}>
+                <div className="mb-10 flex" ref={dragProxy}>
                     <Detail post={post} />
-                    <div className="flex-col-cen w-full shrink-0 my-10">
+                    <div className="flex-col-cen my-10 w-full shrink-0 justify-start">
                         <TeachTable />
                     </div>
                 </div>
-                <div className="relative mx-auto mt-3 flex w-full items-center justify-center space-x-3">
-                    <div
-                        onClick={() => closeTeachTable.current()}
-                        className={`h-2 w-2 rounded-full bg-gray-200 ${isTeachTable ? "bg-gray-200" : "bg-gray-700"}`}></div>
-                    <div
-                        onClick={() => openTeachTable.current()}
-                        className={`h-2 w-2 rounded-full bg-gray-200 ${!isTeachTable ? "bg-gray-200" : "bg-gray-700"}`}></div>
+                {isOverflow && (
+                    <div className="opacity-gradient absolute bottom-0  z-10 h-[100px] w-full cursor-pointer " onClick={() => handleClick()}>
+                        <div className="absolute bottom-0 left-0 self-end text-sm text-text underline">{isShowMore ? "ดูน้อยลง" : "ดูเพิ่มเติม"}</div>
+                        <div className="absolute bottom-0 mx-auto mt-6 flex w-full items-center justify-center space-x-3">
+                            <div
+                                onClick={() => closeTeachTable.current()}
+                                className={`h-2 w-2 rounded-full bg-gray-200 ${isTeachTable ? "bg-gray-200" : "bg-gray-700"}`}></div>
+                            <div
+                                onClick={() => openTeachTable.current()}
+                                className={`h-2 w-2 rounded-full bg-gray-200 ${!isTeachTable ? "bg-gray-200" : "bg-gray-700"}`}></div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            <div className="mt-10 flex justify-end space-x-4">
+                <div className="btn-orange rounded-lg px-10 py-2 text-base" onClick={()=> setSelectedPost(post)}>สมัครเป็น TA</div>
+                <div className="mb-1 flex space-x-2 self-end">
+                    <FontAwesomeIcon icon={faHeart} className="" />
+                    <div className="text-sm text-text-light">17</div>
                 </div>
             </div>
-            <FontAwesomeIcon icon={faHeart} className="absolute right-10 bottom-8 text-text" />
         </div>
     );
 };
@@ -95,40 +130,13 @@ const Header = ({ post }) => {
 };
 
 const Detail = forwardRef(({ post }, ref) => {
-    const [isMore, setIsMore] = useState(false);
-    const [showMore, setShowMore] = useState(false);
-
-    const moreDetailRef = useRef(null);
-    const textRef = useRef(null);
-
-    useEffect(() => {
-        const setSize = () => {
-            const containerHeight = textRef.current.offsetHeight;
-            const lineHeight = 28;
-            if (containerHeight > lineHeight * 3) {
-                setIsMore(true);
-                moreDetailRef.current.style.height = `${28 * 3}px`;
-                moreDetailRef.current.style.overflow = "hidden";
-            } else {
-                setIsMore(false);
-                moreDetailRef.current.style.height = `auto`;
-                moreDetailRef.current.style.overflow = "hidden";
-            }
-        };
-        setSize();
-        window.addEventListener("resize", setSize);
-
-        return () => {
-            window.removeEventListener("resize", setSize);
-        };
-    }, []);
-
     const text = ({ label, detail, className = "" }) => (
         <div className={`${className} flex min-w-0 items-start whitespace-nowrap`}>
             <span className="w-20 shrink-0 font-semibold ">{label}</span>
             <span className="  whitespace-pre-line ">{detail}</span>
         </div>
     );
+
     return (
         <div className="mt-8 flex w-full shrink-0 items-start justify-between text-sm " ref={ref}>
             <div className="flex flex-col space-y-2 ">
@@ -143,17 +151,10 @@ const Detail = forwardRef(({ post }, ref) => {
                 <div className={`flex min-w-0 flex-col whitespace-nowrap  `}>
                     <div className="mr-6 font-semibold">หน้าที่</div>
                     <div className="whitespace-pre-line px-5 py-2 ">
-                        <div ref={moreDetailRef} className="leading-[28px]">
-                            <div ref={textRef} className="w-full ">
-                                {post.moreDetail}
-                            </div>
+                        <div className="leading-[28px]">
+                            <div className="w-full ">{post.moreDetail}</div>
                         </div>
                         <br />
-                        {isMore && (
-                            <div className="cursor-pointer text-sm underline" onClick={() => setShowMore(e => !e)}>
-                                ...ดูเพิ่มเติม
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@ import { POSTS } from "../../generalConfig";
 
 import useSearchQuery from "../../composables/useSearchQuery";
 
-export default function usePostListFetch(page, id){
+export default function usePostListFetch(page, id) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [postList, setPostList] = useState([]);
@@ -12,6 +12,7 @@ export default function usePostListFetch(page, id){
 
     useEffect(() => {
         let isSubscribe = true;
+        clearPostList();
         const getPostList = async () => {
             try {
                 const postQuery = {
@@ -53,4 +54,4 @@ export default function usePostListFetch(page, id){
     };
 
     return { isLoading, error, postList, clearPostList };
-};
+}
