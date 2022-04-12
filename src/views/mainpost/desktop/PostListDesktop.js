@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
@@ -9,6 +9,7 @@ import PostDesktop, { PostFallBack } from "./components/PostDesktop";
 import DepartmentPanel from "./components/DepartmentPanel";
 import SortPanel from "./components/SortPanel";
 import Pagination from "../../../component/Pagination";
+import ApplyPopup from "./components/ApplyPopup";
 
 const PostListDesktop = ({ postList, isLoading }) => {
     gsap.registerPlugin(ScrollToPlugin);
@@ -18,6 +19,8 @@ const PostListDesktop = ({ postList, isLoading }) => {
 
     const isHideSortPanel = useMediaQuery({ query: "(max-width: 1180px)" });
     const isDepartmentPanel = useMediaQuery({ query: "(max-width: 980px)" });
+
+    const [selectedPost, setSelectedPost] = useState(null);
 
     const documentHeight = () => {
         var body = document.body,
@@ -55,11 +58,12 @@ const PostListDesktop = ({ postList, isLoading }) => {
                         <PostFallBack />
                     </>
                 ) : (
-                    postList.map((post, i) => <PostDesktop post={post} key={post.subjectID} />)
+                    postList.map((post, i) => <PostDesktop post={post} key={post.subjectID} setSelectedPost={setSelectedPost} />)
                 )}
                 {<Pagination currentPage={page} setPage={scrollThenNextPage} />}
             </div>
             {!isHideSortPanel && <SortPanel setPage={scrollThenCallback} />}
+            {selectedPost && <ApplyPopup setSelectedPost={setSelectedPost} selectedPost={selectedPost} />}
         </div>
     );
 };

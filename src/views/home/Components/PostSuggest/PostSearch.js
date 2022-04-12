@@ -88,10 +88,10 @@ const Desktop = () => {
                 </div>
             </div>
             {user && (
-                <div className="flex-cen w-full">
+                <div className="flex-cen w-full mt-10">
                     <div className="w-[90%] max-w-[1200px] space-x-4 py-8">
                         <FontAwesomeIcon icon={faThumbsUp} className="text-2xl text-yellow-200" />
-                        <span className="text-2xl font-bold text-text ">แนะนำ</span>
+                        <span className="text-4xl font-bold text-text ">แนะนำ</span>
                     </div>
                 </div>
             )}

@@ -5,11 +5,11 @@ import "moment/locale/th";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 
 import TeachTable from "./TeachTable";
 
-const PostDesktop = ({ post }, ref) => {
+const PostDesktop = ({ post, setSelectedPost }, ref) => {
     const container = useRef(null);
     useLayoutEffect(() => {
         gsap.from(container.current, {
@@ -22,14 +22,16 @@ const PostDesktop = ({ post }, ref) => {
     }, [ref]);
 
     return (
-        <div ref={container} className="mypost min-w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
+        <div ref={container} className="mypost w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
             <Header post={post} />
             <Detail post={post} />
             <div className="flex justify-end space-x-8">
-                <div className="btn-orange px-10 py-2 rounded-lg">สมัครเป็น TA</div>
-                <div className="flex space-x-2 self-end mb-1">
-                    <FontAwesomeIcon icon={faHeartRegular} className=""/>
-                    <div className="text-text-light text-sm">17</div>
+                <div className="btn-orange rounded-lg px-10 py-2" onClick={() => setSelectedPost(post)}>
+                    สมัครเป็น TA
+                </div>
+                <div className="mb-1 flex space-x-2 self-end">
+                    <FontAwesomeIcon icon={faHeartRegular} className="" />
+                    <div className="text-sm text-text-light">17</div>
                 </div>
             </div>
         </div>
@@ -83,6 +85,7 @@ const Detail = ({ post }) => {
             height: "auto",
             paused: true,
             reversed: true,
+            duration: 0.3,
             onComplete: () => {
                 setIsShowMore(true);
             },

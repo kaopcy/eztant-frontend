@@ -23,7 +23,7 @@ const LoginDesktop = props => {
     return (
         <InputProvider>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto" onClose={() => handleCloseModal()}>
+                <Dialog as="div" className="fixed inset-0 z-[1002] flex items-center justify-center overflow-y-auto" onClose={() => handleCloseModal()}>
                     <>
                         <Transition.Child
                             as={Fragment}
