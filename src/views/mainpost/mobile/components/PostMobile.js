@@ -5,9 +5,9 @@ import { Draggable } from "gsap/Draggable";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
 
 import TeachTable from "../../desktop/components/TeachTable";
+import Like from "../../components/Like";
 
 const PostMobile = ({ post, setSelectedPost }) => {
     gsap.registerPlugin(Draggable);
@@ -76,7 +76,7 @@ const PostMobile = ({ post, setSelectedPost }) => {
                     </div>
                 </div>
                 {isOverflow && (
-                    <div className="opacity-gradient absolute bottom-0  z-10 h-[100px] w-full cursor-pointer " onClick={() => handleClick()}>
+                    <div className="opacity-gradient z-1 absolute  bottom-0 h-[100px] w-full cursor-pointer " onClick={() => handleClick()}>
                         <div className="absolute bottom-0 left-0 self-end text-sm text-text underline">{isShowMore ? "ดูน้อยลง" : "ดูเพิ่มเติม"}</div>
                         <div className="absolute bottom-0 mx-auto mt-6 flex w-full items-center justify-center space-x-3">
                             <div
@@ -91,15 +91,15 @@ const PostMobile = ({ post, setSelectedPost }) => {
             </div>
 
             <div className="mt-10 flex justify-end space-x-4">
-                <div className="btn-orange rounded-lg px-10 py-2 text-base" onClick={()=> setSelectedPost(post)}>สมัครเป็น TA</div>
-                <div className="mb-1 flex space-x-2 self-end">
-                    <FontAwesomeIcon icon={faHeart} className="" />
-                    <div className="text-sm text-text-light">17</div>
+                <div className="btn-orange rounded-lg px-10 py-2 text-base" onClick={() => setSelectedPost(post)}>
+                    สมัครเป็น TA
                 </div>
+                <Like />
             </div>
         </div>
     );
 };
+
 
 const Header = ({ post }) => {
     const left = () => (

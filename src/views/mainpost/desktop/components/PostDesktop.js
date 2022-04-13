@@ -8,6 +8,7 @@ import { faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 
 import TeachTable from "./TeachTable";
+import Like from "../../components/Like";
 
 const PostDesktop = ({ post, setSelectedPost }, ref) => {
     const container = useRef(null);
@@ -29,10 +30,7 @@ const PostDesktop = ({ post, setSelectedPost }, ref) => {
                 <div className="btn-orange rounded-lg px-10 py-2" onClick={() => setSelectedPost(post)}>
                     สมัครเป็น TA
                 </div>
-                <div className="mb-1 flex space-x-2 self-end">
-                    <FontAwesomeIcon icon={faHeartRegular} className="" />
-                    <div className="text-sm text-text-light">17</div>
-                </div>
+                <Like />
             </div>
         </div>
     );
