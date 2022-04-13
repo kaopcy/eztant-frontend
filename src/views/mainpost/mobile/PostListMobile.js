@@ -15,13 +15,13 @@ const PostListMobile = ({ postList, isLoading }) => {
 
     return (
         <div className="flex min-h-[5000px] w-full flex-col">
-            <ControlBar ref={controlBarRef} />
             <div ref={blankRef} className=""></div>
             <div className="flex-col-cen mt-6 space-y-4 text-text">
                 {postList.map((post, i) => (
                     <PostMobile post={post} key={post.subjectID} setSelectedPost={setSelectedPost} />
-                ))}
+                    ))}
             </div>
+            <ControlBar ref={controlBarRef} />
             {selectedPost && <ApplyPopup setSelectedPost={setSelectedPost} selectedPost={selectedPost}/>}
         </div>
     );
