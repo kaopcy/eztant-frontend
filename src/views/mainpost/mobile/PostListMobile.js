@@ -8,15 +8,15 @@ const PostListMobile = ({ postList, isLoading }) => {
 
     const controlBarRef = useRef(null);
     const blankRef = useRef(null);
-    
+
     useEffect(() => {
         console.log(controlBarRef.current.clientHeight);
         blankRef.current.style.height = `${controlBarRef.current.offsetHeight}px`;
     }, []);
-    
+
     return (
         <div className="flex  w-full flex-col">
-            <div ref={blankRef} className=""></div>
+            <div ref={blankRef} className="h-[57px]"></div>
             <div className="flex-col-cen mt-6 space-y-4 text-text">
                 {isLoading ? (
                     <PostFallBack />
