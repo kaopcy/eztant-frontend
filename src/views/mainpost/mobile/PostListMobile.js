@@ -8,8 +8,9 @@ const PostListMobile = ({ postList, isLoading }) => {
 
     const controlBarRef = useRef(null);
     const blankRef = useRef(null);
+    
     useEffect(() => {
-        console.log(controlBarRef.current.offsetHeight);
+        console.log(controlBarRef.current.clientHeight);
         blankRef.current.style.height = `${controlBarRef.current.offsetHeight}px`;
     }, []);
     
