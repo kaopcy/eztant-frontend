@@ -36,7 +36,6 @@ const Day = ({ day, sec, time }) => {
 };
 
 // Mobile
-
 const TeachTableMobile = () => {
     return (
         <div className="flex w-full md:w-[80%] flex-col items-center">
@@ -52,7 +51,7 @@ const Section = ({ sec, day, time }) => {
         <div className="relative mt-4 flex w-full flex-col rounded-md border-2 px-4 py-4">
             <div className="absolute top-0 -translate-y-[15px] bg-white px-2 text-base font-bold tracking-wide">เซค {sec}</div>
             <DayList day={day} />
-            <div className="mt-3 self-center font-bold tracking-tighter text-text">{time}</div>
+            <div className="mt-3 flex-cen self-center w-full whitespace-nowrap font-bold tracking-tighter text-text">{time}</div>
         </div>
     );
 };
@@ -65,7 +64,7 @@ const DayList = ({ day }) => {
             {dayShorts.map(dayShort => (
                 <div
                     key={dayShort}
-                    className={` text-[10px] xs:text-xs font-semibold tracking-tighter text-gray-400  ${
+                    className={`text-[10px] xs:text-xs font-semibold tracking-tighter text-gray-400  ${
                         dayShort === currentDay && "!text-lg !font-bold opacity-60"
                     } `}
                     style={{ color: dayShort === currentDay ? DAY_COLOR[day] : undefined }}>

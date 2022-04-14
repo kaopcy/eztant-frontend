@@ -15,7 +15,7 @@ const ControlBar = forwardRef((_, ref) => {
     return (
         <div ref={ref} className="fixed top-[60px] z-[200] flex w-full items-center space-x-2 border-b bg-white px-2 py-3 text-text">
             <FontAwesomeIcon
-                onClick={() => navigate(-1)}
+                onClick={() => navigate(-2)}
                 icon={faArrowLeft}
                 className="flex-cen shrink-0 cursor-pointer rounded-full py-2 px-2 hover:bg-slate-100 xs:px-2"
             />

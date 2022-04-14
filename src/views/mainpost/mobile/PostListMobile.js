@@ -12,9 +12,9 @@ const PostListMobile = ({ postList, isLoading }) => {
         console.log(controlBarRef.current.offsetHeight);
         blankRef.current.style.height = `${controlBarRef.current.offsetHeight}px`;
     }, []);
-
+    
     return (
-        <div className="flex min-h-[5000px] w-full flex-col">
+        <div className="flex  w-full flex-col">
             <div ref={blankRef} className=""></div>
             <div className="flex-col-cen mt-6 space-y-4 text-text">
                 {isLoading ? (
