@@ -25,11 +25,8 @@ const Inside = () => {
     const { id } = useParams();
 
     const { query } = useSearchQuery();
-    const [params , setParams] = useSearchParams()
 
     const page = query?.page || 1;
-    const sortBy = query?.sortBy || "teacherName";
-    const orderBy = query?.orderBy || "ascending";
     
     const { postList, isLoading } = usePostListFetch(page, id);
     return (
