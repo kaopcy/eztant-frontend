@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { faMagnifyingGlass, faChevronLeft, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,7 +14,6 @@ const MobileDropdown = props => {
     const [searchValue, setSearchValue] = useState("");
 
     const tl1 = useRef(null);
-    const tl2 = useRef(null);
     const container = useRef(null);
     const overlayRef = useRef(null);
     const mainContainer = useRef(null);
@@ -58,56 +57,48 @@ const MobileDropdown = props => {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
-        tl1.current = gsap.timeline({});
-        tl1.current
+        tl1.current = gsap
+            .timeline({ paused: true, reversed: true, onReverseComplete: () => toggleMobileDropdown() })
             .to(container.current, {
-                xPercent: 0,
-                duration: 0.5,
+                xPercent: 100,
+                duration: 0.3,
                 ease: "linear",
             })
-            .to(overlayRef.current, { opacity: 0.3 }, "<");
-    }, []);
+            .to(overlayRef.current, { opacity: 0.3, duration: 0.3 }, "<");
+        tl1.current.play();
+    }, [toggleMobileDropdown]);
 
     const handleOnClose = () => {
-        if (tl2.current?.isActive) return;
-        document.body.style.overflow = "auto";
-        tl2.current = gsap.timeline({
-            onComplete: () => {
-                toggleMobileDropdown();
-            },
-        });
-        tl2.current.to(container.current, { xPercent: -100, duration: 0.5, ease: "expo.out" }).to(overlayRef.current, { opacity: 0 }, "<");
+        tl1.current.reverse();
     };
 
     return ReactDOM.createPortal(
         <>
-            <div className=" fixed inset-0 z-[98] ">
-                <div className="absolute  inset-0 bg-black opacity-0 " ref={overlayRef}></div>
-                <div className=" fixed inset-0 z-[99]" ref={mainContainer}>
+            <div className=" fixed inset-0 z-[1001] ">
+                <div className="absolute inset-0 bg-black opacity-0 " ref={overlayRef}></div>
+                <div className=" fixed inset-0 z-[99] flex" ref={mainContainer}>
                     <div
-                        className="fixed top-0 z-[100] flex h-full w-[100%] max-w-[300px] shrink-0 flex-col overflow-y-auto bg-white"
+                        className="absolute top-0 -left-[300px] z-[100] flex h-full w-[300px] shrink-0 flex-col overflow-y-auto bg-white"
                         ref={container}>
-                        <div className="flex h-16 w-full shrink-0 items-center justify-end px-6" onClick={() => handleOnClose()}>
-                            <FontAwesomeIcon icon={faChevronLeft} className="text-gray-700" />
-                        </div>
                         <Searchbar handleInput={handleInput} />
-                        <div className="mt-10 flex w-full flex-col items-center">
+                        <div className="mt-6 flex w-full flex-col items-center">
                             {links.map(link =>
                                 link.children ? (
-                                    <DisclosureDropdown key={link.name} link={link} handleOnClose={handleOnClose} />
+                                    <DisclosureDropdown key={link.name} link={link} handleOnClose={toggleMobileDropdown} />
                                 ) : (
                                     <CustomLink
-                                        className="w-[90%] shrink-0 rounded-md px-10 py-3 text-xl font-medium text-gray-600"
+                                        className="w-[90%] shrink-0 rounded-md px-4 py-3 text-xl font-medium text-gray-600"
                                         to={link.to}
                                         state={link.modal ? { backgroundLocation: location } : null}
                                         key={link.name}
-                                        handleOnClose={handleOnClose}>
+                                        handleOnClose={toggleMobileDropdown}>
                                         {link.name}
                                     </CustomLink>
                                 )
                             )}
                         </div>
                     </div>
+                    <div className="h-full w-full bg-transparent" onClick={() => handleOnClose()}></div>
                 </div>
             </div>
         </>,
@@ -118,7 +109,7 @@ const MobileDropdown = props => {
 const Searchbar = props => {
     const { handleInput } = props;
     return (
-        <div className="flex w-full items-center space-x-6 px-6 ">
+        <div className="flex mt-6 w-full items-center space-x-6 px-6 ">
             <input type="text" className="w-full rounded-md border border-gray-300 px-2 py-1 text-base" onChange={() => handleInput()} />
             <FontAwesomeIcon icon={faMagnifyingGlass} className="text-2xl text-gray-700" />
         </div>
@@ -133,7 +124,7 @@ const CustomLink = ({ children, to, handleOnClose, defaultColor, ...props }) => 
         background: match ? "#465FFC" : defaultColor ?? "white",
     };
     return (
-        <Link style={style} to={to} {...props} onClick={() => handleOnClose()}>
+        <Link style={style} to={to} {...props} onClick={()=> handleOnClose()}>
             {children}
         </Link>
     );
@@ -148,7 +139,7 @@ const DisclosureDropdown = props => {
         const { handleOnClose, link } = props;
         return (
             <CustomLink
-                className="w-[90%] shrink-0 rounded-md bg-slate-50 px-2 py-1 text-xl font-medium text-gray-600 xs:px-10 xs:py-3"
+                className="w-[90%] shrink-0 rounded-md bg-slate-50 px-2 py-[6px] text-base font-medium text-gray-600 xs:px-10 xs:py-3"
                 to={link.to}
                 key={link.name}
                 state={null}
@@ -164,7 +155,7 @@ const DisclosureDropdown = props => {
             {({ childRelativeContainer, childAbsoluteContainer }) => (
                 <div className="flex w-[90%] flex-col ">
                     <div
-                        className={` flex w-full cursor-pointer justify-between rounded-md px-10 py-3 text-xl font-medium text-gray-600 ${
+                        className={` flex w-full cursor-pointer justify-between rounded-md px-4  py-3 text-xl font-medium text-gray-600 ${
                             toggle ? "bg-slate-100" : "bg-white"
                         }`}
                         onClick={() => setToggle(e => !e)}>
