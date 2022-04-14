@@ -15,7 +15,6 @@ const useSearchQuery = () => {
     const searchAsObject = Object.fromEntries(new URLSearchParams(query));
 
     const appendQuery = newQuery => {
-        console.log(allQuery);
         setQuery({ ...allQuery, ...newQuery });
     };
 

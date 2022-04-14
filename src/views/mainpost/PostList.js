@@ -1,5 +1,5 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useResponsive } from "../../composables/context/useResponsive";
 
 import { ControlProvider } from "./context/ControlContext";
@@ -25,8 +25,14 @@ const Inside = () => {
     const { id } = useParams();
 
     const { query } = useSearchQuery();
+    const [params , setParams] = useSearchParams()
 
     const page = query?.page || 1;
+    const sortBy = query?.sortBy || "teacherName";
+    const orderBy = query?.orderBy || "ascending";
+    useEffect(() => {
+        setParams({ sortBy, orderBy, page });
+    }, [sortBy , orderBy , page , setParams]);
 
     const { postList, isLoading } = usePostListFetch(page, id);
     return (

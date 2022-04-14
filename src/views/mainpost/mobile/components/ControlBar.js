@@ -1,16 +1,24 @@
 import React, { forwardRef, useContext, useEffect, useRef, useState } from "react";
-import { faArrowLeft, faSearch, faDownLong, faChevronDown, faSignal } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import gsap from "gsap";
-
+import { useNavigate } from "react-router-dom";
 import { SearchContext, SortContext } from "../../context/ControlContext";
 
-import { SORT_TYPE, ORDER_TYPE } from "../../../../generalConfig";
+import gsap from "gsap";
+
+import { faArrowLeft, faSearch, faDownLong, faChevronDown, faSignal } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { SORT_TYPE } from "../../../../generalConfig";
 import DisclosureAnimate from "../../../../component/utils/DisclosureAnimate";
+
 const ControlBar = forwardRef((_, ref) => {
+    const navigate = useNavigate();
     return (
-        <div ref={ref} className="fixed top-[60px] z-100 flex w-full items-center space-x-2 border-b bg-white px-2 py-3 text-text">
-            <FontAwesomeIcon icon={faArrowLeft} className="flex-cen cursor-pointer rounded-full py-2 px-0 hover:bg-slate-100 xs:px-2" />
+        <div ref={ref} className="fixed top-[60px] z-[200] flex w-full items-center space-x-2 border-b bg-white px-2 py-3 text-text">
+            <FontAwesomeIcon
+                onClick={() => navigate(-1)}
+                icon={faArrowLeft}
+                className="flex-cen shrink-0 cursor-pointer rounded-full py-2 px-2 hover:bg-slate-100 xs:px-2"
+            />
             <SearchBar />
             <SortBar />
         </div>
@@ -21,7 +29,7 @@ const SearchBar = () => {
     const { setSearchValue } = useContext(SearchContext);
     const inputRef = useRef(null);
     useEffect(() => {
-        const searchWidth = inputRef.current.clientWidth
+        const searchWidth = inputRef.current.clientWidth;
         const animate = gsap.to(inputRef.current, {
             paused: true,
             yoyo: true,
