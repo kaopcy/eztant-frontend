@@ -30,10 +30,7 @@ const Inside = () => {
     const page = query?.page || 1;
     const sortBy = query?.sortBy || "teacherName";
     const orderBy = query?.orderBy || "ascending";
-    useEffect(() => {
-        setParams({ sortBy, orderBy, page });
-    }, [sortBy , orderBy , page , setParams]);
-
+    
     const { postList, isLoading } = usePostListFetch(page, id);
     return (
         <div className="min-h-screen w-full">

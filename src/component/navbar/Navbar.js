@@ -47,11 +47,11 @@ const Navbar = ({ height }) => {
 
     useEffect(() => {
         console.log(`isOpenDropdown: ${isOpenDropdown}`);
-    }, [isOpenDropdown]);   
-    
-    const toggleMobileDropdown = (value)=>{
-        setIsOpenDropdown(e=> value ?? !e)
-    }
+    }, [isOpenDropdown]);
+
+    const toggleMobileDropdown = value => {
+        setIsOpenDropdown(e => value ?? !e);
+    };
     const isLogin = false;
     return (
         <div
@@ -62,9 +62,7 @@ const Navbar = ({ height }) => {
             ) : (
                 <DesktopMenu location={location} isLogin={isLogin} />
             )}
-            {isOpenDropdown && isMobile && (
-                <MobileDropdown links={links} toggleMobileDropdown={toggleMobileDropdown} location={location} />
-            )}
+            {isOpenDropdown && isMobile && <MobileDropdown links={links} toggleMobileDropdown={toggleMobileDropdown} location={location} />}
         </div>
     );
 };

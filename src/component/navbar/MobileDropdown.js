@@ -17,6 +17,7 @@ const MobileDropdown = props => {
     const container = useRef(null);
     const overlayRef = useRef(null);
     const mainContainer = useRef(null);
+    const boundingRef = useRef(null);
 
     const handleInput = e => {
         const { value } = e.target.value;
@@ -26,6 +27,7 @@ const MobileDropdown = props => {
 
     useEffect(() => {
         let lastSnap = 0;
+        let lastX = 0;
         Draggable.create(mainContainer.current, {
             type: "x",
             onDragEnd: () => {
@@ -98,7 +100,7 @@ const MobileDropdown = props => {
                             )}
                         </div>
                     </div>
-                    <div className="h-full w-full bg-transparent" onClick={() => handleOnClose()}></div>
+                    <div className="h-full w-full bg-transparent" onClick={() => handleOnClose()} ref={boundingRef}></div>
                 </div>
             </div>
         </>,
@@ -109,7 +111,7 @@ const MobileDropdown = props => {
 const Searchbar = props => {
     const { handleInput } = props;
     return (
-        <div className="flex mt-6 w-full items-center space-x-6 px-6 ">
+        <div className="mt-6 flex w-full items-center space-x-6 px-6 ">
             <input type="text" className="w-full rounded-md border border-gray-300 px-2 py-1 text-base" onChange={() => handleInput()} />
             <FontAwesomeIcon icon={faMagnifyingGlass} className="text-2xl text-gray-700" />
         </div>
@@ -124,7 +126,7 @@ const CustomLink = ({ children, to, handleOnClose, defaultColor, ...props }) => 
         background: match ? "#465FFC" : defaultColor ?? "white",
     };
     return (
-        <Link style={style} to={to} {...props} onClick={()=> handleOnClose()}>
+        <Link style={style} to={to} {...props} onClick={() => handleOnClose()}>
             {children}
         </Link>
     );
@@ -139,7 +141,7 @@ const DisclosureDropdown = props => {
         const { handleOnClose, link } = props;
         return (
             <CustomLink
-                className="w-[90%] shrink-0 rounded-md bg-slate-50 px-2 py-[6px] text-base font-medium text-gray-600 xs:px-10 xs:py-3"
+                className="w-[90%] shrink-0 rounded-md bg-slate-50 px-2 py-[6px] text-base font-medium text-gray-600 xs:py-3"
                 to={link.to}
                 key={link.name}
                 state={null}
@@ -164,7 +166,7 @@ const DisclosureDropdown = props => {
                     </div>
                     <div className="relative w-[95%] self-end overflow-hidden " ref={childRelativeContainer}>
                         <div ref={childAbsoluteContainer} className="absolute bottom-0 w-full">
-                            <div className="flex w-[100%] flex-col bg-slate-50 pl-4 xs:pl-14">
+                            <div className="flex w-[100%] flex-col bg-slate-50 pl-4 ">
                                 {menu.map(e => (
                                     <Link key={e.name} {...props} link={e}></Link>
                                 ))}
