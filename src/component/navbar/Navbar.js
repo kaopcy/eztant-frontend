@@ -47,20 +47,23 @@ const Navbar = ({ height }) => {
 
     useEffect(() => {
         console.log(`isOpenDropdown: ${isOpenDropdown}`);
-    }, [isOpenDropdown]);
-
+    }, [isOpenDropdown]);   
+    
+    const toggleMobileDropdown = (value)=>{
+        setIsOpenDropdown(e=> value ?? !e)
+    }
     const isLogin = false;
     return (
         <div
-            className={`fixed z-50 flex w-full items-center justify-between  border-b-[1.5px] bg-white px-4 font-bold text-blue-700 shadow-sm md:px-10 `}
+            className={`fixed z-50 flex w-full items-center justify-between  border-b-[1.5px] bg-white  font-bold text-blue-700 shadow-sm md:px-10 `}
             style={{ height: isMobile ? `${height - 20}px` : `${height}px` }}>
             {isMobile ? (
-                <MobileMenu location={location} isLogin={isLogin} toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} />
+                <MobileMenu location={location} isLogin={isLogin} toggleMobileDropdown={toggleMobileDropdown} />
             ) : (
                 <DesktopMenu location={location} isLogin={isLogin} />
             )}
             {isOpenDropdown && isMobile && (
-                <MobileDropdown links={links} toggleMobileDropdown={() => setIsOpenDropdown(e => !e)} location={location} />
+                <MobileDropdown links={links} toggleMobileDropdown={toggleMobileDropdown} location={location} />
             )}
         </div>
     );
@@ -71,7 +74,7 @@ const DesktopMenu = props => {
 
     return (
         <>
-            <div className="flex h-full items-center md:space-x-6 2md:space-x-8 lg:space-x-14">
+            <div className="flex h-full items-center px-4 md:space-x-6 2md:space-x-8 lg:space-x-14">
                 <Link to={"/"} className="h-[40%] shrink-0 md:h-[50%] lg:h-[57%] ">
                     <EztantLogo className="h-full" />
                 </Link>
@@ -104,8 +107,8 @@ const MobileMenu = props => {
     const { toggleMobileDropdown } = props;
     return (
         <>
-            <div className="flex h-full w-full items-center justify-between">
-                <div className="flex h-full w-10 cursor-pointer items-center justify-start" onClick={() => toggleMobileDropdown()}>
+            <div className="flex h-full  w-full items-center justify-between pr-4">
+                <div className="flex-col-cen h-full cursor-pointer pl-4 pr-4 " onClick={() => toggleMobileDropdown(true)}>
                     <FontAwesomeIcon icon={faBars} className="text-2xl text-gray-700 hover:text-gray-800" />
                 </div>
                 <Link to={"/"} className="h-[49%] shrink-0">
@@ -117,7 +120,7 @@ const MobileMenu = props => {
     );
 };
 
-const CustomLink = ({name, children, to, ...props }) => {
+const CustomLink = ({ name, children, to, ...props }) => {
     const { pathname: path } = useResolvedPath(to);
     const match = useMatch({ path, end: name === "โพสต์" ? false : true });
     return (

@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
 
 import TeachTable from "../../desktop/components/TeachTable";
 import Like from "../../components/Like";
@@ -100,7 +100,6 @@ const PostMobile = ({ post, setSelectedPost }) => {
     );
 };
 
-
 const Header = ({ post }) => {
     const left = () => (
         <div className="flex-cen w-full justify-start space-x-4">
@@ -161,5 +160,66 @@ const Detail = forwardRef(({ post }, ref) => {
         </div>
     );
 });
+
+export const PostFallBack = () => {
+    const left = () => (
+        <div className="flex-cen w-full justify-start space-x-4">
+            <div className=" h-12 w-12  shrink-0 overflow-hidden  rounded-full lg:h-16 lg:w-16">
+                <div className="h-full w-full bg-slate-200"></div>
+            </div>
+            <div className="flex w-full items-start justify-between">
+                <div className="flex flex-col  ">
+                    <span className="h-4 w-28 bg-slate-100"></span>
+                    <span className="mt-2 h-4 w-28 bg-slate-100"></span>
+                </div>
+                {right()}
+            </div>
+        </div>
+    );
+
+    const right = () => (
+        <div className="flex-cen space-x-3">
+            <div className="h-4 w-16 bg-gray-100"></div>
+            <FontAwesomeIcon icon={faEllipsis} className="rotate-90 text-lg" />
+        </div>
+    );
+
+    const text = ({ width }) => (
+        <div className=" flex w-full items-start whitespace-nowrap">
+            <div style={{ width }} className="h-4 w-24 shrink-0 bg-gray-200 "></div>
+            <div className="ml-4 h-4 w-full bg-gray-100 "></div>
+        </div>
+    );
+
+    return (
+        <div className="relative  w-[95%] shrink-0 rounded-md  border bg-white px-6 py-8 text-xl shadow-md">
+            <div className="flex-cen w-full">{left()}</div>
+            <div className="relative overflow-hidden ">
+                <div className="mb-10 flex">
+                    <div className="mt-8 flex w-full shrink-0 items-start justify-between text-sm ">
+                        <div className="flex w-full flex-col space-y-4">
+                            {text({ width: "100px" })}
+                            {text({ width: "150px" })}
+                            {text({ width: "130px" })}
+                            {text({ width: "110px" })}
+                            {text({ width: "160px" })}
+                            {text({ width: "50px" })}
+                            {text({ width: "60px" })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="mt-10 flex justify-end space-x-4">
+                <div className="w-40 rounded-lg bg-red-100 px-10 py-2 text-base"></div>
+                <div className="mb-1 flex space-x-2 self-end">
+                    <div className="flex-col-cen relative ">
+                        <FontAwesomeIcon icon={faHeart} className="text-slate-200" />
+                    </div>
+                    <div className="self-end text-sm text-text-light">17</div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default PostMobile;
