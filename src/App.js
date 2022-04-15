@@ -8,8 +8,11 @@ import { RegisterDesktop, RegisterMobile } from "./views/register";
 
 import Home from "./views/home/Home";
 import { PostList } from "./views/mainpost";
+import CreatePost from "./views/createPost/CreatePost";
 import UserTeacherList from "./views/userList/UserTeacherList";
 import UserStudentList from "./views/userList/UserStudentList";
+import FillDetail from "./views/createPost/FillDetail";
+import FillTable from "./views/createPost/FillTable";
 
 import Navbar from "./component/navbar/Navbar";
 import { useSelector } from "react-redux";
@@ -75,6 +78,30 @@ const App = () => {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/create-post"
+                    element={
+                        <ProtectedRoute>
+                            <CreatePost />
+                        </ProtectedRoute>
+                    }>
+                    <Route
+                        element={
+                            <ProtectedRoute>
+                                <FillDetail />
+                            </ProtectedRoute>
+                        }
+                        index
+                    />
+                    <Route
+                        path="/create-post/fill-table"
+                        element={
+                            <ProtectedRoute>
+                                <FillTable />
+                            </ProtectedRoute>
+                        }
+                    />
+                </Route>
                 <Route
                     path="/post-list/"
                     element={
