@@ -11,9 +11,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleRight, faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 import { Pagination, Navigation } from "swiper";
+import { useNavigate } from "react-router-dom";
 
 const PostSuggestDesktop = ({ isLoading , postSuggest }) => {
     gsap.registerPlugin(ScrollTrigger);
+    const navigate = useNavigate()
 
     const [triggerUpdate, setTriggerUpdate] = useState(true);
     const nextEl = useRef(null);
@@ -53,6 +55,11 @@ const PostSuggestDesktop = ({ isLoading , postSuggest }) => {
         },
     };
 
+    const handlePostClick = (e , subjectName )=>{
+        e.preventDefault();
+        navigate(`/post-list/all-department?${subjectName.replace(/\s/g , '')}`)
+    }
+
     return (
         <>
             <div className="relative w-[90%] max-w-[1200px]">
@@ -60,8 +67,9 @@ const PostSuggestDesktop = ({ isLoading , postSuggest }) => {
                     {isLoading && <Loading />}
                     {postSuggest.map(post => (
                         <SwiperSlide
+                             onClick={(e)=> handlePostClick(e , post.subjectName )}
                             key={post.subjectID}
-                            className="flex-col-cen w-[350px] justify-start overflow-hidden rounded-lg border-[2px] bg-white ">
+                            className="flex-col-cen w-[350px] justify-start overflow-hidden rounded-xl border-[2px] bg-white ">
                             <div className="flex-cen h-32 w-full justify-start space-x-4 bg-primary-dark px-3 leading-none text-white">
                                 <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-white bg-orange-200">
                                     <img src={post?.authorAvatar} className="h-full w-full" alt="" />

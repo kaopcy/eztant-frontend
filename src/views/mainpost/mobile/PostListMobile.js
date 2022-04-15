@@ -11,7 +11,7 @@ const PostListMobile = ({ postList, isLoading }) => {
 
     useEffect(() => {
         console.log(controlBarRef.current.clientHeight);
-        blankRef.current.style.height = `${controlBarRef.current.offsetHeight}px`;
+        blankRef.current.style.height = `${controlBarRef.current.clientHeight}px`;
     }, []);
 
     return (

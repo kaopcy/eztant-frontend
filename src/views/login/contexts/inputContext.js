@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 
 export const InputContext = createContext({
     userinput: {},
@@ -14,13 +14,13 @@ export const InputProvider = ({ children }) => {
 
     const [userinput, setuserinput] = useState(initialInput);
 
-    const handleInputUpdate = e => {
+    const handleInputUpdate = useCallback(e => {
         if (e.target.value.includes(" ")) {
             e.target.value = e.target.value.replace(/\s/g, "");
         }
         const { name, value } = e.target;
-        setuserinput({ ...userinput, [name]: value });
-    };
+        setuserinput(old => ({ ...old, [name]: value }));
+    }, []);
 
     const handleOnBlur = e => {
         alert("blur");

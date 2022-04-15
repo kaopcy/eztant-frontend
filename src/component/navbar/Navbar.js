@@ -29,9 +29,14 @@ const links = [
         to: "register",
     },
     {
-        name: "เข้าสู่ระบบ",
+        name: "รายชื่ออาจารย์",
         mobile: true,
-        to: "login",
+        to: "user-student-list",
+    },
+    {
+        name: "รายชื่อนักศึกษา",
+        mobile: true,
+        to: "user-teacher-list",
     },
 ];
 
@@ -92,7 +97,11 @@ const DesktopMenu = props => {
                 </div>
             </div>
             <div className="flex h-full items-center space-x-5 2md:space-x-8 lg:space-x-10">
-                {!isLogin && <div className="rounded-md bg-secondary px-4 py-2 text-white">สร้างโพสต์</div>}
+                {!isLogin && (
+                    <Link to="/create-post" className="rounded-md bg-secondary px-4 py-2 text-white">
+                        สร้างโพสต์
+                    </Link>
+                )}
                 <FontAwesomeIcon icon={faBell} className="text-2xl text-gray-600" />
                 <UserlistDropdown />
                 <UserIcon height={40} />
