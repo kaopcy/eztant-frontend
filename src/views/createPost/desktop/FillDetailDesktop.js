@@ -1,5 +1,5 @@
 import React from "react";
-import { useHandleInput } from "../context/inputCreatePostContext";
+import { useHandleInput, useInput } from "../context/inputCreatePostContext";
 
 const FillDetailDesktop = () => {
     return (
@@ -49,10 +49,15 @@ const FillDetailDesktop = () => {
 
 const TextArea = ({ label, name }) => {
     const handleInput = useHandleInput();
+    const inputValue = useInput();
 
     return (
-        <div onChange={handleInput} className="relative h-[120px] w-[320px] ">
-            <textarea name={name} className="relative h-full w-full rounded-md border-[3px] px-2 pt-4 pb-1 "></textarea>
+        <div className="relative h-[120px] w-[320px] ">
+            <textarea
+                onChange={handleInput}
+                value={inputValue[name]}
+                name={name}
+                className="relative h-full w-full rounded-md border-[3px] px-2 pt-4 pb-1 "></textarea>
             <div className="absolute top-0 left-4 -translate-y-1/2 bg-white px-2 text-text">{label}</div>
         </div>
     );
@@ -60,10 +65,18 @@ const TextArea = ({ label, name }) => {
 
 const Input = ({ label, name, inputWidth }) => {
     const handleInput = useHandleInput();
+    const inputValue = useInput();
     return (
         <div className=" flex">
             <div className="relative">
-                <input name={name} type="text" className="rounded-md border-[3px] px-2 py-1" style={{ width: inputWidth }} onChange={handleInput} />
+                <input
+                    name={name}
+                    value={inputValue[name]}
+                    type="text"
+                    className="rounded-md border-[3px] px-2 py-1"
+                    style={{ width: inputWidth }}
+                    onChange={handleInput}
+                />
                 <div className="absolute top-0 left-4 -translate-y-1/2 bg-white px-2  text-sm ">{label}</div>
             </div>
         </div>

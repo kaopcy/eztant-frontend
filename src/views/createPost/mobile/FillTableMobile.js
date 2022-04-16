@@ -37,7 +37,7 @@ const Add = forwardRef((_, ref) => {
     }, []);
 
     return (
-        <div ref={container} className="relative float-right mx-2 w-full overflow-hidden mt-4">
+        <div ref={container} className="relative mx-2 w-full overflow-hidden mt-4">
             <div className="absolute bottom-0 h-[200px] w-full rounded-md border-2 flex flex-col items-center">
                 <FontAwesomeIcon onClick={() => ref.current.reverse()} icon={faClose} className="absolute right-0  p-2  text-xl " />
                 <div className="flex flex-col items-center mt-10">

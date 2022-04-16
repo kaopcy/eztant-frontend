@@ -11,6 +11,7 @@ const initialState = {
     minGrade: "",
     duty: "",
     requirement: "",
+    expired_date: null,
 };
 
 export const InputProvider = ({ children }) => {
