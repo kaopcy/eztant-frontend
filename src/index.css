@@ -26,6 +26,10 @@
 }
 
 @layer components {
+    input {
+        @apply placeholder:text-zinc-200
+    }
+
     .input-register {
         @apply w-full rounded-md border px-2 py-[0.45rem] text-xs outline-none focus:border-gray-300;
     }
