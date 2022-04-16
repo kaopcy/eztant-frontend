@@ -1,25 +1,28 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate, Navigate, Link } from "react-router-dom";
 import { useResponsive } from "./composables/context/useResponsive";
+import { useSelector } from "react-redux";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
 
-import Home from "./views/home/Home";
-import { PostList } from "./views/mainpost";
-import CreatePost from "./views/createPost/CreatePost";
-import UserTeacherList from "./views/userList/UserTeacherList";
-import UserStudentList from "./views/userList/UserStudentList";
-import FillDetail from "./views/createPost/FillDetail";
-import FillTable from "./views/createPost/FillTable";
-
 import Navbar from "./component/navbar/Navbar";
-import { useSelector } from "react-redux";
+const PostList = React.lazy(() => import("./views/mainpost/PostList"));
+const Home = React.lazy(() => import("./views/home/Home"));
+const CreatePost = React.lazy(() => import("./views/createPost/CreatePost"));
+const UserTeacherList = React.lazy(() => import("./views/userList/UserTeacherList"));
+const UserStudentList = React.lazy(() => import("./views/userList/UserStudentList"));
+const FillDetail = React.lazy(() => import("./views/createPost/FillDetail"));
+const FillTable = React.lazy(() => import("./views/createPost/FillTable"));
 
 const ProtectedRoute = ({ isAuth, children }) => {
     const { user } = useSelector(state => state.user);
-    return user ? children : <Navigate to="/" />;
+    return <Suspense fallback={<div></div>}>{user ? children : <Navigate to="/" />}</Suspense>;
+};
+
+const UnprotectedRoute = ({ children }) => {
+    return <Suspense fallback={<div></div>}>{children}</Suspense>;
 };
 
 const App = () => {
@@ -44,72 +47,15 @@ const App = () => {
             <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
             {/* this logic used for when not in mobile we want to render background for register */}
             <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
-                <Route
-                    path="/post"
-                    element={
-                        <ProtectedRoute>
-                            <RegisterMobile />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route index path="/" element={<Home />} />
-
-                <Route
-                    path="/post-list/:id"
-                    element={
-                        <ProtectedRoute>
-                            <PostList />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/user-teacher-list"
-                    element={
-                        <ProtectedRoute>
-                            <UserTeacherList />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/user-student-list"
-                    element={
-                        <ProtectedRoute>
-                            <UserStudentList />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/create-post"
-                    element={
-                        <ProtectedRoute>
-                            <CreatePost />
-                        </ProtectedRoute>
-                    }>
-                    <Route
-                        element={
-                            <ProtectedRoute>
-                                <FillDetail />
-                            </ProtectedRoute>
-                        }
-                        index
-                    />
-                    <Route
-                        path="/create-post/fill-table"
-                        element={
-                            <ProtectedRoute>
-                                <FillTable />
-                            </ProtectedRoute>
-                        }
-                    />
+                <Route index path="/" element={<UnprotectedRoute children={<Home />} />} />
+                <Route path="/post-list/:id" element={<ProtectedRoute children={<PostList />} />} />
+                <Route path="/user-teacher-list" element={<ProtectedRoute children={UserTeacherList} />} />
+                <Route path="/user-student-list" element={<ProtectedRoute children={UserStudentList} />} />
+                <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
+                    <Route element={<ProtectedRoute children={<FillDetail />} />} index />
+                    <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
                 </Route>
-                <Route
-                    path="/post-list/"
-                    element={
-                        <ProtectedRoute>
-                            <Navigate to="/post-list/all-department" replace />
-                        </ProtectedRoute>
-                    }
-                />
+                <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
                 {isMobile && (
                     <>
                         <Route path="/register" element={<RegisterMobile />} />
