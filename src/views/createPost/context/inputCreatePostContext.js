@@ -1,33 +1,16 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const InputContext = createContext();
-const HandleInputContext = createContext();
-
-const initialState = {
-    subjectName: "",
-    subjectID: "",
-    wage: "",
-    year: "",
-    minGrade: "",
-    duty: "",
-    requirement: "",
-    expired_date: null,
-};
+const SetInputContext = createContext();
 
 export const InputProvider = ({ children }) => {
-    const [input, setInput] = useState(initialState);
-    
-    const handleInput = useCallback((e)=>{
-        const { value, name } = e.target;
-        setInput(old => ({ ...old, [name]: value }));
-    },[])
-
+    const [input, setInput] = useState(null);
     return (
         <InputContext.Provider value={input}>
-            <HandleInputContext.Provider value={handleInput}>{children}</HandleInputContext.Provider>
+            <SetInputContext.Provider value={setInput}>{children}</SetInputContext.Provider>
         </InputContext.Provider>
     );
 };
 
-export const useHandleInput = () => useContext(HandleInputContext)
+export const useSetInput = () => useContext(SetInputContext);
 export const useInput = () => useContext(InputContext);
