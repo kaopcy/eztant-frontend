@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-
-import CreateDetail from "./FillDetailMobile";
-import CreateTable from "./FillTableMobile";
 
 const CreatePostMobile = () => {
     const navigate = useNavigate();

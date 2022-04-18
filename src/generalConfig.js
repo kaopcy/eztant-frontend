@@ -178,3 +178,5 @@ export const DAY_SHORT_EN = {
     friday: "FRI",
     saturnday: "SAT",
 };
+
+export const GRADE_LIST = ["S", "A", "B+", "B", "C+", "C", "D+", "D", "F"];

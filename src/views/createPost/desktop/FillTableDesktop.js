@@ -1,42 +1,73 @@
-import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { Link, useMatch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { useHandleTableInput, useTableInput, useAddTableInput, useDeleteTableInput } from "../context/tableCreatePostContext";
-
-import { faPlus, faClose, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faClose, faWarning, faPlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// thisi si another test for fill table
-const TABLE_ROW_HEIGHT = 44;
+
+import { useSetTableInput, useTableInput } from "../context/tableCreatePostContext";
+import { useInput } from "../context/inputCreatePostContext";
+import { timeValidate, sectionValidate, max_taValidate, closeDateValidate } from "../../../utils/createTableInputValidate";
 
 const FillTableDesktop = () => {
     const tableMatch = useMatch("/create-post/fill-table");
     const detailMatch = useMatch("/create-post");
 
-    const { register, handleSubmit, control, watch } = useForm();
+    const [isPreviousEmpty, setIsPreviousEmpty] = useState(false);
 
+    const setTableInput = useSetTableInput();
+    const tableInput = useTableInput();
+    const inputValue = useInput();
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: { errors, isValid },
+        setError,
+    } = useForm({ mode: "onChange", defaultValues: tableInput || {} });
+
+    const onSubmit = data => {
+        data.tables.forEach((element, index) => {
+            const numberTimeTo = parseInt(element.time_to.split(":").join(""));
+            const numberTimeFrom = parseInt(element.time_from.split(":").join(""));
+            if (numberTimeFrom >= numberTimeTo)
+                setError(`tables[${index}].time_to`, { type: "formatError", message: "เวลาเลิกคาบเรียนต้องหลังจากเวลาเริ่มคาบ" });
+        });
+        if (!isValid) return;
+        if (!inputValue) {
+            setIsPreviousEmpty(true);
+            return;
+        }
+        setTableInput(data);
+    };
+
+    useEffect(() => {
+        console.log(tableInput);
+    }, [tableInput]);
 
     return (
         <>
-            <form
-                onSubmit={handleSubmit(data => {
-                    console.log(data);
-                })}
-                className="mt-10 flex w-full items-start justify-center space-x-4 px-2 lg:space-x-20 ">
-                <Table ref={register} control={control} />
-                <DueDate />
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-10 flex w-full items-start justify-center space-x-4 px-2 lg:space-x-20 ">
+                <Table errors={errors} register={register} control={control} />
+                <DueDate isPreviousEmpty={isPreviousEmpty} register={register} errors={errors} />
             </form>
             <div className="mt-20 flex w-full items-center justify-center space-x-2">
-                <Link to="/create-post" className="">
+                <Link type="submit" to="/create-post" className="relative">
                     <FontAwesomeIcon
                         icon={faChevronRight}
                         className={`rotate-180  border-2 py-3 px-2 transition-all  ${
                             tableMatch
                                 ? "cursor-pointer border-gray-400 hover:bg-text hover:text-white"
                                 : "cursor-default border-slate-100 text-slate-200"
-                        }`}
+                        } ${isPreviousEmpty && "!border-red-500 !text-red-500"}`}
                     />
+                    {isPreviousEmpty && (
+                        <div className="absolute flex items-center -top-14 left-1/2 -translate-x-3/4 rounded-md border-2 border-red-500 px-4 py-2 text-red-500 shadow-lg">
+                            <div className="whitespace-nowrap mr-3">กรอบรายละเอียดในหน้านี้ให้ครบ</div>
+                            <FontAwesomeIcon icon={faWarning} className="text-orange-400" />
+                        </div>
+                    )}
                 </Link>
                 <Link className="" to="fill-table">
                     <FontAwesomeIcon
@@ -53,40 +84,18 @@ const FillTableDesktop = () => {
     );
 };
 
-const Table = forwardRef(({ control }, register) => {
-    // const tableInput = useTableInput();
-    // const addTable = useAddTableInput();
-    const { fields, append, remove } = useFieldArray({ control, name: "tables" });
+const Table = ({ errors, control, register }) => {
+    const { fields, append, remove: removeData } = useFieldArray({ control, name: "tables" });
+    const remove = index => {
+        if (fields.length <= 1) return;
+        removeData(index);
+    };
+    const tableInput = useTableInput();
 
-    // const tableContainer = useRef(null);
-    // const tl = useRef(null);
-    // const tl2 = useRef(null);
-
-    // useLayoutEffect(() => {
-    //     gsap.set(tableContainer.current, { height: `+=${TABLE_ROW_HEIGHT * (tableContainer.current.childElementCount - 1)}px` });
-    // }, []);
-
-    // useEffect(() => {
-    //     tl.current = gsap.to(tableContainer.current, {
-    //         paused: true,
-    //         height: `+=${TABLE_ROW_HEIGHT}`,
-    //     });
-    //     tl2.current = gsap.to(tableContainer.current, {
-    //         paused: true,
-    //         height: `-=${TABLE_ROW_HEIGHT}`,
-    //     });
-    // }, [tableInput.length]);
-
-    // const play = () => {
-    //     tl2.current.play();
-    // };
-
-    // useEffect(() => {
-    //     return () => {
-    //         tl.current.kill();
-    //     };
-    // }, []);
-
+    useEffect(() => {
+        if (tableInput) return;
+        append();
+    }, [append, tableInput]);
     return (
         <div className={`mr-10 flex min-h-[323px] flex-col  items-center`}>
             <div className="flex  flex-col items-start ">
@@ -110,150 +119,150 @@ const Table = forwardRef(({ control }, register) => {
                 </div>
                 {fields.map(({ id, ...item }, index) => (
                     <div className="" key={id}>
-                        <NewAddTable index={index} ref={register} {...item} />
+                        <AddedTable remove={remove} errors={errors} index={index} register={register} {...item} />
                     </div>
                 ))}
-                <div className="btn-orange px-4 py-2 " onClick={() => append({})}>
-                    Add
-                </div>
-                {/* <div ref={tableContainer} className="relative z-0 flex flex-col items-start ">
-                    <AddedTable index={0} tableInput={tableInput[0]} main onDelete={play} />
-                    {tableInput.map((e, index) => index !== 0 && <AddedTable onDelete={play} key={index} index={index} tableInput={e} />)}
-                </div> */}
             </div>
-
-            {/* <div
-                onClick={() => {
-                    addTable();
-                    tl.current.play();
-                }}
-                className="btn-white flex-cen mt-10 space-x-2 rounded-xl border-2 px-5 py-1 text-lg">
+            <div onClick={() => append()} className="btn-white flex-cen mt-10 space-x-2 rounded-xl border-2 px-5 py-1 text-lg">
                 <FontAwesomeIcon className="text-sm" icon={faPlus} />
                 <div className="">เพิ่ม</div>
-            </div> */}
+            </div>
         </div>
     );
-});
+};
 
-const AddedTable = ({ index, tableInput, onDelete, main = false }) => {
-    const rowTable = useRef(null);
-    const tl = useRef(null);
+const AddedTable = ({ index, remove, errors, register, ...props }) => {
+    const error = errors?.tables?.[index];
 
-    useLayoutEffect(() => {
-        rowTable.current.style.top = `${index * TABLE_ROW_HEIGHT}px`;
-        gsap.set(rowTable.current, { yPercent: -100 });
-    }, [index]);
-
-    useEffect(() => {
-        tl.current = gsap.timeline({ paused: true, reversed: true }).to(rowTable.current, { yPercent: 0 });
-        tl.current.play();
-    }, []);
-
-    const handleTableInput = useHandleTableInput();
-    const deleteTable = useDeleteTableInput();
-    const timeInput = props => (
-        <input
-            type="text"
-            onChange={e => handleTableInput(e, index)}
-            {...props}
-            value={tableInput[props.name]}
-            className=" my-[0.375rem] w-28 rounded-md py-1 px-2 text-center "
-        />
-    );
-
+    const ErrorValidate = ({ name }) => {
+        return error?.[name] ? (
+            <div className="group absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer">
+                <FontAwesomeIcon icon={faCircleInfo} className="text-sm text-red-500" />
+                <div className="invisible absolute left-1/2 bottom-full -translate-x-1/2 rounded-md border bg-white px-2 py-2 shadow-lg group-hover:visible">
+                    <div className="z-[100] whitespace-nowrap text-xs text-red-500 ">{error?.[name]?.message}</div>
+                </div>
+            </div>
+        ) : (
+            ""
+        );
+    };
     return (
-        <div
-            style={{ height: TABLE_ROW_HEIGHT, zIndex: 100 - index }}
-            className={`flex  w-full bg-primary ${main ? "relative" : "absolute left-0 top-full "}`}
-            ref={rowTable}>
-            <div className="shrink-0 border-r">
-                <input
-                    onChange={e => handleTableInput(e, index)}
-                    name="section"
-                    type="text"
-                    placeholder="101"
-                    maxLength={3}
-                    value={tableInput.section}
-                    className="my-[0.375rem] mx-2 w-12 rounded-md bg-white py-1 px-2 text-center lg:w-20"
-                />
+        <div style={{ zIndex: 100 + index }} className={`relative  flex w-full bg-primary`}>
+            <div className="relative shrink-0 border-r">
+                <div className="relative my-[0.375rem] mx-2">
+                    <ErrorValidate name="section" />
+                    <input
+                        type="text"
+                        maxLength={3}
+                        placeholder={101}
+                        className={`cool-input w-12 rounded-md border-2 bg-white py-1 px-2 text-center lg:w-20 ${error?.section && "border-red-300"}`}
+                        {...register(`tables[${index}].section`, sectionValidate)}
+                    />
+                </div>
             </div>
-            <div className="shrink-0 border-r">
-                <input
-                    onChange={e => handleTableInput(e, index)}
-                    name="max_ta"
-                    type="text"
-                    placeholder="5"
-                    maxLength={2}
-                    value={tableInput.max_ta}
-                    className="my-[0.375rem] mx-2 w-12 rounded-md bg-white py-1 px-2 text-center lg:w-20"
-                />
+            <div className="relative shrink-0 border-r">
+                <div className="relative my-[0.375rem] mx-2">
+                    <ErrorValidate name="max_ta" />
+                    <input
+                        maxLength={2}
+                        type="text"
+                        className={`cool-input w-12 rounded-md border-2 bg-white py-1 px-2 text-center lg:w-20 ${error?.max_ta && "border-red-300"}`}
+                        {...register(`tables[${index}].max_ta`, max_taValidate)}
+                    />
+                </div>
             </div>
-            <div className="shrink-0 border-r">
-                <select
-                    name="day"
-                    onChange={e => handleTableInput(e, index)}
-                    value={tableInput.day}
-                    className="form-select my-[0.375rem] mx-2 w-[5.5rem] rounded-md bg-white py-1 px-2 text-text">
-                    <option value="monday" className="my-1">
-                        จันทร์
-                    </option>
-                    <option value="tuesday" className="my-1">
-                        อังคาร
-                    </option>
-                    <option value="wednesday" className="my-1">
-                        พุธ
-                    </option>
-                    <option value="thursday" className="my-1">
-                        พฤหัส
-                    </option>
-                    <option value="friday" className="my-1">
-                        ศุกร์
-                    </option>
-                    <option value="saturnday" className="my-1">
-                        เสาร์
-                    </option>
-                    <option value="sunday" className="my-1">
-                        อาทิตย์
-                    </option>
-                </select>
+            <div className="relative shrink-0 border-r">
+                <div className="relative my-[0.375rem] mx-2">
+                    <ErrorValidate name="day" />
+                    <select
+                        maxLength={2}
+                        className={`cool-input form-select  w-[5.5rem] rounded-md border-2 bg-white py-1 px-2 text-text ${
+                            error?.day && "border-red-300"
+                        }`}
+                        {...register(`tables[${index}].day`)}>
+                        <option value="monday" className="my-1 ">
+                            จันทร์
+                        </option>
+                        <option value="tuesday" className="my-1">
+                            อังคาร
+                        </option>
+                        <option value="wednesday" className="my-1">
+                            พุธ
+                        </option>
+                        <option value="thursday" className="my-1">
+                            พฤหัส
+                        </option>
+                        <option value="friday" className="my-1">
+                            ศุกร์
+                        </option>
+                        <option value="saturnday" className="my-1">
+                            เสาร์
+                        </option>
+                        <option value="sunday" className="my-1">
+                            อาทิตย์
+                        </option>
+                    </select>
+                </div>
             </div>
             <div className="flex w-full items-center justify-center px-2 lg:px-6">
-                {timeInput({ placeholder: "09:30", name: "time_from" })}
+                <div className="relative shrink-0">
+                    <div className="relative my-[0.375rem]">
+                        <ErrorValidate name="time_from" />
+                        <input
+                            maxLength={5}
+                            placeholder="09:00"
+                            type="text"
+                            className={`cool-input w-28 rounded-md border-2 py-1 px-2 text-center  ${error?.time_from && "border-red-300"}`}
+                            {...register(`tables[${index}].time_from`, timeValidate)}
+                        />
+                    </div>
+                </div>
                 <div className="mx-4 text-white">ถึง</div>
-                {timeInput({ placeholder: "13:30", name: "time_to" })}
+                <div className="relative shrink-0 ">
+                    <div className="relative">
+                        <ErrorValidate name="time_to" />
+                        <input
+                            maxLength={5}
+                            placeholder="13:00"
+                            type="text"
+                            className={`cool-input my-[0.375rem] w-28 rounded-md border-2 py-1 px-2 text-center  ${
+                                error?.time_to && "border-red-300"
+                            }`}
+                            {...register(`tables[${index}].time_to`, timeValidate)}
+                        />
+                    </div>
+                </div>
             </div>
-            <div
-                className="flex-col-cen absolute top-0 left-full h-full w-10"
-                onClick={() => {
-                    deleteTable(index, onDelete);
-                }}>
+            <div className="flex-col-cen absolute top-0 left-full h-full w-10" onClick={() => remove(index)}>
                 <FontAwesomeIcon icon={faClose} className="text-red-500" />
             </div>
         </div>
     );
 };
 
-const NewAddTable = forwardRef(({ index, ...props }, register) => {
-    return (
-        <div className="">
-            <input type="text" className="border-2 border-text" {...register(`tables[${index}].section`)} />
-            <input type="text" className="border-2 border-text" {...register(`tables[${index}].time_to`)} />
-            <input type="text" className="border-2 border-text" {...register(`tables[${index}].time_from`)} />
-            <input type="text" className="border-2 border-text" {...register(`tables[${index}].max_ta`)} />
-        </div>
-    );
-});
-
-const DueDate = ({ register }) => {
-    const [startDate, setStartDate] = useState(new Date());
+const DueDate = ({ isPreviousEmpty, register, errors }) => {
     return (
         <div className={`flex w-[220px] flex-col items-center space-y-6 `}>
             <div className="font-bold text-secondary underline ">กำหนดวันปิดรับสมัคร</div>
-            <div className="relative flex w-full items-center">
-                <input type="date" className="w-full rounded-md border-2 px-2 py-[0.375rem]" />
+            <div className="relative flex w-full items-center ">
+                {errors?.close_date ? (
+                    <div className="absolute left-0 top-full z-[100] whitespace-nowrap text-xs text-red-500">{errors?.close_date?.message}</div>
+                ) : (
+                    ""
+                )}
+                <input
+                    type="date"
+                    placeholder="dd-mm-yyyy"
+                    min="1997-01-01"
+                    max="2030-12-31"
+                    className={`w-full rounded-md border-2 px-2 py-[0.375rem] ${errors?.close_date && "border-red-300"}`}
+                    {...register("close_date", closeDateValidate)}
+                />
                 <div className="absolute top-0 left-4 -translate-y-[55%] bg-white py-0 px-2">วันที่</div>
             </div>
-            <div className="btn-orange flex-cen w-full rounded-md py-2 text-xl font-bold">โพสต์</div>
+            <button disabled={isPreviousEmpty} type="submit" className="  btn-orange flex-cen w-full rounded-md py-2 text-xl font-bold">
+                โพสต์
+            </button>
         </div>
     );
 };

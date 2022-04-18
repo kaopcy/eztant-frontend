@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHandleInput } from "../context/inputCreatePostContext";
 import DisclosureAnimate from "../../../component/utils/DisclosureAnimate";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,9 +36,8 @@ const FillDetailMobile = () => {
 };
 
 const TextArea = ({ label, name }) => {
-    const handleInput = useHandleInput();
     return (
-        <div onChange={handleInput} className="relative h-[120px] w-full ">
+        <div  className="relative h-[120px] w-full ">
             <textarea name={name} className="relative h-full w-full rounded-md border-[3px] px-2 pt-4 pb-1 "></textarea>
             <div className="absolute top-0 left-4 -translate-y-1/2 bg-white px-2 text-text">{label}</div>
         </div>
@@ -47,17 +45,15 @@ const TextArea = ({ label, name }) => {
 };
 
 const Input = ({ label, name, inputWidth }) => {
-    const handleInput = useHandleInput();
     return (
         <div className="relative">
             <div className="absolute top-0 left-4 -translate-y-1/2 bg-white px-2 ">{label}</div>
-            <input onChange={handleInput} type="text" name={name} className="rounded-md border-2 px-2 py-[0.375rem]" style={{ width: inputWidth }} />
+            <input  type="text" name={name} className="rounded-md border-2 px-2 py-[0.375rem]" style={{ width: inputWidth }} />
         </div>
     );
 };
 
 const YearCheckbox = ({ label, value }) => {
-    const handleInput = useHandleInput();
     return (
         <label className="flex cursor-pointer items-center space-x-2">
             <input type="checkbox" className=" form-checkbox rounded-sm border-2 border-text-light text-secondary" value={value} />
