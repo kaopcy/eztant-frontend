@@ -10,7 +10,7 @@ const CreatePostMobile = React.lazy(() => import("./mobile/CreatePostMobile"));
 const CreatePost = () => {
     const isMobile = useResponsive();
     return (
-        <Suspense fallback={<div>Loading</div>}>
+        <Suspense fallback={<div></div>}>
             <TableInputProvider>
                 <InputProvider>{isMobile ? <CreatePostMobile /> : <CreatePostDesktop />}</InputProvider>
             </TableInputProvider>
