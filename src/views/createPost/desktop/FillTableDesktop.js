@@ -19,6 +19,12 @@ const FillTableDesktop = () => {
     const tableInput = useTableInput();
     const inputValue = useInput();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!inputValue) {
+            navigate("/create-post");
+        }
+    }, [inputValue, navigate]);
     
     const {
         register,

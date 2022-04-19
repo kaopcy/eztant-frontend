@@ -9,7 +9,7 @@ const CreatePostMobile = () => {
     return (
         <div className="flex w-full flex-col items-center  px-7 text-base text-text">
             <FontAwesomeIcon
-                onClick={() => navigate(-1)}
+                onClick={() =>  navigate(-1)}
                 icon={faArrowLeft}
                 className="mt-10 cursor-pointer self-start rounded-full p-3 hover:bg-gray-100 "
             />

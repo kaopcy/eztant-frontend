@@ -1,8 +1,10 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState, useLayoutEffect } from "react";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faCircleInfo, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { DAY_COLOR } from "../../../generalConfig";
 
 import { Section } from "../../mainpost/desktop/components/TeachTable";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -10,7 +12,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { useSetTableInput, useTableInput } from "../context/tableCreatePostContext";
 import { useInput } from "../context/inputCreatePostContext";
 import { timeValidate, sectionValidate, max_taValidate } from "../../../utils/createTableInputValidate";
-import { useNavigate } from "react-router-dom";
 
 const CreateTableMobile = () => {
     const addRef = useRef(null);
@@ -33,6 +34,7 @@ const CreateTableMobile = () => {
         control,
         formState: { errors, isValid },
         setError,
+        getValues
     } = useForm({ mode: "onChange", defaultValues: tableInput || {} });
 
     const { remove } = useFieldArray({ control, name: "tables" });
@@ -59,7 +61,7 @@ const CreateTableMobile = () => {
             <div className="text-xl font-bold text-secondary">ตารางเรียน</div>
             {tableInput && tableInput.tables.map((e, index) => <PreviewSection key={index} {...e} remove={remove} />)}
 
-            <Add ref={addRef} index={length} register={register} errors={errors} />
+            <Add getValues={getValues} ref={addRef} index={length} register={register} errors={errors} />
         </form>
     );
 };
@@ -93,13 +95,16 @@ const ErrorValidate = ({ errors, name, className }) => {
     );
 };
 
-const Add = forwardRef(({ index, register, errors }, ref) => {
+const Add = forwardRef(({ index, register, errors , getValues }, ref) => {
     const tl = useRef(null);
     const container = useRef(null);
     const iconRef = useRef(null);
+    const quoteRef = useRef(null);
     const error = errors?.tables?.[index];
 
     const CONTAINER_HEIGHT = "422px";
+
+    const [curDay , setCurDay] = useState('monday')
 
     useImperativeHandle(ref, () => ({
         toggle: () => {
@@ -118,15 +123,20 @@ const Add = forwardRef(({ index, register, errors }, ref) => {
             .timeline({ paused: true, reversed: true })
             .to(container.current, { width: "100%", borderRadius: "10px", ease: "power4.in" })
             .to(iconRef.current, { top: "20px", right: "10px", rotate: "45deg" })
-            .to(container.current, { height: CONTAINER_HEIGHT }, "<");
+            .to(container.current, { height: CONTAINER_HEIGHT }, "<")
+            .to(quoteRef.current, { autoAlpha: 1 , duration: 0.2 } , '<0.3');
     }, []);
 
     return (
         <div ref={container} className="relative mx-2 mt-10 mb-20 h-7   w-7 overflow-hidden rounded-full outline outline-[0.19rem] outline-secondary">
+            <div ref={quoteRef} className="opacity-0 invisible absolute top-[20px] left-[20px] flex  text-xl text-secondary">
+                <FontAwesomeIcon  icon={faCalendarPlus} className="mr-2" />
+                <div className="text-base font-bold">เพิ่มตาราง</div>
+            </div>
             <div
                 onClick={() => ref.current.toggle()}
                 ref={iconRef}
-                className="absolute right-0 top-0 z-10 mr-[6px] cursor-pointer text-xl text-secondary group-hover:text-white">
+                className="shrink-0 absolute right-0 top-0 z-10 mr-[6px] cursor-pointer text-xl text-secondary group-hover:text-white">
                 <FontAwesomeIcon icon={faPlus} />
             </div>
             <div className="absolute bottom-0 flex w-full flex-col items-center rounded-md  py-10" style={{ height: CONTAINER_HEIGHT }}>
@@ -158,7 +168,7 @@ const Add = forwardRef(({ index, register, errors }, ref) => {
                     </div>
                     <div className="relative mt-5 flex w-full items-center">
                         <div className="shrink-0">วันที่เข้าสอน</div>
-                        <div className="mx-4 aspect-square w-10 rounded-full bg-yellow-200"></div>
+                        <div className="mx-4 aspect-square w-10 rounded-full " style={{ backgroundColor: DAY_COLOR[curDay] }}></div>
                         <div className="relative w-full">
                             <ErrorValidate errors={error} name={"day"} />
                             <select
@@ -166,7 +176,8 @@ const Add = forwardRef(({ index, register, errors }, ref) => {
                                 className={`cool-input form-select  w-full rounded-md border-2  bg-white py-1 px-2 text-text ${
                                     error?.day && "!border-red-300"
                                 }`}
-                                {...register(`tables[${index}].day`)}>
+                                {...register(`tables[${index}].day`)}
+                                onChange={(e)=>{setCurDay(e.target.value)}}>
                                 <option value="monday" className="my-1 ">
                                     จันทร์
                                 </option>
@@ -191,8 +202,8 @@ const Add = forwardRef(({ index, register, errors }, ref) => {
                             </select>
                         </div>
                     </div>
-                    <div className="mt-5 flex w-full flex-col items-center 2xs:flex-row">
-                        <div className="mr-3 shrink-0">เวลาที่เข้าสอน</div>
+                    <div className="mt-5 flex w-full flex-col items-start 2xs:flex-row 2xs:items-center">
+                        <div className="mr-3 mb-2 shrink-0 xs:mb-0">เวลาที่เข้าสอน</div>
 
                         <div className="flex w-full items-center">
                             <div className="relative w-full">

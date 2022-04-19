@@ -102,6 +102,16 @@ export const POSTS = [
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/400",
         moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -113,6 +123,16 @@ export const POSTS = [
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/399",
         moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -124,6 +144,16 @@ export const POSTS = [
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/398",
         moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -135,6 +165,16 @@ export const POSTS = [
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/398",
         moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
     },
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -146,6 +186,16 @@ export const POSTS = [
         minGrade: "B+",
         authorAvatar: "https://i.pravatar.cc/398",
         moreDetail: "-",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+            },
+        ],
     },
 ];
 

@@ -72,7 +72,7 @@ const PostMobile = ({ post, setSelectedPost }) => {
                 <div className="mb-10 flex" ref={dragProxy}>
                     <Detail post={post} />
                     <div className="flex-col-cen my-10 w-full shrink-0 justify-start">
-                        <TeachTable />
+                        <TeachTable tables={post.tables} />
                     </div>
                 </div>
                 {isOverflow && (
