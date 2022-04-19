@@ -15,16 +15,15 @@ import {
     subjectIDValidate,
 } from "../../../utils/createDetailInputValidate";
 import { GRADE_LIST } from "../../../generalConfig";
+
 const FillDetailDesktop = () => {
     const tableMatch = useMatch("/create-post/fill-table");
     const detailMatch = useMatch("/create-post");
     const navigate = useNavigate();
 
-    const inputValue = useInput();
     const setInputValue = useSetInput();
     const {
         register,
-        setError,
         handleSubmit,
         formState: { errors, isValid },
     } = useForm({ mode: "onChange" });
@@ -36,7 +35,7 @@ const FillDetailDesktop = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} >
             <div className="mt-16 flex w-full flex-col items-center justify-center space-x-16 xl:flex-row xl:items-start ">
                 <div className="flex flex-col  space-y-12 xl:min-h-[300px]">
                     <div className="flex space-x-20 ">

@@ -60,7 +60,7 @@ const Navbar = ({ height }) => {
     const isLogin = false;
     return (
         <div
-            className={`fixed z-50 flex w-full items-center justify-between  border-b-[1.5px] bg-white  font-bold text-blue-700 shadow-sm md:px-10 `}
+            className={`fixed z-[201] flex w-full items-center justify-between  border-b-[1.5px] bg-white  font-bold text-blue-700 shadow-sm md:px-10 `}
             style={{ height: isMobile ? `${height - 20}px` : `${height}px` }}>
             {isMobile ? (
                 <MobileMenu location={location} isLogin={isLogin} toggleMobileDropdown={toggleMobileDropdown} />
@@ -114,7 +114,7 @@ const MobileMenu = props => {
     const { toggleMobileDropdown } = props;
     return (
         <>
-            <div className="flex h-full  w-full items-center justify-between pr-4">
+            <div className="z-[1000] flex  h-full w-full items-center justify-between  pr-4">
                 <div className="flex-col-cen h-full cursor-pointer pl-4 pr-4 " onClick={() => toggleMobileDropdown(true)}>
                     <FontAwesomeIcon icon={faBars} className="text-2xl text-gray-700 hover:text-gray-800" />
                 </div>
