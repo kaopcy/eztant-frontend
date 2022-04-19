@@ -8,6 +8,7 @@ import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
 
 import Navbar from "./component/navbar/Navbar";
+const PreviewPost = React.lazy(() => import("./views/createPost/PreviewPost"));
 const PostList = React.lazy(() => import("./views/mainpost/PostList"));
 const Home = React.lazy(() => import("./views/home/Home"));
 const CreatePost = React.lazy(() => import("./views/createPost/CreatePost"));
@@ -54,6 +55,7 @@ const App = () => {
                 <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
                     <Route element={<ProtectedRoute children={<FillDetail />} />} index />
                     <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
+                    <Route path="/create-post/preview-post" element={<ProtectedRoute children={<PreviewPost />} />} />
                 </Route>
                 <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
                 {isMobile && (

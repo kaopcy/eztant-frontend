@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState, useLayoutEffect, useCallback, useMemo } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState, useLayoutEffect, useMemo } from "react";
 import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { useSetTableInput, useTableInput } from "../context/tableCreatePostContext";
 import { useInput } from "../context/inputCreatePostContext";
 import { timeValidate, closeDateValidate, sectionValidate, max_taValidate } from "../../../utils/createTableInputValidate";
+import { useSelector } from "react-redux";
 
 const CreateTableMobile = () => {
     const addRef = useRef(null);
@@ -25,11 +26,11 @@ const CreateTableMobile = () => {
     const tableInput = useTableInput();
     const inputValue = useInput();
 
-    // useEffect(() => {
-    //     if (!inputValue) {
-    //         navigate("/create-post");
-    //     }
-    // }, [inputValue, navigate]);
+    useEffect(() => {
+        if (!inputValue) {
+            navigate("/create-post");
+        }
+    }, [inputValue, navigate]);
 
     const {
         register,
@@ -76,7 +77,7 @@ const CreateTableMobile = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col items-center ">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col items-center px-7">
             <div className="text-xl font-bold text-secondary">ตารางเรียน</div>
             {tableInput && tableInput.tables?.map((e, index) => <PreviewSection key={index} onDelete={onDelete} index={index} {...e} />)}
 
@@ -105,8 +106,11 @@ const ChooseCloseDate = forwardRef(({ setIsOpenChooseDate }, ref) => {
         formState: { errors },
         handleSubmit,
     } = useForm({ mode: "onChange" });
+    const navigate = useNavigate();
+
     const container = useRef(null);
     const animate = useRef(null);
+    const { user } = useSelector(state => state.user);
 
     const setTableInput = useSetTableInput();
 
@@ -120,11 +124,18 @@ const ChooseCloseDate = forwardRef(({ setIsOpenChooseDate }, ref) => {
         reverse: cb => {
             animate.current.reverse().eventCallback("onReverseComplete", cb || null);
         },
-        submit: () => {
+        submit: async () => {
             const onSubmit = data => {
-                setTableInput(e => ({ ...e, ...data }));
+                setTableInput(e => ({
+                    ...e,
+                    ...data,
+                    author: `${user.firstname} ${user.lastname}`,
+                    department: user.department,
+                    authorAvatar: user.imgURL,
+                }));
             };
-            handleSubmit(onSubmit)();
+            await handleSubmit(onSubmit)();
+            navigate("/create-post/preview-post");
         },
     }));
 

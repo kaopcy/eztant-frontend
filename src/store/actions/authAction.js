@@ -9,9 +9,18 @@ export const login = (userinput, cb) => async dispatch => {
         const { data } = await api.fetchUser({ email, password });
         const user = data.results[0] || null;
         if (!user) throw new Error();
-        user.role = 'teacher'
-        localStorage.setItem("user", JSON.stringify(user));
-        dispatch({ type: REQUEST_LOGIN_SUCCESS, payload: user });
+
+        const shapedUser = {
+            ...user,
+            role: "teacher",
+            imgURL: user.picture.large,
+            firstname: user.name.first,
+            lastname: user.name.last,
+            department: "computer",
+        };
+
+        localStorage.setItem("user", JSON.stringify(shapedUser));
+        dispatch({ type: REQUEST_LOGIN_SUCCESS, payload: shapedUser });
         if (cb) cb();
     } catch (error) {
         dispatch({ type: REQUEST_LOGIN_FAILURE });
@@ -20,6 +29,6 @@ export const login = (userinput, cb) => async dispatch => {
 };
 
 export const logout = () => {
-    localStorage.clear('user')
+    localStorage.clear("user");
     return { type: LOGOUT };
 };

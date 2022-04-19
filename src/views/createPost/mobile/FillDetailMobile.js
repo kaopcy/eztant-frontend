@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMatch, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -29,7 +29,7 @@ const FillDetailMobile = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full overflow-hidden px-1">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full overflow-hidden px-7">
             <div className="mt-4 text-center font-bold text-secondary">รายละเอียด</div>
             <div className="mt-10 mb-32 flex w-full flex-col space-y-10">
                 <Input validate={subjectNameValidate} register={register} errors={errors} label="ชื่อวิชา" width="100%" name="subjectName" />
@@ -104,7 +104,6 @@ const Input = props => {
                     {...register(name, validate)}
                     defaultValue={inputValue?.[name] || ""}
                     type="text"
-                    
                     className={`cool-input  rounded-md border-2 px-2 py-[0.375rem]  ${errors?.[name] && "border-red-500"}`}
                     style={{ width: width }}
                 />
@@ -137,9 +136,11 @@ const Disclosure = ({ setValue }) => {
     const inputValue = useInput();
 
     const [selectedSec, setSelectedSec] = useState(inputValue?.minGrade || "F");
+    useEffect(() => {
+        setValue("minGrade", selectedSec);
+    }, [selectedSec, setValue]);
     const handleOnSelect = value => {
         setSelectedSec(value);
-        setValue("minGrade", value);
     };
 
     return (

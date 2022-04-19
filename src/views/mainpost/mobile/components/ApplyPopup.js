@@ -53,7 +53,7 @@ const ApplyPopup = ({ setSelectedPost, selectedPost }) => {
                     </div>
                     <div className="mt-10 flex items-center space-x-4">
                         <div className="">เลือกเซคที่ต้องการสมัคร</div>
-                        <Disclosure />
+                        <Disclosure section={selectedPost.tables.map(e=> e.section)} />
                     </div>
                 </div>
                 <div onClick={() => handleOnClose()} className="btn-orange flex-col-cen absolute bottom-0 h-[70px] w-full  text-2xl font-bold ">
@@ -64,45 +64,28 @@ const ApplyPopup = ({ setSelectedPost, selectedPost }) => {
     );
 };
 
-const Disclosure = () => {
-    const mockSec = [
-        {
-            label: "101",
-            value: "101",
-        },
-        {
-            label: "102",
-            value: "102",
-        },
-        {
-            label: "103",
-            value: "103",
-        },
-    ];
+const Disclosure = ({section}) => {
     const [open, setOpen] = useState(false);
-    const [selectedSec, setSelectedSec] = useState({
-        label: "101",
-        value: "101",
-    });
+    const [selectedSec, setSelectedSec] = useState(section[0]);
     return (
         <DisclosureAnimate toggle={open}>
             {({ childRelativeContainer, childAbsoluteContainer }) => (
                 <div
                     className="relative flex z-10 w-[130px] cursor-pointer items-center justify-between space-x-2 rounded-md bg-white px-2 py-1 outline outline-1 outline-text-light"
                     onClick={() => setOpen(e => !e)}>
-                    <span className="ellipsis ">{mockSec.filter(e => selectedSec.value === e.value)[0].label} </span>
+                    <span className="ellipsis ">{section.filter(e => selectedSec=== e)[0]} </span>
                     <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
                     <div className="absolute top-[calc(100%+1px)] -left-2 w-full ">
                         <div className="relative w-full self-end overflow-hidden " ref={childRelativeContainer}>
                             <div ref={childAbsoluteContainer} className="absolute bottom-0 left-0 flex w-full flex-col border bg-white py-2">
-                                {mockSec.map(e => {
-                                    const active = e.value === selectedSec;
+                                {section.map(e => {
+                                    const active = e === selectedSec;
                                     return (
                                         <div
                                             className={`w-full  py-1 px-2  ${active ? "bg-primary text-white " : "hover:bg-gray-100 "} `}
                                             onClick={() => setSelectedSec(e)}
-                                            key={e.label}>
-                                            {e.label}
+                                            key={e}>
+                                            {e}
                                         </div>
                                     );
                                 })}

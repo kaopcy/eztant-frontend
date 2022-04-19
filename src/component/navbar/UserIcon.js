@@ -128,7 +128,7 @@ const Icon = ({ height }) => {
         <div className="flex items-center space-x-2 rounded-md outline-1 outline-offset-4 outline-gray-200 hover:outline">
             {user ? (
                 <img
-                    src={user.picture.large}
+                    src={user.imgURL}
                     alt="dwad"
                     className="rounded-full bg-black object-cover shadow-sm"
                     style={{ height: `${height}px`, width: `${height}px` }}></img>
