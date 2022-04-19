@@ -6,18 +6,24 @@ import { faChevronRight, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useSetInput, useInput } from "../context/inputCreatePostContext";
-import { minGradeValidate, yearValidate, wageValidate, subjectNameValidate, subjectIDValidate } from "../../../utils/createDetailInputValidate";
+import {
+    fieldValidate,
+    minGradeValidate,
+    yearValidate,
+    wageValidate,
+    subjectNameValidate,
+    subjectIDValidate,
+} from "../../../utils/createDetailInputValidate";
 import { GRADE_LIST } from "../../../generalConfig";
+
 const FillDetailDesktop = () => {
     const tableMatch = useMatch("/create-post/fill-table");
     const detailMatch = useMatch("/create-post");
     const navigate = useNavigate();
 
-    const inputValue = useInput();
     const setInputValue = useSetInput();
     const {
         register,
-        setError,
         handleSubmit,
         formState: { errors, isValid },
     } = useForm({ mode: "onChange" });
@@ -29,7 +35,7 @@ const FillDetailDesktop = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} >
             <div className="mt-16 flex w-full flex-col items-center justify-center space-x-16 xl:flex-row xl:items-start ">
                 <div className="flex flex-col  space-y-12 xl:min-h-[300px]">
                     <div className="flex space-x-20 ">
@@ -71,8 +77,8 @@ const FillDetailDesktop = () => {
                     </div>
                 </div>
                 <div className="mt-12 flex h-full w-[750px] flex-row space-x-12 xl:mt-0 xl:w-auto xl:flex-col xl:space-x-0 xl:space-y-8">
-                    <TextArea register={register} label="หน้าที่" name="duty" />
-                    <TextArea register={register} label="ข้อกำหนด" name="requirement" />
+                    <TextArea errors={errors} validate={fieldValidate} register={register} label="หน้าที่" name="duty" />
+                    <TextArea errors={errors} validate={fieldValidate} register={register} label="ข้อกำหนด" name="requirement" />
                 </div>
             </div>
             <div className="mt-20 flex w-full items-center justify-center space-x-2">
@@ -101,21 +107,6 @@ const FillDetailDesktop = () => {
     );
 };
 
-const TextArea = ({ register, label, name }) => {
-    const inputValue = useInput();
-
-    return (
-        <div className="relative h-[120px] w-[320px] ">
-            <textarea
-                name={name}
-                defaultValue={inputValue?.[name] || ""}
-                {...register(name)}
-                className="relative h-full w-full rounded-md border-[3px] px-2 pt-4 pb-1 "></textarea>
-            <div className="absolute top-0 left-4 -translate-y-1/2 bg-white px-2 text-text">{label}</div>
-        </div>
-    );
-};
-
 const ErrorValidate = ({ errors, name, className }) => {
     return errors?.[name] ? (
         <div className={`group absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer ${className}`}>
@@ -128,6 +119,23 @@ const ErrorValidate = ({ errors, name, className }) => {
         ""
     );
 };
+
+const TextArea = ({ register, label, name, validate, errors }) => {
+    const inputValue = useInput();
+
+    return (
+        <div className="relative h-[120px] w-[320px] ">
+            <textarea
+                name={name}
+                defaultValue={inputValue?.[name] || ""}
+                {...register(name, validate)}
+                className={`cool-input relative h-full w-full rounded-md border-[3px] px-2 pt-4 pb-1 ${errors?.[name] && '!border-red-500'}`}></textarea>
+            <ErrorValidate errors={errors} name={name} />
+            <div className="absolute top-0 left-4 -translate-y-1/2 bg-white px-2 text-text">{label}</div>
+        </div>
+    );
+};
+
 
 const Input = props => {
     const inputValue = useInput();
@@ -154,7 +162,7 @@ const YearCheckbox = ({ register, errors, validate, index }) => {
     return (
         <label className="flex cursor-pointer items-center space-x-2">
             <input
-                defaultChecked={inputValue?.year?.[index-1]}
+                defaultChecked={inputValue?.year?.[index - 1]}
                 {...register(`year`, validate)}
                 name="year"
                 type="checkbox"

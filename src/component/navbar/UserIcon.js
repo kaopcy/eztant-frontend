@@ -6,7 +6,7 @@ import { Menu, Transition } from "@headlessui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { faUser, faCircleUser, faUserPlus, faArrowRightFromBracket, faUserPen } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faCircleUser, faSquarePlus, faUserPlus, faArrowRightFromBracket, faUserPen } from "@fortawesome/free-solid-svg-icons";
 
 import { logout } from "../../store/actions/authAction";
 
@@ -28,6 +28,15 @@ const UserIcon = ({ height }) => {
             name: "คำขอทั้งหมด",
             to: "/",
             onclick: () => {},
+        },
+        {
+            icon: faSquarePlus,
+            name: "สร้างโพสต์",
+            notShow: user?.role !== "teacher",
+            to: "/",
+            onclick: () => {
+                navigate("create-post");
+            },
         },
         {
             icon: faArrowRightFromBracket,
@@ -84,7 +93,7 @@ const UserIcon = ({ height }) => {
                         as="div"
                         className="absolute -right-2 top-[calc(100%)] flex flex-col items-center space-y-2 rounded-md bg-white py-2 px-1 font-medium shadow-xl">
                         {/* <div className="triangle-clip absolute -top-1.5 right-3 h-4 w-4 rotate-[135deg] bg-primary"></div> */}
-                        {user && loggedLink.map(link => <Link link={link} key={link.name} />)}
+                        {user && loggedLink.map(link => !link.notShow && <Link link={link} key={link.name} />)}
                         {!user && unlogLink.map(link => <Link link={link} key={link.name} />)}
                     </Menu.Items>
                 </Transition>

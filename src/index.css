@@ -101,6 +101,7 @@
 }
 
 .cool-input:focus {
+    outline: none;
     box-shadow: 0 0 0 0.1px #f0f1f3, 0 0 0 2px #74c0fc;
 }
 

@@ -120,7 +120,7 @@ const Detail = ({ post }) => {
                     </div>
                 </div>
             </div>
-            <TeachTable />
+            <TeachTable tables={post?.tables} />
             {isOverflow && (
                 <div className="opacity-gradient absolute bottom-0  z-10 h-[100px] w-full cursor-pointer " onClick={() => handleClick()}>
                     <div className="absolute bottom-0 left-0 self-end text-sm text-text underline">{isShowMore ? "ดูน้อยลง" : "ดูเพิ่มเติม"}</div>

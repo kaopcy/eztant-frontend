@@ -44,7 +44,7 @@ export const timeValidate = {
 export const sectionValidate = {
     onChange: e => (e.target.value = /[0-9]+/g.exec(e.target.value)?.[0] || ""),
     validate: {
-        min_Length: value => value.length === 3 || "เซคต้องมี 3 ตัวอักษรเช่น 101",
+        min_Length: value => value.length === 3 || "เซคต้องเป็นตัวเลข 3 ตัว เช่น 101",
     },
 };
 
@@ -52,7 +52,7 @@ export const max_taValidate = {
     onChange: e => (e.target.value = /[0-9]+/g.exec(e.target.value)?.[0] || ""),
     validate: {
         min_Length: value => value.length > 0 || "กรุณากรอกจำนวน TA",
-        max: value => (value.length <= 0 ? true : parseInt(value) < 15 || "จำนวน TA ไม่เกิน 15 คน"),
+        max: value => (value.length <= 0 ? true : parseInt(value) <= 15 || "รับ TA ได้ไม่เกิน 15 คน"),
         min: value => (value.length <= 0 ? true : parseInt(value) > 0 || "ต้องมี TA อย่างน้อย 1 คน"),
     },
 };
@@ -105,8 +105,8 @@ const wrongFormat = date =>{
 export const closeDateValidate = {
     validate: {
         wrongFormat: value=> wrongFormat(value),
-        isMore: value => isMoreDay(value) || "ห้ามกรอกเลขในอดีต",
-        isLess: value => isLessDay(value) || "ห้ามกรอกเลขมากกว่า 1 ปี",
-        isEqual: value => isEqualDay(value) || "ห้ามกรอกวันนี้",
+        isMore: value => isMoreDay(value) || "ช่วงเวลารับสมัครต้องไม่เป็นอดีต",
+        isLess: value => isLessDay(value) || "ช่วงเวลารับสมัครต้องต่ำกว่า 1 ปี",
+        isEqual: value => isEqualDay(value) || "ช่วงเวลารับสมัครต้องมากกว่า 24 ชั่วโมง",
     },
 };

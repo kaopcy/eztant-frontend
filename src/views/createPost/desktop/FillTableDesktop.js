@@ -19,6 +19,13 @@ const FillTableDesktop = () => {
     const tableInput = useTableInput();
     const inputValue = useInput();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!inputValue) {
+            navigate("/create-post");
+        }
+    }, [inputValue, navigate]);
+    
     const {
         register,
         handleSubmit,
@@ -131,7 +138,7 @@ const Table = ({ errors, control, register }) => {
     );
 };
 
-const AddedTable = ({ index, remove, errors, register, ...props }) => {
+const AddedTable = ({ index, remove, errors, register }) => {
     const error = errors?.tables?.[index];
 
     const ErrorValidate = ({ name }) => {
