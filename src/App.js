@@ -6,8 +6,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
-import UserTeacherList from "./views/userList/UserTeacherList";
-import UserStudentList from "./views/userList/UserStudentList";
+import UserTeacherList from "./views/userList/UserTeacherList/UserTeacherList";
+import UserStudentList from "./views/userList/UserTeacherList/UserTeacherList";
 
 import Navbar from "./component/navbar/Navbar";
 const PreviewPost = React.lazy(() => import("./views/createPost/PreviewPost"));
@@ -47,7 +47,7 @@ const App = () => {
             navigate("/");
         }
     }, [state?.backgroundLocation, location.pathname, navigate, isMobile]);
-
+    
     return (
         <div className="m-0 flex flex-col bg-white p-0">
             <Navbar height={80} />
@@ -56,8 +56,8 @@ const App = () => {
             <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
                 <Route index path="/" element={<UnprotectedRoute children={<Home />} />} />
                 <Route path="/post-list/:id" element={<ProtectedRoute children={<PostList />} />} />
-                <Route path="/user-teacher-list" element={<ProtectedRoute children={UserTeacherList} />} />
-                <Route path="/user-student-list" element={<ProtectedRoute children={UserStudentList} />} />
+                <Route path="/user-teacher-list" element={<ProtectedRoute children={<UserTeacherList />} />} />
+                <Route path="/user-student-list" element={<ProtectedRoute children={<UserStudentList />} />} />
                 <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
                     <Route element={<ProtectedRoute children={<FillDetail />} />} index />
                     <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
