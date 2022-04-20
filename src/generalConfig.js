@@ -221,8 +221,7 @@ export const REQUEST_LIST = [
                 day: "monday",
                 time_from: "09:00",
                 time_to: "20:00",
-                requested: [
-                ],
+                requested: [],
             },
             {
                 section: "102",
@@ -238,23 +237,32 @@ export const REQUEST_LIST = [
                             firstname: "ปิยชัย",
                             lastname: "แก้วชุ่ม",
                         },
-                        is_accepted: true,
+                        is_accepted: false,
                     },
                     {
                         user: {
-                            studentID: 63010604,
+                            studentID: 63010648,
                             imgURL: "https://i.pravatar.cc/300",
-                            firstname: "ปิยชัย",
+                            firstname: "พรหมพิริยะ",
                             lastname: "แก้วชุ่ม",
                         },
                         is_accepted: true,
                     },
                     {
                         user: {
-                            studentID: 63010604,
+                            studentID: 63010679,
                             imgURL: "https://i.pravatar.cc/300",
-                            firstname: "ปิยชัย",
-                            lastname: "แก้วชุ่ม",
+                            firstname: "พิชชาภา",
+                            lastname: "เวียงทอง",
+                        },
+                        is_accepted: false,
+                    },
+                    {
+                        user: {
+                            studentID: 63010467,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ธีรภัทร",
+                            lastname: "เกตุสิงห์น้อย",
                         },
                         is_accepted: false,
                     },
@@ -341,6 +349,33 @@ export const REQUEST_LIST = [
                             imgURL: "https://i.pravatar.cc/300",
                             firstname: "ปิยชัย",
                             lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                    {
+                        user: {
+                            studentID: 63010648,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "พรหมพิริยะ",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: true,
+                    },
+                    {
+                        user: {
+                            studentID: 63010679,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "พิชชาภา",
+                            lastname: "เวียงทอง",
+                        },
+                        is_accepted: false,
+                    },
+                    {
+                        user: {
+                            studentID: 63010467,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ธีรภัทร",
+                            lastname: "เกตุสิงห์น้อย",
                         },
                         is_accepted: false,
                     },

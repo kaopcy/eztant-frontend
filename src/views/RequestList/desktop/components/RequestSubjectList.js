@@ -35,7 +35,7 @@ const EachPost = ({ setActive, index, active = false, post, ...props }) => {
     }, [active]);
 
     return (
-        <div onClick={() => setActive(index)} className="w-full cursor-pointer rounded-md bg-white">
+        <div onClick={() => setActive(index)} className="w-full cursor-pointer bg-white">
             <div className="flex  min-w-0 flex-col px-3 py-4">
                 <div className=" ellipsis text-base font-bold uppercase leading-5 tracking-wide text-primary">{post.subjectName}</div>
                 <div className="text-base font-bold  text-gray-400">01006030</div>
@@ -61,7 +61,7 @@ const EachSection = ({ table, activeSection, index }) => {
     return (
         <div className={`mt-2  flex w-full items-center py-1 ${activeSection === index && "bg-gray-100"}`}>
             <div className="flex w-full items-center justify-center text-base  font-bold">
-                <div className="mr-2 h-2 w-4 shrink-0 rounded-sm" style={{ backgroundColor: DAY_COLOR[table.day] }}></div>
+                {/* <div className="mr-2 h-2 w-4 shrink-0 rounded-sm" style={{ backgroundColor: DAY_COLOR[table.day] }}></div> */}
                 เซค {table.section}
             </div>
             <div className="flex w-full items-center justify-center text-base  font-bold">
