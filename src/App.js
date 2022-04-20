@@ -6,16 +6,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
+import UserTeacherList from "./views/userList/UserTeacherList";
+import UserStudentList from "./views/userList/UserStudentList";
 
 import Navbar from "./component/navbar/Navbar";
 const PreviewPost = React.lazy(() => import("./views/createPost/PreviewPost"));
 const PostList = React.lazy(() => import("./views/mainpost/PostList"));
 const Home = React.lazy(() => import("./views/home/Home"));
 const CreatePost = React.lazy(() => import("./views/createPost/CreatePost"));
-const UserTeacherList = React.lazy(() => import("./views/userList/UserTeacherList"));
-const UserStudentList = React.lazy(() => import("./views/userList/UserStudentList"));
 const FillDetail = React.lazy(() => import("./views/createPost/FillDetail"));
 const FillTable = React.lazy(() => import("./views/createPost/FillTable"));
+const RequestList = React.lazy(() => import("./views/RequestList/RequestList"));
 
 const ProtectedRoute = ({ isAuth, children }) => {
     const { user } = useSelector(state => state.user);
@@ -24,6 +25,11 @@ const ProtectedRoute = ({ isAuth, children }) => {
 
 const UnprotectedRoute = ({ children }) => {
     return <Suspense fallback={<div></div>}>{children}</Suspense>;
+};
+
+const TeacherOnlyRoute = ({ children }) => {
+    const { user } = useSelector(state => state.user);
+    return <Suspense fallback={<div></div>}>{user.role === "teacher" ? children : <Navigate to={"/"} />}</Suspense>;
 };
 
 const App = () => {
@@ -57,6 +63,7 @@ const App = () => {
                     <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
                     <Route path="/create-post/preview-post" element={<ProtectedRoute children={<PreviewPost />} />} />
                 </Route>
+                <Route path="request-list" element={<TeacherOnlyRoute children={<RequestList />} />} />
                 <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
                 {isMobile && (
                     <>

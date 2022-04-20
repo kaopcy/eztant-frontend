@@ -52,7 +52,7 @@
         clip-path: polygon(0 0, 0% 100%, 100% 100%);
     }
     .btn-orange {
-        @apply cursor-pointer border border-transparent bg-secondary text-white transition-colors duration-200 hover:border-secondary hover:bg-white hover:text-secondary disabled:border-gray-200  disabled:bg-white  disabled:!text-gray-200 disabled:cursor-default;
+        @apply cursor-pointer border border-transparent bg-secondary text-white transition-colors duration-200 hover:border-secondary hover:bg-white hover:text-secondary disabled:cursor-default  disabled:border-gray-200  disabled:bg-white disabled:!text-gray-200;
     }
     .btn-white {
         @apply cursor-pointer border border-secondary bg-white text-secondary transition-colors duration-200  hover:border-transparent  hover:bg-secondary  hover:text-white;
@@ -74,7 +74,6 @@
 }
 ::-webkit-scrollbar-track {
     background-color: #e7e7e7;
-    border-radius: 100%;
 }
 ::-webkit-scrollbar-thumb {
     background-color: #8d8d8d;
@@ -87,6 +86,13 @@
     -ms-writing-mode: vertical-lr;
     text-orientation: mixed;
     transform: scaleX(-1) scaleY(-1);
+}
+
+.left-scroll {
+    direction: rtl;
+}
+.left-scroll-child {
+    direction: ltr;
 }
 
 .opacity-gradient {

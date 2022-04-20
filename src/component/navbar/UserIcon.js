@@ -27,7 +27,9 @@ const UserIcon = ({ height }) => {
             icon: faUserPlus,
             name: "คำขอทั้งหมด",
             to: "/",
-            onclick: () => {},
+            onclick: () => {
+            navigate("request-list")
+            },
         },
         {
             icon: faSquarePlus,
