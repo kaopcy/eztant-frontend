@@ -25,8 +25,7 @@ const links = [
     },
     {
         name: "คอมมูนิตี้",
-        mobile: true,
-        to: "register",
+        to: "community",
     },
     {
         name: "รายชื่ออาจารย์",

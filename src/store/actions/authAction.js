@@ -17,6 +17,17 @@ export const login = (userinput, cb) => async dispatch => {
             firstname: user.name.first,
             lastname: user.name.last,
             department: "computer",
+            community: [
+                {
+                    id: "123465",
+                },
+                {
+                    id: "23131",
+                },
+                {
+                    id: "124124",
+                },
+            ],
         };
 
         localStorage.setItem("user", JSON.stringify(shapedUser));

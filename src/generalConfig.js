@@ -80,6 +80,40 @@ export const SORT_TYPE = [
     },
 ];
 
+
+export const DAY_COLOR = {
+    sunday: "#FF1B1B",
+    monday: "#FFE600",
+    tuesday: "#F72FB4",
+    wednesday: "#48A847",
+    thursday: "#FB4214",
+    friday: "#0065fb",
+    saturnday: "#6600ce",
+};
+
+export const DAY_SHORT_TH = {
+    sunday: "อา.",
+    monday: "จ.",
+    tuesday: "อ.",
+    wednesday: "พ.",
+    thursday: "พฤ.",
+    friday: "ศ.",
+    saturnday: "ส.",
+};
+
+export const DAY_SHORT_EN = {
+    sunday: "SUN",
+    monday: "MON",
+    tuesday: "TUE",
+    wednesday: "WED",
+    thursday: "THU",
+    friday: "FRI",
+    saturnday: "SAT",
+};
+
+export const GRADE_LIST = ["S", "A", "B+", "B", "C+", "C", "D+", "D", "F"];
+
+
 export const ORDER_TYPE = [
     {
         label: "น้อยไปมาก",
@@ -202,6 +236,7 @@ export const POSTS = [
     },
 ];
 
+// Post with requset list
 export const REQUEST_LIST = [
     {
         author: "ปิยชัย แก้วชุ่ม",
@@ -647,34 +682,15 @@ export const REQUEST_LIST = [
     },
 ];
 
-export const DAY_COLOR = {
-    sunday: "#FF1B1B",
-    monday: "#FFE600",
-    tuesday: "#F72FB4",
-    wednesday: "#48A847",
-    thursday: "#FB4214",
-    friday: "#0065fb",
-    saturnday: "#6600ce",
-};
 
-export const DAY_SHORT_TH = {
-    sunday: "อา.",
-    monday: "จ.",
-    tuesday: "อ.",
-    wednesday: "พ.",
-    thursday: "พฤ.",
-    friday: "ศ.",
-    saturnday: "ส.",
-};
+// List of community that PIYACHAI KAEWCHUM own
+// export const COMMUNITY = [
+//     // community 1 (Data Communication)
+//     {   
+//         name: 
+//         ta:[
 
-export const DAY_SHORT_EN = {
-    sunday: "SUN",
-    monday: "MON",
-    tuesday: "TUE",
-    wednesday: "WED",
-    thursday: "THU",
-    friday: "FRI",
-    saturnday: "SAT",
-};
+//         ]
+//     }
+// ]
 
-export const GRADE_LIST = ["S", "A", "B+", "B", "C+", "C", "D+", "D", "F"];

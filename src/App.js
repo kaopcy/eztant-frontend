@@ -6,17 +6,29 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
-import UserTeacherList from "./views/userList/UserTeacherList/UserTeacherList";
-import UserStudentList from "./views/userList/UserTeacherList/UserTeacherList";
 
 import Navbar from "./component/navbar/Navbar";
-const PreviewPost = React.lazy(() => import("./views/createPost/PreviewPost"));
+
 const PostList = React.lazy(() => import("./views/mainpost/PostList"));
 const Home = React.lazy(() => import("./views/home/Home"));
+
+const UserTeacherList = React.lazy(() => import("./views/userList/UserTeacherList/UserTeacherList"));
+const UserStudentList = React.lazy(() => import("./views/userList/UserTeacherList/UserTeacherList"));
+// CratePost page
 const CreatePost = React.lazy(() => import("./views/createPost/CreatePost"));
 const FillDetail = React.lazy(() => import("./views/createPost/FillDetail"));
 const FillTable = React.lazy(() => import("./views/createPost/FillTable"));
+const PreviewPost = React.lazy(() => import("./views/createPost/PreviewPost"));
+
+// RequestList page
 const RequestList = React.lazy(() => import("./views/RequestList/RequestList"));
+
+// Community page
+const Community = React.lazy(() => import("./views/Community/Community"));
+const CommunityReceipt = React.lazy(() => import("./views/Community/CommunityReceipt/CommunityReceipt"));
+const CommunityHome = React.lazy(() => import("./views/Community/CommunityHome/CommunityHome"));
+const CommunityAttendence = React.lazy(() => import("./views/Community/CommunityAttendence/CommunityAttendence"));
+const CommunityFile = React.lazy(() => import("./views/Community/CommunityFile/CommunityFile"));
 
 const ProtectedRoute = ({ isAuth, children }) => {
     const { user } = useSelector(state => state.user);
@@ -35,8 +47,12 @@ const TeacherOnlyRoute = ({ children }) => {
 const App = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const isMobile = useResponsive();
     const state = location.state;
+
+    const { user } = useSelector(state => state.user)
+    const firstCommunity = user?.community?.[0]?.id || 'no-community'
+    const isMobile = useResponsive();
+
 
     // prevent user access some route without background state
     useEffect(() => {
@@ -47,7 +63,7 @@ const App = () => {
             navigate("/");
         }
     }, [state?.backgroundLocation, location.pathname, navigate, isMobile]);
-    
+
     return (
         <div className="m-0 flex flex-col bg-white p-0">
             <Navbar height={80} />
@@ -55,16 +71,29 @@ const App = () => {
             {/* this logic used for when not in mobile we want to render background for register */}
             <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
                 <Route index path="/" element={<UnprotectedRoute children={<Home />} />} />
+
                 <Route path="/post-list/:id" element={<ProtectedRoute children={<PostList />} />} />
+                <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
+
                 <Route path="/user-teacher-list" element={<ProtectedRoute children={<UserTeacherList />} />} />
                 <Route path="/user-student-list" element={<ProtectedRoute children={<UserStudentList />} />} />
+
                 <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
                     <Route element={<ProtectedRoute children={<FillDetail />} />} index />
                     <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
                     <Route path="/create-post/preview-post" element={<ProtectedRoute children={<PreviewPost />} />} />
                 </Route>
+
                 <Route path="request-list" element={<TeacherOnlyRoute children={<RequestList />} />} />
-                <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
+
+                <Route path="community" element={<ProtectedRoute children={<Navigate to={`/community/${firstCommunity}`} replace />} />} />
+                <Route path="community/:id" element={<ProtectedRoute children={<Community />} />}>
+                    <Route path="/community/:id/attendence" element={<ProtectedRoute children={<CommunityAttendence />} />} />
+                    <Route path="/community/:id/receipt" element={<ProtectedRoute children={<CommunityReceipt />} />} />
+                    <Route path="/community/:id/file" element={<ProtectedRoute children={<CommunityFile />} />} />
+                    <Route index element={<ProtectedRoute children={<CommunityHome />} />} />
+                </Route>
+
                 {isMobile && (
                     <>
                         <Route path="/register" element={<RegisterMobile />} />
