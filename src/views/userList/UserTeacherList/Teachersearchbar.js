@@ -12,6 +12,11 @@ const Teachersearchbar = () => {
             <input className='form-input w-44 h-7 px-3 py-2 rounded-xl ring-1 ring-gray-300'></input>
             <FontAwesomeIcon icon={faSearch} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
             <input  className='form-input w-20 h-7 px-3 py-2 rounded-xl ring-1 ring-gray-300'></input>
+            {/* <select class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+              <option>Really long option that will likely overlap the chevron</option>
+              <option>Option 2</option>
+              <option>Option 3</option>
+            </select> */}
             <FontAwesomeIcon icon={faSearch} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
             <button className='bg-primary hover:bg-white hover:text-primary text-white rounded-2xl ring-2 ring-primary m-[0.5%] p-1 pr-[1%] pl-[1%]'>อาจารย์</button>
             <button className='bg-white hover:bg-primary hover:text-white text-primary rounded-2xl ring-2 ring-primary m-[0.5%] p-1 pr-[1%] pl-[1%]'>นักเรียน</button>

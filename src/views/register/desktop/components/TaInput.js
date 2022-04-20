@@ -79,12 +79,12 @@ const TaInput = props => {
     );
 };
 
-const InputField = ({ type, label, onChange }) => {
+const InputField = ({ type, label, onChange, name}) => {
     const { userinput, handleInputUpdate: handleInput, handleOnBlur } = useContext(InputContext);
     return (
         <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
             <div className="input-label  ">{label}</div>
-            <input type="text"  onBlur={handleOnBlur} onChange={onChange} name={type} className="input-register" />
+            <input type={type}  onBlur={handleOnBlur} onChange={onChange} name={name} className="input-register" />
         </div>
     );
 };
@@ -92,6 +92,7 @@ const InputField = ({ type, label, onChange }) => {
 
 
 const InputFirstPage = forwardRef((props, ref) => {
+
     const { onClose, setPage } = props;
 
     const initialValues = {firstname : "", lastname : "", email : "", password : "", phone : ""};
@@ -99,37 +100,81 @@ const InputFirstPage = forwardRef((props, ref) => {
     const [formErrors, setFormErrors]= useState({});
 
     const handleChange = (e) => {
-        console.log("kuy")
         const { name, value}= e.target;
-        setFormValues({ ...formValues, [name]: value })
-    }
+        setFormValues({ ...formValues, [name]: value });
+        // console.log(name)
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setFormErrors(validate(formValues))
-        setPage(2)
-    }
+        const check = validate(formValues)
+        setFormErrors(check);
+        // console.log(check)
+        if(Object.keys(check).length === 0 ){
+            setPage(2)
+        }
+    };
 
-    const validate = (value) => {
+    useEffect(() => {
+        // console.log(formErrors);
+        if(Object.keys(formErrors).length === 0){
+            // console.log(formValues);
+        }
+    }, [formErrors,formValues]);
 
+    const validate = (values) => {
+        const errors = {}
+        const number = [1,2,3,4,5,6,7,8,9,0]
+        // const regex = 
+        if (!values.firstname){
+            errors.firstname = "กรุณากรอกชื่อ"
+        }else if(number.some((e) => values.firstname.includes(e))){
+            errors.firstname = "ไม่สามารถใส่ตัวเลขได้"
+            console.log("kuy")
+        }
+        if (!values.lastname){
+            errors.lastname = "กรุณากรอกนามสกุล"
+        }
+        if (!values.email){
+            errors.email = "กรุณากรอกอีเมล์"
+        }
+        if (!values.password){
+            errors.password = "กรุณากรอกรหัสผ่าน"
+        }else if (values.password.length < 8){
+            errors.password = "รหัสผ่านต้องมีอย่างน้อย 8 ตัว"
+        }else if (values.password.length > 15){
+            errors.password = "รหัสผ่านต้องมีไม่เกิน 15 ตัว"
+        }
+        if (!values.phone){
+            errors.phone = "กรุณากรอกเบอร์โทรศัพท์"
+        }else if (values.phone.length < 10 || values.phone.length > 10){
+            errors.phone = "เบอร์โทรศัพท์ต้องมี 10 ตัว"
+        }
+        return errors
     }
 
     return (
         <form className="flex-col-cen w-full" ref={ref} onSubmit={handleSubmit}>
             <GoogleRegister />
+
             {/* divider */}
             <div className="flex-cen mt-4 space-x-1">
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400 "></span>
                 <span className="text-[13px] text-gray-500">หรือ</span>
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400"></span>
             </div>
-            <InputField type={"firstname"}label={"ชื่อ"}  onChange={handleChange}/>
-            <InputField type={"lastname"} label={"นามสกุล"}  onChange={handleChange}/>
-            <InputField type={"email"} label={"อีเมล์"}  onChange={handleChange}/>
-            <InputField type={"password"} label={"รหัสผ่าน"}  onChange={handleChange}/>
-            <InputField type={"phone"} label={"เบอร์โทรศัพท์"}  onChange={handleChange}/>
+            <InputField type="text" name={"firstname"}label={"ชื่อ"} onChange={handleChange}/>
+            <p className="text-xs text-red-500">{formErrors.firstname}</p>
+            <InputField type="text" name={"lastname"} label={"นามสกุล"} onChange={handleChange}/>
+            <p className="text-xs">{formErrors.lastname}</p>
+            <InputField type="email" name={"email"} label={"อีเมล์"} onChange={handleChange}/>
+            <p className="text-xs">{formErrors.email}</p>
+            <InputField type="password" name={"password"} label={"รหัสผ่าน"} onChange={handleChange}/>
+            <p className="text-xs">{formErrors.password}</p>
+            <InputField type="text" name={"phone"} label={"เบอร์โทรศัพท์"} onChange={handleChange}/>
+            <p className="text-xs">{formErrors.phone}</p>
             {/* btn wrapper */}
-            <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
+            {/* <pre>{JSON.stringify(formValues, undefined, 2)}</pre> */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
                     className=" group flex h-12  w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
