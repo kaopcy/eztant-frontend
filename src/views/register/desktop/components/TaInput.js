@@ -10,6 +10,7 @@ import { register } from "../../../../api/authApi";
 import { InputContext } from "../../contexts/InputContext";
 import { useTwoComTransition } from "../../../../composables/animation/useTwoComTransition";
 import SmallLoading from "../../../../component/utils/SmallLoading";
+import { set } from "react-hook-form";
 
 const TaInput = props => {
     const { role } = props;
@@ -83,7 +84,9 @@ const InputField = ({ type, label, onChange, name}) => {
     const { userinput, handleInputUpdate: handleInput, handleOnBlur } = useContext(InputContext);
     return (
         <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
-            <div className="input-label  ">{label}</div>
+            <div className="input-label  ">
+                {label}
+            </div>
             <input type={type}  onBlur={handleOnBlur} onChange={onChange} name={name} className="input-register" />
         </div>
     );
@@ -118,22 +121,32 @@ const InputFirstPage = forwardRef((props, ref) => {
     useEffect(() => {
         // console.log(formErrors);
         if(Object.keys(formErrors).length === 0){
-            // console.log(formValues);
+            console.log(formValues);
         }
     }, [formErrors,formValues]);
 
     const validate = (values) => {
         const errors = {}
         const number = [1,2,3,4,5,6,7,8,9,0]
-        // const regex = 
+        const special = ["!","@","#","$","%","^","&","*","(",")","-","_","=","+","{","}","[","]","?","<",">",";",":","'",'"']
+        
         if (!values.firstname){
             errors.firstname = "กรุณากรอกชื่อ"
         }else if(number.some((e) => values.firstname.includes(e))){
             errors.firstname = "ไม่สามารถใส่ตัวเลขได้"
-            console.log("kuy")
+        }else if(special.some((e) => values.firstname.includes(e))){
+            errors.firstname = "ไม่สามารถใส่อักษรพิเศษได้"
+        }else if (values.firstname.length > 40){
+            errors.firstname = "ชื่อต้องไม่เกิน 40 ตัว"
         }
         if (!values.lastname){
             errors.lastname = "กรุณากรอกนามสกุล"
+        }else if(number.some((e) => values.lastname.includes(e))){
+            errors.lastname = "ไม่สามารถใส่ตัวเลขได้"
+        }else if(special.some((e) => values.lastname.includes(e))){
+            errors.lastname = "ไม่สามารถใส่อักษรพิเศษได้"
+        }else if (values.lastname.length > 40){
+            errors.lastname = "นามสกุลต้องไม่เกิน 40 ตัว"
         }
         if (!values.email){
             errors.email = "กรุณากรอกอีเมล์"
@@ -142,19 +155,24 @@ const InputFirstPage = forwardRef((props, ref) => {
             errors.password = "กรุณากรอกรหัสผ่าน"
         }else if (values.password.length < 8){
             errors.password = "รหัสผ่านต้องมีอย่างน้อย 8 ตัว"
-        }else if (values.password.length > 15){
-            errors.password = "รหัสผ่านต้องมีไม่เกิน 15 ตัว"
+        }else if (values.password.length > 25){
+            errors.password = "รหัสผ่านต้องมีไม่เกิน 25 ตัว"
         }
         if (!values.phone){
             errors.phone = "กรุณากรอกเบอร์โทรศัพท์"
         }else if (values.phone.length < 10 || values.phone.length > 10){
             errors.phone = "เบอร์โทรศัพท์ต้องมี 10 ตัว"
+        }else if (values.phone.match(/[A-Za-z]/i)){
+            errors.phone = "เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น"
+        }else if(special.some((e) => values.phone.includes(e))){
+            errors.phone = "ไม่สามารถใส่อักษรพิเศษได้"
         }
+
         return errors
     }
 
     return (
-        <form className="flex-col-cen w-full" ref={ref} onSubmit={handleSubmit}>
+        <form className="flex-col-cen w-full relative" ref={ref} onSubmit={handleSubmit}>
             <GoogleRegister />
 
             {/* divider */}
@@ -163,16 +181,17 @@ const InputFirstPage = forwardRef((props, ref) => {
                 <span className="text-[13px] text-gray-500">หรือ</span>
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400"></span>
             </div>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[75px]">{formErrors.firstname}</p>
             <InputField type="text" name={"firstname"}label={"ชื่อ"} onChange={handleChange}/>
-            <p className="text-xs text-red-500">{formErrors.firstname}</p>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[140px]">{formErrors.lastname}</p>
             <InputField type="text" name={"lastname"} label={"นามสกุล"} onChange={handleChange}/>
-            <p className="text-xs">{formErrors.lastname}</p>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[205px]">{formErrors.email}</p>
             <InputField type="email" name={"email"} label={"อีเมล์"} onChange={handleChange}/>
-            <p className="text-xs">{formErrors.email}</p>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[270px]">{formErrors.password}</p>
             <InputField type="password" name={"password"} label={"รหัสผ่าน"} onChange={handleChange}/>
-            <p className="text-xs">{formErrors.password}</p>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[335px]">{formErrors.phone}</p>
             <InputField type="text" name={"phone"} label={"เบอร์โทรศัพท์"} onChange={handleChange}/>
-            <p className="text-xs">{formErrors.phone}</p>
+            
             {/* btn wrapper */}
             {/* <pre>{JSON.stringify(formValues, undefined, 2)}</pre> */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
@@ -194,21 +213,77 @@ const InputFirstPage = forwardRef((props, ref) => {
 });
 
 const InputSecondPage = forwardRef((props, ref) => {
-    const { userinput } = useContext(InputContext);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const { setPage, handleOnRegSuccess } = props;
 
-    const handleSubmit = async e => {
-        await register(userinput, setIsLoading, setError);
-        e.preventDefault();
-        handleOnRegSuccess();
+    const [isLoading, setIsLoading] = useState(false);
+    const { setPage, handleOnRegSuccess } = props;
+    const initialValues = {studentID : "", department: "", year: ""}
+    const [formValues, setFormValues]= useState(initialValues);
+    const [formErrors, setFormErrors]= useState({});
+
+    const handleChange = (e) => {
+        const { name, value}= e.target;
+        setFormValues({ ...formValues, [name]: value });
+        // console.log(name)
     };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        console.log(formValues)
+        const check = validate(formValues)
+        setFormErrors(check);
+        // console.log(check)
+        if(Object.keys(check).length === 0 ){
+            handleOnRegSuccess();
+        }
+    };
+
+    useEffect(() => {
+        // console.log(formErrors);
+        if(Object.keys(formErrors).length === 0){
+            console.log(formValues);
+        }
+    }, [formErrors,formValues]);
+
+    const validate = (values) => {
+        const errors = {}
+        const special = ["!","@","#","$","%","^","&","*","(",")","-","_","=","+","{","}","[","]","?","<",">",";",":","'",'"']
+        
+        if (!values.studentID){
+            errors.studentID = "กรุณากรอกรหัส"
+        }else if (values.studentID.length < 8 || values.studentID.length > 8){
+            errors.studentID = "รหัสนักศึกษาต้องมี 8 ตัว"
+        }else if (values.studentID.match(/[A-Za-z]/i)){
+            errors.studentID = "รหัสต้องเป็นตัวเลขเท่านั้น"
+        }else if(special.some((e) => values.studentID.includes(e))){
+            errors.studentID = "ไม่สามารถใส่อักษรพิเศษได้"
+        }
+        if (!values.department){
+            errors.department = "กรุณากรอกภาควิชา"
+        }else if(special.some((e) => values.department.includes(e))){
+            errors.department = "ไม่สามารถใส่อักษรพิเศษได้"
+        }else if (values.department.length > 30){
+            errors.department = "ภาควิชาควรไม่เกิน 30 ตัว"
+        }
+        if (!values.year){
+            errors.year = "กรุณากรอกชั้นปี"
+        }else if (values.year.length < 1 || values.year.length > 1){
+            errors.year = "ชั้นปีไม่ถูกต้อง"
+        }else if (values.year.match(/[A-Za-z]/i)){
+            errors.year = "ชั้นปีต้องเป็นตัวเลขเท่านั้น"
+        }else if(special.some((e) => values.year.includes(e))){
+            errors.year = "ไม่สามารถใส่อักษรพิเศษได้"
+        }
+
+        return errors
+    }
     return (
-        <div className="flex-col-cen absolute w-full" ref={ref}>
-            <InputField type={"studentID"} label={"รหัสนักศึกษา"} />
-            <InputField type={"department"} label={"ภาควิชา"} />
-            <InputField type={"year"} label={"ชั้นปี"} />
+        <form className="flex-col-cen absolute w-full" ref={ref} onSubmit={handleSubmit}>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[5px]">{formErrors.studentID}</p>
+            <InputField type="text" name={"studentID"} label={"รหัสนักศึกษา"} onChange={handleChange}/>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[16%]">{formErrors.department}</p>
+            <InputField type="text" name={"department"} label={"ภาควิชา"} onChange={handleChange}/>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[135px]">{formErrors.year}</p>
+            <InputField type="text" name={"year"} label={"ชั้นปี"} onChange={handleChange}/>
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
@@ -219,18 +294,17 @@ const InputSecondPage = forwardRef((props, ref) => {
                 </button>
                 <SmallLoading isLoading={isLoading} gap={4}>
                     <button
-                        onClick={handleSubmit}
                         className=" flex h-12 items-center justify-center space-x-2 rounded-2xl border-4 border-secondary bg-secondary px-6 py-1">
                         <SmallLoading.Title>
                             <span className="text-lg text-white">ลงทะเบียน</span>
                         </SmallLoading.Title>
                         <SmallLoading.Loader>
-                            <span>ควย</span>
+                            <span>Success</span>
                         </SmallLoading.Loader>
                     </button>
                 </SmallLoading>
             </div>
-        </div>
+        </form>
     );
 });
 
