@@ -12,25 +12,29 @@ import Like from "../../components/Like";
 
 const PostDesktop = ({ post, setSelectedPost }, ref) => {
     const container = useRef(null);
-    useLayoutEffect(() => {
-        gsap.from(container.current, {
-            autoAlpha: 0,
-            yPercent: 50,
-            scale: 0.8,
-            duration: 1,
-            ease: "expo.inOut",
-        });
-    }, [ref]);
+    // useLayoutEffect(() => {
+    //     gsap.from(container.current, {
+    //         autoAlpha: 0,
+    //         yPercent: 50,
+    //         scale: 0.8,
+    //         duration: 1,
+    //         ease: "expo.inOut",
+    //     });
+    // }, [ref]);
 
     return (
         <div ref={container} className="mypost w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
             <Header post={post} />
             <Detail post={post} />
             <div className="flex justify-end space-x-8">
-                <div className="btn-orange rounded-lg px-10 py-2" onClick={() => setSelectedPost(post)}>
-                    สมัครเป็น TA
-                </div>
-                <Like />
+                {setSelectedPost && (
+                    <>
+                        <div className="btn-orange rounded-lg px-10 py-2" onClick={() => setSelectedPost(post)}>
+                            สมัครเป็น TA
+                        </div>
+                        <Like />
+                    </>
+                )}
             </div>
         </div>
     );
@@ -112,9 +116,18 @@ const Detail = ({ post }) => {
                 </div>
                 <div className={`flex min-w-0 flex-col whitespace-nowrap `}>
                     <div className="mr-6 font-semibold">หน้าที่</div>
+                    <div className="whitespace-pre-line px-5  ">
+                        <div className="leading-[28px]">
+                            <div className="w-full">{post?.duty.trim() || "-"}</div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div className={`flex min-w-0 flex-col whitespace-nowrap `}>
+                    <div className="mr-6 font-semibold">ข้อกำหนด</div>
                     <div className="whitespace-pre-line px-5 py-4 ">
                         <div className="leading-[28px]">
-                            <div className="w-full">{post?.moreDetail.trim() || "-"}</div>
+                            <div className="w-full">{post?.requirement.trim() || "-"}</div>
                         </div>
                         <br />
                     </div>

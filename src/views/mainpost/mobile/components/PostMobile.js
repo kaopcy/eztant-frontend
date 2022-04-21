@@ -91,9 +91,11 @@ const PostMobile = ({ post, setSelectedPost }) => {
             </div>
 
             <div className="mt-10 flex justify-end space-x-4">
-                <div className="btn-orange rounded-lg px-10 py-2 text-base" onClick={() => setSelectedPost(post)}>
-                    สมัครเป็น TA
-                </div>
+                {setSelectedPost && (
+                    <div className="btn-orange rounded-lg px-10 py-2 text-base" onClick={() => setSelectedPost(post)}>
+                        สมัครเป็น TA
+                    </div>
+                )}
                 <Like />
             </div>
         </div>
@@ -151,7 +153,16 @@ const Detail = forwardRef(({ post }, ref) => {
                     <div className="mr-6 font-semibold">หน้าที่</div>
                     <div className="whitespace-pre-line px-5 py-2 ">
                         <div className="leading-[28px]">
-                            <div className="w-full ">{post.moreDetail}</div>
+                            <div className="w-full ">{post.duty.trim()}</div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div className={`flex min-w-0 flex-col whitespace-nowrap  `}>
+                    <div className="mr-6 font-semibold">ข้อกำหนด</div>
+                    <div className="whitespace-pre-line px-5 py-2 ">
+                        <div className="leading-[28px]">
+                            <div className="w-full ">{post.requirement.trim()}</div>
                         </div>
                         <br />
                     </div>

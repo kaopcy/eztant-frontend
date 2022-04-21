@@ -80,124 +80,6 @@ export const SORT_TYPE = [
     },
 ];
 
-export const ORDER_TYPE = [
-    {
-        label: "น้อยไปมาก",
-        value: "ascending",
-    },
-    {
-        label: "มากไปน้อย",
-        value: "descending",
-    },
-];
-
-export const POSTS = [
-    {
-        author: "พรหมพิริยะ เจริญพานทองดี",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA STRUCTURE & ALGORYTHM",
-        subjectID: "0100123",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/400",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
-        duty: "เก็บขยะ",
-        tables: [
-            {
-                section: "101",
-                max_ta: "2",
-                day: "monday",
-                time_to: "09:00",
-                time_from: "20:00",
-            },
-        ],
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100124",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/399",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
-        duty: "เก็บขยะ",
-        tables: [
-            {
-                section: "101",
-                max_ta: "2",
-                day: "monday",
-                time_to: "09:00",
-                time_from: "20:00",
-            },
-        ],
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100125",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
-        duty: "เก็บขยะ",
-        tables: [
-            {
-                section: "101",
-                max_ta: "2",
-                day: "monday",
-                time_to: "09:00",
-                time_from: "20:00",
-            },
-        ],
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100126",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-        moreDetail: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
-        duty: "เก็บขยะ",
-        tables: [
-            {
-                section: "101",
-                max_ta: "2",
-                day: "monday",
-                time_to: "09:00",
-                time_from: "20:00",
-            },
-        ],
-    },
-    {
-        author: "ปิยชัย แก้วชุ่ม",
-        department: "คอมพิวเตอร์",
-        subjectName: "DATA COMMUNICATION NAJA",
-        subjectID: "0100127",
-        wage: "600",
-        year: "2,3,4",
-        minGrade: "B+",
-        authorAvatar: "https://i.pravatar.cc/398",
-        moreDetail: "-",
-        duty: "เก็บขยะ",
-        tables: [
-            {
-                section: "101",
-                max_ta: "2",
-                day: "monday",
-                time_from: "09:00",
-                time_to: "20:00",
-            },
-        ],
-    },
-];
 
 export const DAY_COLOR = {
     sunday: "#FF1B1B",
@@ -230,3 +112,585 @@ export const DAY_SHORT_EN = {
 };
 
 export const GRADE_LIST = ["S", "A", "B+", "B", "C+", "C", "D+", "D", "F"];
+
+
+export const ORDER_TYPE = [
+    {
+        label: "น้อยไปมาก",
+        value: "ascending",
+    },
+    {
+        label: "มากไปน้อย",
+        value: "descending",
+    },
+];
+
+export const POSTS = [
+    {
+        author: "พรหมพิริยะ เจริญพานทองดี",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA STRUCTURE & ALGORYTHM",
+        subjectID: "0100123",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/400",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100124",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/399",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100125",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100126",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_to: "09:00",
+                time_from: "20:00",
+            },
+        ],
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100127",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+            },
+        ],
+    },
+];
+
+// Post with requset list
+export const REQUEST_LIST = [
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100127",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [],
+            },
+            {
+                section: "102",
+                max_ta: "2",
+                day: "tuesday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                    {
+                        user: {
+                            studentID: 63010648,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "พรหมพิริยะ",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: true,
+                    },
+                    {
+                        user: {
+                            studentID: 63010679,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "พิชชาภา",
+                            lastname: "เวียงทอง",
+                        },
+                        is_accepted: false,
+                    },
+                    {
+                        user: {
+                            studentID: 63010467,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ธีรภัทร",
+                            lastname: "เกตุสิงห์น้อย",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "103",
+                max_ta: "2",
+                day: "wednesday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "104",
+                max_ta: "2",
+                day: "friday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100127",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                    {
+                        user: {
+                            studentID: 63010648,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "พรหมพิริยะ",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: true,
+                    },
+                    {
+                        user: {
+                            studentID: 63010679,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "พิชชาภา",
+                            lastname: "เวียงทอง",
+                        },
+                        is_accepted: false,
+                    },
+                    {
+                        user: {
+                            studentID: 63010467,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ธีรภัทร",
+                            lastname: "เกตุสิงห์น้อย",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100127",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        author: "ปิยชัย แก้วชุ่ม",
+        department: "คอมพิวเตอร์",
+        subjectName: "DATA COMMUNICATION",
+        subjectID: "0100127",
+        wage: "600",
+        year: ["2", "3", "4"],
+        minGrade: "B+",
+        authorAvatar: "https://i.pravatar.cc/398",
+        requirement: "-เก้าโคตรเท่\n-เก้าโคตรคูล\n-เก้าโคตรเจ๋ง\n-เก้าโคตรแจ๋ว\n-เก้าโคตร\n-เก้าโคตรเท่\n-เก้าโคตรเท่\n",
+        duty: "เก็บขยะ",
+        tables: [
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+            {
+                section: "101",
+                max_ta: "2",
+                day: "monday",
+                time_from: "09:00",
+                time_to: "20:00",
+                requested: [
+                    {
+                        user: {
+                            studentID: 63010604,
+                            imgURL: "https://i.pravatar.cc/300",
+                            firstname: "ปิยชัย",
+                            lastname: "แก้วชุ่ม",
+                        },
+                        is_accepted: false,
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+
+// List of community that PIYACHAI KAEWCHUM own
+// export const COMMUNITY = [
+//     // community 1 (Data Communication)
+//     {   
+//         name: 
+//         ta:[
+
+//         ]
+//     }
+// ]
+

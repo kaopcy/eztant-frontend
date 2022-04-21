@@ -8,24 +8,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSetTableInput, useTableInput } from "../context/tableCreatePostContext";
 import { useInput } from "../context/inputCreatePostContext";
 import { timeValidate, sectionValidate, max_taValidate, closeDateValidate } from "../../../utils/createTableInputValidate";
+import { useSelector } from "react-redux";
 
 const FillTableDesktop = () => {
     const tableMatch = useMatch("/create-post/fill-table");
     const detailMatch = useMatch("/create-post");
 
     const [isPreviousEmpty, setIsPreviousEmpty] = useState(false);
+    const navigate = useNavigate();
 
+    const { user } = useSelector(state=> state.user)
     const setTableInput = useSetTableInput();
     const tableInput = useTableInput();
     const inputValue = useInput();
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (!inputValue) {
             navigate("/create-post");
         }
     }, [inputValue, navigate]);
-    
+
     const {
         register,
         handleSubmit,
@@ -46,7 +48,13 @@ const FillTableDesktop = () => {
             setIsPreviousEmpty(true);
             return;
         }
-        setTableInput(data);
+        setTableInput({
+            ...data,
+            author: `${user.firstname} ${user.lastname}`,
+            department: user.department,
+            authorAvatar: user.imgURL,
+        });
+        navigate("/create-post/preview-post");
     };
 
     useEffect(() => {
@@ -70,8 +78,8 @@ const FillTableDesktop = () => {
                         } ${isPreviousEmpty && "!border-red-500 !text-red-500"}`}
                     />
                     {isPreviousEmpty && (
-                        <div className="absolute flex items-center -top-14 left-1/2 -translate-x-3/4 rounded-md border-2 border-red-500 px-4 py-2 text-red-500 shadow-lg">
-                            <div className="whitespace-nowrap mr-3">กรอบรายละเอียดในหน้านี้ให้ครบ</div>
+                        <div className="absolute -top-14 left-1/2 flex -translate-x-3/4 items-center rounded-md border-2 border-red-500 px-4 py-2 text-red-500 shadow-lg">
+                            <div className="mr-3 whitespace-nowrap">กรอบรายละเอียดในหน้านี้ให้ครบ</div>
                             <FontAwesomeIcon icon={faWarning} className="text-orange-400" />
                         </div>
                     )}
