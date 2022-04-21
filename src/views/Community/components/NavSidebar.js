@@ -25,17 +25,17 @@ const NavSidebar = () => {
             color: "bg-green-600",
             to: community?.[2]?.id,
             name: "DATA COMMUNICATION",
-        }
+        },
     ];
 
-    const { id } = useParams()
+    const { id } = useParams();
 
     return (
-        <div className="left-scroll overflow-auto flex h-[calc(100vh-120px)] w-[280px] flex-col rounded-bl-md bg-[#f5f5f5] text-text shadow-lg">
-            <div className="left-scroll-child w-full h-full">
+        <div className="left-scroll flex h-[calc(100vh-120px)] w-[250px] shrink-0 flex-col overflow-auto rounded-bl-md border-2 bg-[#f5f5f5] text-text shadow-lg">
+            <div className="left-scroll-child h-full w-full">
                 <div className="my-14 flex w-full flex-col">
                     <ControlLink to={`/community/${id}`} name="หน้าหลัก" icon={faHouse} />
-                    <ControlLink to={`/community/${id}/attendence`} name="เช็คชื่อ" icon={faCalendarCheck} />
+                    <ControlLink to={`/community/${id}/attendance`} name="เช็คชื่อ" icon={faCalendarCheck} />
                     <ControlLink to={`/community/${id}/file`} name="ไฟล์" icon={faFileLines} />
                     <ControlLink to={`/community/${id}/receipt`} name="ใบเสร็จ" icon={faReceipt} />
                 </div>
@@ -51,11 +51,10 @@ const NavSidebar = () => {
     );
 };
 
+
 const ControlLink = ({ name, icon, to }) => {
     const { pathname: path } = useResolvedPath(to);
-    const match = useMatch({ path , end: true });
-
-    console.log(match);
+    const match = useMatch({ path, end: true });
 
     return (
         <Link to={to} className={`flex w-full items-center px-4 py-4 text-xl font-semibold ${match && "bg-primary text-white"}`}>

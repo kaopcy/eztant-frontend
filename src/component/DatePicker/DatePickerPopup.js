@@ -89,7 +89,7 @@ const DatePickerPopup = forwardRef((_, ref) => {
     }, [mockDate, getMonthDetails]);
 
     return (
-        <div ref={ref} className="absolute top-full left-0 flex  w-[300px] flex-col rounded-md border bg-white p-4 shadow-md">
+        <div ref={ref} className="flex  w-[300px] flex-col rounded-md border bg-white p-4 shadow-md">
             <div className="flex w-full items-center justify-between ">
                 <div className="">{getMonthStr(mockDate.getMonth())}</div>
                 <div className="flex items-center">

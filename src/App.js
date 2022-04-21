@@ -27,7 +27,7 @@ const RequestList = React.lazy(() => import("./views/RequestList/RequestList"));
 const Community = React.lazy(() => import("./views/Community/Community"));
 const CommunityReceipt = React.lazy(() => import("./views/Community/CommunityReceipt/CommunityReceipt"));
 const CommunityHome = React.lazy(() => import("./views/Community/CommunityHome/CommunityHome"));
-const CommunityAttendence = React.lazy(() => import("./views/Community/CommunityAttendence/CommunityAttendence"));
+const CommunityAttendance = React.lazy(() => import("./views/Community/CommunityAttendance/CommunityAttendance"));
 const CommunityFile = React.lazy(() => import("./views/Community/CommunityFile/CommunityFile"));
 
 const ProtectedRoute = ({ isAuth, children }) => {
@@ -88,7 +88,7 @@ const App = () => {
 
                 <Route path="community" element={<ProtectedRoute children={<Navigate to={`/community/${firstCommunity}`} replace />} />} />
                 <Route path="community/:id" element={<ProtectedRoute children={<Community />} />}>
-                    <Route path="/community/:id/attendence" element={<ProtectedRoute children={<CommunityAttendence />} />} />
+                    <Route path="/community/:id/attendance" element={<ProtectedRoute children={<CommunityAttendance />} />} />
                     <Route path="/community/:id/receipt" element={<ProtectedRoute children={<CommunityReceipt />} />} />
                     <Route path="/community/:id/file" element={<ProtectedRoute children={<CommunityFile />} />} />
                     <Route index element={<ProtectedRoute children={<CommunityHome />} />} />
