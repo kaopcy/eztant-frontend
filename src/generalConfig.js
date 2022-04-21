@@ -80,7 +80,6 @@ export const SORT_TYPE = [
     },
 ];
 
-
 export const DAY_COLOR = {
     sunday: "#FF1B1B",
     monday: "#FFE600",
@@ -99,6 +98,16 @@ export const DAY_SHORT_TH = {
     thursday: "พฤ.",
     friday: "ศ.",
     saturnday: "ส.",
+};
+
+export const DAY_FULL_TH = {
+    sunday: "อาทิตย์",
+    monday: "จันทร์",
+    tuesday: "อังคาร",
+    wednesday: "พุธ",
+    thursday: "พฤหัส",
+    friday: "ศุกร์",
+    saturnday: "เสาร์",
 };
 
 export const DAY_SHORT_EN = {
@@ -253,7 +262,7 @@ export const REQUEST_LIST = [
             {
                 section: "101",
                 max_ta: "2",
-                day: "monday",
+                day: "thursday",
                 time_from: "09:00",
                 time_to: "20:00",
                 requested: [],
@@ -261,7 +270,7 @@ export const REQUEST_LIST = [
             {
                 section: "102",
                 max_ta: "2",
-                day: "tuesday",
+                day: "thursday",
                 time_from: "09:00",
                 time_to: "20:00",
                 requested: [
@@ -271,6 +280,7 @@ export const REQUEST_LIST = [
                             imgURL: "https://i.pravatar.cc/300",
                             firstname: "ปิยชัย",
                             lastname: "แก้วชุ่ม",
+                            evidenceURL: 'https://c.tenor.com/1Of-DpNBmgsAAAAd/%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89-%E0%B9%80%E0%B8%9E%E0%B8%B4%E0%B8%94%E0%B8%8A%E0%B8%AD%E0%B8%9A%E0%B8%81%E0%B8%B4%E0%B8%99%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89.gif'
                         },
                         is_accepted: false,
                     },
@@ -682,15 +692,4 @@ export const REQUEST_LIST = [
     },
 ];
 
-
-// List of community that PIYACHAI KAEWCHUM own
-// export const COMMUNITY = [
-//     // community 1 (Data Communication)
-//     {   
-//         name: 
-//         ta:[
-
-//         ]
-//     }
-// ]
 

@@ -6,12 +6,12 @@ import gsap from "gsap";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { DAY_COLOR } from "../../../generalConfig";
+import { DAY_COLOR, DAY_SHORT_EN } from "../../../generalConfig";
 
 import { useToday, useSelectedDay, useSetSelectedDay } from "./AttendanceContext";
 
-const DAY_MAP = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 const MONTH_MAP = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const DAY_MAP = Object.values(DAY_SHORT_EN);
 const MONTH_MAP_TH = [
     "มกราคม ",
     "กุมภาพันธ์ ",
@@ -32,7 +32,7 @@ const Calendar = forwardRef((_, ref) => {
     const [nextMonthDetail, setNextMonthDetail] = useState([]);
     const [previousMonthDetail, setPreviousMonthDetail] = useState([]);
 
-    const today = useToday()
+    const today = useToday();
     const selectedDay = useSelectedDay();
     const setSelectedDay = useSetSelectedDay();
 
@@ -62,14 +62,28 @@ const Calendar = forwardRef((_, ref) => {
         leftAnimate.current = addAnimate(false);
         rightAnimate.current = addAnimate(true);
 
-        const width = document.querySelector(".calendar").clientWidth;
-        console.log(width);
-        gsap.set(wrapperRef.current, {
-            left: `-${width}px`,
-        });
-        gsap.set(".calendar", {
-            x: i => i * width,
-        });
+        const onResize = () => {
+            console.log("resized");
+            const width = document.querySelector(".calendar").clientWidth;
+            setTimeout(() => {
+                const height = document.querySelector(".calendar").clientHeight;
+                gsap.set(wrapperRef.current, {
+                    left: `-${width}px`,
+                    height: height,
+                });
+            }, 1);
+
+            gsap.set(".calendar", {
+                x: i => i * width,
+            });
+        };
+
+        onResize();
+
+        window.addEventListener("resize", onResize);
+        return () => {
+            window.removeEventListener("resize", onResize);
+        };
     }, []);
 
     const getArrayOfMonth = useCallback(
@@ -187,20 +201,20 @@ const Calendar = forwardRef((_, ref) => {
         );
     };
 
-    const handleSetToday = ()=>{
-        setSelectedDay(new Date(today))
-    }
+    const handleSetToday = () => {
+        setSelectedDay(new Date(today));
+    };
     return (
-        <>
-            <div className="mb-4 flex w-[420px]  items-center justify-between space-x-2 text-xl text-white">
-                <div className="opacity-0">today</div>
+        <div className="flex w-full max-w-[400px] flex-col items-center">
+            <div className="mb-4 flex  w-full items-center justify-center space-x-2 text-xl text-white ">
+                {/* <div className="opacity-0">today</div> */}
                 <div className="flex items-center">
                     <FontAwesomeIcon
                         icon={faChevronRight}
                         onClick={() => handleNextMonth()}
                         className="h-3  w-3 shrink-0 rotate-180 cursor-pointer rounded-full p-1 hover:bg-white hover:text-secondary"
                     />
-                    <div className="flex w-36 justify-center space-x-2">
+                    <div className="flex w-40 justify-center space-x-2">
                         <div className="font-bold">{MONTH_MAP_TH[selectedDay.getMonth()]}</div>
                         <div className="font-bold">{selectedDay.getFullYear() + 543}</div>
                     </div>
@@ -211,14 +225,12 @@ const Calendar = forwardRef((_, ref) => {
                         className="h-3 w-3 shrink-0 cursor-pointer rounded-full p-1 hover:bg-white hover:text-secondary"
                     />
                 </div>
-                <div className="justify-self-end font-bold hover:underline cursor-pointer"
-                    onClick={()=> handleSetToday()}
-                >today</div>
-                {/* </div> */}
+                {/* <div className="cursor-pointer justify-self-end text-base hover:underline" onClick={() => handleSetToday()}>
+                    วันนี้
+                </div> */}
             </div>
-            <div ref={ref} className="flex  w-[420px] flex-col rounded-md border bg-white p-4 shadow-md">
-                <div className="flex w-full items-center justify-between "></div>
-                <div className="mt-4 flex w-full flex-wrap justify-between text-sm">
+            <div ref={ref} className="flex w-full flex-col items-center rounded-md border bg-white p-4 text-xs shadow-md lg:text-sm">
+                <div className="mt-4 flex w-full flex-wrap justify-between ">
                     {DAY_MAP.map((day, i) => (
                         <div key={uuid()} className="flex-col-cen w-[13%] ">
                             <div className="font-bold uppercase opacity-50" style={{ color: Object.values(DAY_COLOR)[i] }}>
@@ -227,15 +239,15 @@ const Calendar = forwardRef((_, ref) => {
                         </div>
                     ))}
                 </div>
-                <div className=" relative h-[255.6px] w-full overflow-hidden ">
-                    <div ref={wrapperRef} className="relative ">
+                <div className="relative w-full overflow-hidden ">
+                    <div ref={wrapperRef} className="relative">
                         <Month handleClick={handleClick} monthDetail={getArrayOfMonth((activeCalendar - 1) % 3)} />
                         <Month handleClick={handleClick} monthDetail={getArrayOfMonth(activeCalendar % 3)} />
                         <Month handleClick={handleClick} monthDetail={getArrayOfMonth((activeCalendar + 1) % 3)} />
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 });
 
@@ -250,16 +262,22 @@ const Month = ({ monthDetail, handleClick }) => {
     const isSelectedDay = (day, month) => {
         return month === 0 && new Date(selectedDay).getTime() === new Date(day).getTime();
     };
+
     return (
-        <div className="calendar absolute top-0 mt-2 flex w-full flex-wrap justify-between  text-sm">
+        <div className="calendar absolute top-0 mt-2 flex w-full flex-wrap justify-between ">
             {monthDetail.map((day, i) => (
                 <div
                     onClick={() => handleClick(day)}
                     key={uuid()}
+                    style={{
+                        backgroundColor: isSelectedDay(day.timestamp, day.month)
+                            ? Object.values(DAY_COLOR)[new Date(day.timestamp).getDay()]
+                            : undefined,
+                    }}
                     className={`mx-[2%] mt-1 flex aspect-square w-[10%] shrink-0 cursor-pointer items-center justify-center rounded-full font-semibold ${
-                        day.month === 0 ? "text-text " : "text-gray-300"
+                        day.month === 0 ? "text-text " : "text-gray-200"
                     } ${isCurrentDay(day.timestamp, day.month) ? "text-secondary" : "text-text"}
-                ${isSelectedDay(day.timestamp, day.month) ? "bg-secondary !text-white" : "bg-white text-text"}
+                ${isSelectedDay(day.timestamp, day.month) ? " !text-white" : "bg-white text-text"}
                 `}>
                     <div className="flex-col-cen w-full py-1">{day.date}</div>
                 </div>

@@ -10,7 +10,7 @@ const Community = () => {
     const isHideMemberSidebar = useMediaQuery({ query: "(max-width: 1180px)" });
 
     return (
-        <div className="flex w-full justify-between">
+        <div className="flex w-full justify-between items-start">
             <NavSidebar />
             <Outlet />
             {!isHideMemberSidebar && <MemberSidebar />}
