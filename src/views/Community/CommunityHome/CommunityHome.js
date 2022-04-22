@@ -118,10 +118,10 @@ const Post = ({ post, index }) => {
             toggleIsPlay(index);
 
             gsap.timeline({})
-                .fromTo(container.current, { yPercent: -120 }, { yPercent: 0, duration: 0.4, ease: "elastic.out(1,0.7)" })
+                .fromTo(container.current, { yPercent: -120 }, { yPercent: 0, duration: 0.7, ease: "elastic.out(1,0.7)" })
                 .fromTo(
                     container.current,
-                    { outlineStyle: 'solid' , outlineOffset: 0, outlineWidth: 5, outlineColor: "#74c0fc" },
+                    { outlineStyle: "solid", outlineOffset: 0, outlineWidth: 5, outlineColor: "#74c0fc" },
                     { outlineOffset: 0, outlineWidth: 0, outlineColor: "transparent", duration: 3, ease: "power4.inOut" }
                 );
         }
