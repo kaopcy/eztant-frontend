@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useRef, useState, useLayoutEffect, useMemo, useCallback } from "react";
+import React, { useContext, useEffect, useRef, useState, useLayoutEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import gsap from "gsap";
 import Moment from "react-moment";
 import "moment/locale/th";
 
-import { CommunityContext } from "./CommunityHomeContext";
+import { CommunityContext, CommunityActionContext } from "../CommunityContext";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faFileImport, faCircleChevronRight, faXmark, faXmarkCircle, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faCircleChevronRight, faXmarkCircle, faUpload } from "@fortawesome/free-solid-svg-icons";
 
 import { fileValidate } from "../../../utils/fileUploadValidate";
 import { fileIcon } from "../../../utils/fileIcon";
 import { useForm } from "react-hook-form";
 
 const CommunityHome = () => {
-    const { community } = useContext(CommunityContext);
+    const community = useContext(CommunityContext);
     return (
         <div className="mt-3 flex w-full max-w-[900px] flex-col items-center  pb-20 text-text">
             <Header />
@@ -24,7 +24,9 @@ const CommunityHome = () => {
 };
 
 const Header = () => {
-    const { community, addPost } = useContext(CommunityContext);
+    const community = useContext(CommunityContext);
+    const { addPost } = useContext(CommunityActionContext);
+
     const { user } = useSelector(state => state.user);
     const {
         register,
@@ -110,7 +112,7 @@ const Post = ({ post, index }) => {
     const animateDetail = useRef(null);
     const [isOverflow, setIsOverflow] = useState(false);
     const [isShowMore, setIsShowMore] = useState(false);
-    const { toggleIsPlay } = useContext(CommunityContext);
+    const { toggleIsPlay } = useContext(CommunityActionContext);
 
     const container = useRef(null);
     useEffect(() => {
@@ -207,7 +209,7 @@ const Comment = ({ comments, index }) => {
     const [isExpand, setIsExpand] = useState(false);
     const [input, setInput] = useState("");
 
-    const { addComment } = useContext(CommunityContext);
+    const { addComment } = useContext(CommunityActionContext);
 
     useEffect(() => {
         setTimeout(() => {

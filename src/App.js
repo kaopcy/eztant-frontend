@@ -49,10 +49,9 @@ const App = () => {
     const navigate = useNavigate();
     const state = location.state;
 
-    const { user } = useSelector(state => state.user)
-    const firstCommunity = user?.community?.[0]?.id || 'no-community'
+    const { user } = useSelector(state => state.user);
+    const firstCommunity = user?.community?.[0]?.id || "no-community";
     const isMobile = useResponsive();
-
 
     // prevent user access some route without background state
     useEffect(() => {

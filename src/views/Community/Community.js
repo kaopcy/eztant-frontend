@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 
 import { Outlet } from "react-router-dom";
 
-import { Provider } from "./CommunityHome/CommunityHomeContext";
+import { Provider } from "./CommunityContext";
 
 const Community = () => {
     const isHideMemberSidebar = useMediaQuery({ query: "(max-width: 1180px)" });
@@ -15,7 +15,6 @@ const Community = () => {
         <Provider>
             <div className="flex w-full items-start justify-between bg-[#F5F5F5]">
                 <NavSidebar />
-
                 <Outlet />
                 {!isHideMemberSidebar && <MemberSidebar />}
             </div>
