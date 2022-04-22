@@ -79,20 +79,43 @@ const TaInput = props => {
     );
 };
 
-const InputField = ({ type, label }) => {
+const InputField = ({ type, label, onChange }) => {
     const { userinput, handleInputUpdate: handleInput, handleOnBlur } = useContext(InputContext);
     return (
         <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
             <div className="input-label  ">{label}</div>
-            <input type="text" value={userinput[type]} onBlur={handleOnBlur} onChange={handleInput} name={type} className="input-register" />
+            <input type="text"  onBlur={handleOnBlur} onChange={onChange} name={type} className="input-register" />
         </div>
     );
 };
 
+
+
 const InputFirstPage = forwardRef((props, ref) => {
     const { onClose, setPage } = props;
+
+    const initialValues = {firstname : "", lastname : "", email : "", password : "", phone : ""};
+    const [formValues, setFormValues]= useState(initialValues);
+    const [formErrors, setFormErrors]= useState({});
+
+    const handleChange = (e) => {
+        console.log("kuy")
+        const { name, value}= e.target;
+        setFormValues({ ...formValues, [name]: value })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setFormErrors(validate(formValues))
+        setPage(2)
+    }
+
+    const validate = (value) => {
+
+    }
+
     return (
-        <div className="flex-col-cen w-full" ref={ref}>
+        <form className="flex-col-cen w-full" ref={ref} onSubmit={handleSubmit}>
             <GoogleRegister />
             {/* divider */}
             <div className="flex-cen mt-4 space-x-1">
@@ -100,12 +123,13 @@ const InputFirstPage = forwardRef((props, ref) => {
                 <span className="text-[13px] text-gray-500">หรือ</span>
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400"></span>
             </div>
-            <InputField type={"firstname"} label={"ชื่อ"} />
-            <InputField type={"lastname"} label={"นามสกุล"} />
-            <InputField type={"email"} label={"อีเมล์"} />
-            <InputField type={"password"} label={"รหัสผ่าน"} />
-            <InputField type={"phone"} label={"เบอร์โทรศัพท์"} />
+            <InputField type={"firstname"}label={"ชื่อ"}  onChange={handleChange}/>
+            <InputField type={"lastname"} label={"นามสกุล"}  onChange={handleChange}/>
+            <InputField type={"email"} label={"อีเมล์"}  onChange={handleChange}/>
+            <InputField type={"password"} label={"รหัสผ่าน"}  onChange={handleChange}/>
+            <InputField type={"phone"} label={"เบอร์โทรศัพท์"}  onChange={handleChange}/>
             {/* btn wrapper */}
+            <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button
                     className=" group flex h-12  w-[6.5rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
@@ -114,13 +138,13 @@ const InputFirstPage = forwardRef((props, ref) => {
                     <span className="text-lg text-secondary group-hover:text-white">กลับ</span>
                 </button>
                 <button
-                    className=" group flex h-12 w-[6.5rem]  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white"
-                    onClick={() => setPage(2)}>
+                    type="submit"
+                    className=" group flex h-12 w-[6.5rem]  items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary hover:text-white">
                     <span className="text-lg text-secondary group-hover:text-white">ถัดไป</span>
                     <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronRight} />
                 </button>
             </div>
-        </div>
+        </form>
     );
 });
 
