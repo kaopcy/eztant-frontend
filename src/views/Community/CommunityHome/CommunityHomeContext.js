@@ -7,22 +7,29 @@ import { v4 as uuid } from "uuid";
 const actions = {
     ADD_POST: "ADD_POST",
     COMMENT_POST: "COMMENT_POST",
+    TOGGLE_ISPLAY: "TOGGLE_ISPLAY",
 };
 
 const reducer = (state, { type, payload }) => {
     switch (type) {
         case actions.ADD_POST: {
+            console.log(payload.file);
             return {
                 ...state,
                 posts: [
-                    ...state.posts,
                     {
                         id: uuid(),
+                        isPlay: true,
                         body: payload.newPost,
                         created_at: new Date(),
                         comments: [],
                         user: payload.user,
+                        file: {
+                            name: payload.file?.name,
+                            size: payload.file?.size,
+                        },
                     },
+                    ...state.posts,
                 ],
             };
         }
@@ -48,6 +55,20 @@ const reducer = (state, { type, payload }) => {
                 }),
             };
         }
+        case actions.TOGGLE_ISPLAY: {
+            return {
+                ...state,
+                posts: state.posts.map((old, index) => {
+                    if (index === payload.index) {
+                        return {
+                            ...old,
+                            isPlay: false,
+                        };
+                    }
+                    return old;
+                }),
+            };
+        }
         default:
             return state;
     }
@@ -59,17 +80,20 @@ export const Provider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, COMMUNITY);
     const { user } = useSelector(state => state.user);
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(state);
-    },[state])
+    }, [state]);
 
     const value = {
         community: state,
-        addPost: newPost => {
-            dispatch({ type: actions.ADD_POST, payload: { newPost, user } });
+        addPost: (newPost, file) => {
+            dispatch({ type: actions.ADD_POST, payload: { newPost, user, file } });
         },
         addComment: (newComment, index) => {
             dispatch({ type: actions.COMMENT_POST, payload: { newComment, user, index } });
+        },
+        toggleIsPlay: index => {
+            dispatch({ type: actions.TOGGLE_ISPLAY, payload: { index } });
         },
     };
 

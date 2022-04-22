@@ -264,7 +264,7 @@ const Month = ({ monthDetail, handleClick }) => {
     };
 
     return (
-        <div className="calendar absolute top-0 mt-2 flex w-full flex-wrap justify-between ">
+        <div className="calendar absolute top-0 mt-2 flex w-full flex-wrap justify-between pb-3 ">
             {monthDetail.map((day, i) => (
                 <div
                     onClick={() => handleClick(day)}
@@ -274,12 +274,19 @@ const Month = ({ monthDetail, handleClick }) => {
                             ? Object.values(DAY_COLOR)[new Date(day.timestamp).getDay()]
                             : undefined,
                     }}
-                    className={`mx-[2%] mt-1 flex aspect-square w-[10%] shrink-0 cursor-pointer items-center justify-center rounded-full font-semibold ${
+                    className={`relative mx-[2%] mt-1 flex aspect-square w-[10%] shrink-0 cursor-pointer items-center justify-center rounded-full font-semibold ${
                         day.month === 0 ? "text-text " : "text-gray-200"
-                    } ${isCurrentDay(day.timestamp, day.month) ? "text-secondary" : "text-text"}
+                    } 
                 ${isSelectedDay(day.timestamp, day.month) ? " !text-white" : "bg-white text-text"}
                 `}>
-                    <div className="flex-col-cen w-full py-1">{day.date}</div>
+                    <div
+                        className="absolute inset-0 z-10 aspect-square rounded-full bg-red-50 opacity-10"
+                        style={{
+                            backgroundColor: isCurrentDay(day.timestamp, day.month)
+                                ? Object.values(DAY_COLOR)[new Date(day.timestamp).getDay()]
+                                : "transparent",
+                        }}></div>
+                    <div className="flex-col-cen z-20 w-full py-1">{day.date}</div>
                 </div>
             ))}
         </div>

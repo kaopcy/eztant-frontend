@@ -13,7 +13,7 @@ const Community = () => {
 
     return (
         <Provider>
-            <div className="flex w-full items-start justify-between">
+            <div className="flex w-full items-start justify-between bg-[#F5F5F5]">
                 <NavSidebar />
 
                 <Outlet />

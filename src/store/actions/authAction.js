@@ -12,10 +12,11 @@ export const login = (userinput, cb) => async dispatch => {
 
         const shapedUser = {
             ...user,
+            id: 'oiawdjaiojdoadoawdjoiawdjoadjioajdiowa',
             role: "teacher",
             imgURL: user.picture.large,
-            firstname: user.name.first,
-            lastname: user.name.last,
+            firstname: 'ปิยชัย',
+            lastname: 'แก้วชุ่ม',
             department: "computer",
             community: [
                 {

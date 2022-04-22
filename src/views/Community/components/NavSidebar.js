@@ -31,7 +31,7 @@ const NavSidebar = () => {
     const { id } = useParams();
 
     return (
-        <div className="left-scroll flex h-[calc(100vh-120px)] w-[250px] shrink-0 flex-col overflow-auto rounded-bl-md border-2 bg-[#f5f5f5] text-text shadow-lg">
+        <div className="left-scroll sticky top-[80px] flex h-[calc(100vh-120px)] w-[250px] shrink-0 flex-col overflow-auto rounded-bl-md border-2 bg-[#f5f5f5] text-text shadow-md">
             <div className="left-scroll-child h-full w-full">
                 <div className="my-14 flex w-full flex-col">
                     <ControlLink to={`/community/${id}`} name="หน้าหลัก" icon={faHouse} />
@@ -50,7 +50,6 @@ const NavSidebar = () => {
         </div>
     );
 };
-
 
 const ControlLink = ({ name, icon, to }) => {
     const { pathname: path } = useResolvedPath(to);
