@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
 import { v4 as uuid } from "uuid";
 import gsap from "gsap";
@@ -6,26 +6,12 @@ import gsap from "gsap";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { DAY_COLOR, DAY_SHORT_EN } from "../../../generalConfig";
+import { DAY_COLOR } from "../../../generalConfig";
+import { getMonthDetails, DAY_MAP, MONTH_MAP_TH } from "../../../utils/calendarUtils";
 
 import { useToday, useSelectedDay, useSetSelectedDay } from "./AttendanceContext";
 
-const MONTH_MAP = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const DAY_MAP = Object.values(DAY_SHORT_EN);
-const MONTH_MAP_TH = [
-    "มกราคม ",
-    "กุมภาพันธ์ ",
-    "มีนาคม ",
-    "เมษายน ",
-    "พฤษภาคม ",
-    "มิถุนายน ",
-    "กรกฎาคม ",
-    "สิงหาคม ",
-    "กันยายน ",
-    "ตุลาคม ",
-    "พฤศจิกายน ",
-    "ธันวาคม ",
-];
+
 
 const Calendar = forwardRef((_, ref) => {
     const [monthDetail, setMonthDetail] = useState([]);
@@ -94,62 +80,6 @@ const Calendar = forwardRef((_, ref) => {
     );
 
     // main logic
-    const getNumberOfDays = useCallback((year, month) => {
-        return 40 - new Date(year, month, 40).getDate();
-    }, []);
-
-    const getDayDetails = useCallback(
-        args => {
-            let date = args.index - args.firstDay;
-            let day = args.index % 7;
-            let prevMonth = args.month - 1;
-            let prevYear = args.year;
-            if (prevMonth < 0) {
-                prevMonth = 11;
-                prevYear--;
-            }
-            let prevMonthNumberOfDays = getNumberOfDays(prevYear, prevMonth);
-            let _date = (date < 0 ? prevMonthNumberOfDays + date : date % args.numberOfDays) + 1;
-            let month = date < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
-            let timestamp = new Date(args.year, args.month, _date).getTime();
-            return {
-                date: _date,
-                day,
-                month,
-                timestamp,
-                dayString: DAY_MAP[day],
-            };
-        },
-        [getNumberOfDays]
-    );
-
-    const getMonthDetails = useCallback(
-        (year, month) => {
-            let firstDay = new Date(year, month).getDay();
-            let numberOfDays = getNumberOfDays(year, month);
-            let monthArray = [];
-            let rows = 6;
-            let currentDay = null;
-            let index = 0;
-            let cols = 7;
-
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    currentDay = getDayDetails({
-                        index,
-                        numberOfDays,
-                        firstDay,
-                        year,
-                        month,
-                    });
-                    monthArray.push(currentDay);
-                    index++;
-                }
-            }
-            return monthArray;
-        },
-        [getDayDetails, getNumberOfDays]
-    );
 
     useEffect(() => {
         const year = selectedDay.getFullYear();
@@ -157,7 +87,7 @@ const Calendar = forwardRef((_, ref) => {
         setMonthDetail(getMonthDetails(year, month));
         setNextMonthDetail(getMonthDetails(month === 11 ? year + 1 : year, month === 11 ? 0 : month + 1));
         setPreviousMonthDetail(getMonthDetails(month === 0 ? year - 1 : year, month === 0 ? 11 : month - 1));
-    }, [selectedDay, getMonthDetails]);
+    }, [selectedDay]);
 
     const handleNextMonth = () => {
         if (leftAnimate.current.isActive() || rightAnimate.current.isActive()) return;
@@ -201,9 +131,6 @@ const Calendar = forwardRef((_, ref) => {
         );
     };
 
-    const handleSetToday = () => {
-        setSelectedDay(new Date(today));
-    };
     return (
         <div className="flex w-full max-w-[400px] flex-col items-center">
             <div className="mb-4 flex  w-full items-center justify-center space-x-2 text-xl text-white ">
