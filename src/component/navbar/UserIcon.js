@@ -26,6 +26,7 @@ const UserIcon = ({ height }) => {
         {
             icon: faUserPlus,
             name: "คำขอทั้งหมด",
+            notShow: user?.role !== "teacher",
             to: "/",
             onclick: () => {
             navigate("request-list")
