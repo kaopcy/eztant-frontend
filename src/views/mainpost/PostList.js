@@ -30,7 +30,7 @@ const Inside = () => {
     
     const { postList, isLoading } = usePostListFetch(page, id);
     return (
-        <div className="min-h-screen w-full">
+        <div className="min-h-screen w-full bg-[#f5f5f5]">
             {!isMobile && <PostListDesktop postList={postList} isLoading={isLoading} />}
             {isMobile && <PostListMobile postList={postList} isLoading={isLoading} />}
         </div>

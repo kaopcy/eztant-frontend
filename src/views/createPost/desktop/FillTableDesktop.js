@@ -37,13 +37,16 @@ const FillTableDesktop = () => {
     } = useForm({ mode: "onChange", defaultValues: tableInput || {} });
 
     const onSubmit = data => {
+        let iserr = false
         data.tables.forEach((element, index) => {
             const numberTimeTo = parseInt(element.time_to.split(":").join(""));
             const numberTimeFrom = parseInt(element.time_from.split(":").join(""));
-            if (numberTimeFrom >= numberTimeTo)
+            if (numberTimeFrom >= numberTimeTo){
                 setError(`tables[${index}].time_to`, { type: "formatError", message: "เวลาเลิกคาบเรียนต้องหลังจากเวลาเริ่มคาบ" });
+                iserr = true
+            }
         });
-        if (!isValid) return;
+        if (iserr) return;
         if (!inputValue) {
             setIsPreviousEmpty(true);
             return;

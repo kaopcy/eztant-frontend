@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 import { useResponsive } from "../../composables/context/useResponsive";
 
@@ -12,6 +12,8 @@ import MobileDropdown from "./MobileDropdown";
 
 import UserIcon from "./UserIcon";
 import UserlistDropdown from "./UserlistDropdown";
+import Notification from "../Notification/Notification";
+import { useSelector } from "react-redux";
 
 const links = [
     {
@@ -73,7 +75,9 @@ const Navbar = ({ height }) => {
 
 const DesktopMenu = props => {
     const { location, isLogin } = props;
-
+    const [isNoti, setIsNoti] = useState(false);
+    const { user } = useSelector(state => state.user);
+    const notiCount = user.notification.filter(e => !e.isWatched).length;
     return (
         <>
             <div className="flex h-full items-center px-4 md:space-x-6 2md:space-x-8 lg:space-x-14">
@@ -101,7 +105,19 @@ const DesktopMenu = props => {
                         สร้างโพสต์
                     </Link>
                 )}
-                <FontAwesomeIcon icon={faBell} className="text-2xl text-gray-600" />
+                <div className="relative">
+                    <FontAwesomeIcon
+                        icon={faBell}
+                        className="cursor-pointer text-2xl text-gray-600 hover:text-text-light"
+                        onClick={() => {
+                            setIsNoti(true);
+                        }}
+                    />
+                    {notiCount > 0 && (
+                        <div className="absolute bottom-[60%]  left-[60%]  aspect-square w-5  rounded-full flex-col-cen bg-red-500 text-[10px] text-white">{notiCount}</div>
+                    )}
+                    {isNoti && <Notification isNoti={isNoti} setIsNoti={setIsNoti} />}
+                </div>
                 <UserlistDropdown />
                 <UserIcon height={40} />
             </div>

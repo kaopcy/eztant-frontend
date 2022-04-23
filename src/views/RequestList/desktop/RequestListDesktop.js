@@ -18,7 +18,7 @@ const RequestListDesktop = () => {
     }, [posts]);
 
     return (
-        <div className="relative flex min-h-[2000px] w-full justify-center">
+        <div className="relative flex min-h-[2000px] w-full  justify-center bg-[#f5f5f5]">
             <RequestSubjectList activeSection={activeSection} posts={posts} active={activeSubject} setActive={setActiveSubject} />
             <MainRequest post={posts[activeSubject]} postNum={activeSubject} setActiveSection={setActiveSection} />
             {!isHideSortPanel && (

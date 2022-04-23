@@ -48,7 +48,7 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
 
     return (
         <div
-            className={`mx-auto flex w-full max-w-[800px] flex-col px-10 text-text outline-2 outline-gray-200 hover:rounded-md hover:outline `}
+            className={`mx-auto bg-white flex w-full max-w-[800px] flex-col px-10 text-text outline-2 outline-gray-200 hover:rounded-md hover:outline `}
             ref={container}>
             <div className="mb-2 flex items-center text-base  ">
                 เซค {table.section}{" "}
