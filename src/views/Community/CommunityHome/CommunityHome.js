@@ -171,9 +171,7 @@ const Post = ({ post, index }) => {
                             <div className="-mt-2 text-sm text-text-light">{post.user.role === "teacher" ? "อาจารย์" : "นักศึกษา"}</div>
                         </div>
                     </div>
-                    <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow date={post.created_at}>
-                        {}
-                    </Moment>
+                    <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow date={post.created_at} />
                 </div>
                 <div className="relative mt-4 flex w-full items-start justify-between overflow-hidden  px-4 md:px-8 lg:px-14 " ref={detailRef}>
                     <div className="flex w-full flex-col">
