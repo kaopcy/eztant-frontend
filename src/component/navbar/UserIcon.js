@@ -96,7 +96,7 @@ const UserIcon = ({ height }) => {
                     leaveTo="transform opacity-0 scale-95">
                     <Menu.Items
                         as="div"
-                        className="absolute -right-2 top-[calc(100%)] flex flex-col items-center space-y-2 rounded-md bg-white py-2 px-1 font-medium shadow-xl">
+                        className="absolute -right-2 top-[calc(100%)] flex flex-col items-center space-y-2 rounded-md bg-white py-2 px-1 font-medium shadow-xl border-2">
                         {/* <div className="triangle-clip absolute -top-1.5 right-3 h-4 w-4 rotate-[135deg] bg-primary"></div> */}
                         {user && loggedLink.map(link => !link.notShow && <Link link={link} key={link.name} />)}
                         {!user && unlogLink.map(link => <Link link={link} key={link.name} />)}

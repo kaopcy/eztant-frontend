@@ -122,7 +122,7 @@ const Input = ({ name, label, register, formState, canEdit, setValue, clearError
         }
     }, [canEdit, clearErrors]);
     return (
-        <div className="flex items-center relative">
+        <div className="relative flex items-center">
             <div className="w-[90px]">{label}</div>
             <input
                 disabled={canEdit}
@@ -137,7 +137,7 @@ const Input = ({ name, label, register, formState, canEdit, setValue, clearError
                 }`}
             />
             <div className="overflow-hidden">
-                <button type="button" ref={icon} onClick={() => setValue(name, "")}>
+                <button type="button" className="disabled:border-none" disabled={canEdit} ref={icon} onClick={() => setValue(name, "")}>
                     <FontAwesomeIcon icon={faTrashAlt} className="px-2 text-red-500" />
                 </button>
             </div>
