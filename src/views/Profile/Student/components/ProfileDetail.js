@@ -182,7 +182,7 @@ const FileInput = ({ name, label, register, formState, watch, resetField, setIsO
         <div className="relative flex items-center">
             <div className="w-[110px]">{label}</div>
             {user.transcript ? (
-                <div onClick={() => setIsOpenTranscript(true)} className="text-secondary underline ">
+                <div onClick={() => setIsOpenTranscript(true)} className="text-secondary underline cursor-pointer">
                     ดูทรานสคริปต์
                 </div>
             ) : (

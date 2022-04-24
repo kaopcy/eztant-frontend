@@ -23,7 +23,10 @@ const LoginDesktop = props => {
     return (
         <InputProvider>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className="fixed inset-0 z-[1002] flex items-center justify-center overflow-y-auto" onClose={() => handleCloseModal()}>
+                <Dialog
+                    as="div"
+                    className="fixed inset-0 z-[1002] flex items-center justify-center overflow-y-auto"
+                    onClose={() => handleCloseModal()}>
                     <>
                         <Transition.Child
                             as={Fragment}
@@ -86,7 +89,7 @@ const MainBody = forwardRef((props, ref) => {
             )
             .to(decorationContainer.current, { yPercent: 100, ease: "power4.in" }, "-=0.75")
             .to("#finished-overlay", { yPercent: 100, ease: "power4.inOut" }, "-=0.4")
-            .fromTo(".stagger-animation", { y: e => (5 - e) * -400 }, { y: 0, duration: 0.8, ease: "power4.out", stagger: { amount: 0.3 } }, "<");
+            .fromTo(".stagger-animation", { y: e => (5 - e) * -400 }, { y: 0, duration: 0.8, ease: "elastic.out(1,1)", stagger: { amount: 0.3 } }, "<");
     };
 
     useEffect(() => {
@@ -100,8 +103,8 @@ const MainBody = forwardRef((props, ref) => {
                 { borderTopLeftRadius: "1.5rem", borderBottomLeftRadius: "1.5rem", width: `60%`, duration: 1, ease: "power3.inOut" },
                 "<0.5"
             )
-            .from(".animated-text", { yPercent: 150, ease: "power4.out" }, "<0.6")
-            .from(".animated-text-2", { yPercent: 150, ease: "power4.out" }, "<0.1");
+            .from(".animated-text", { yPercent: 150, ease: "elastic.out(1,1)" , duration: 1 }, "<0.6")
+            .from(".animated-text-2", { yPercent: 150, ease: "elastic.out(1,1)" , duration: 1 }, "<0.1");
         return () => {
             tl.current.kill();
             tl2.current.kill();
