@@ -10,7 +10,7 @@ import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import TeachTable from "./TeachTable";
 import Like from "../../components/Like";
 
-const PostDesktop = ({ post, setSelectedPost }, ref) => {
+const PostDesktop = ({ post, setSelectedPost }) => {
     const container = useRef(null);
     // useLayoutEffect(() => {
     //     gsap.from(container.current, {

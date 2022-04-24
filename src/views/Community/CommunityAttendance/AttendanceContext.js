@@ -8,8 +8,8 @@ export const AttendanceProvider = ({ children }) => {
     const today = new Date();
     const currentDay = useRef(new Date(`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`));
     const [selectedDay, setSelectedDay] = useState(new Date(currentDay.current));
-
     return (
+        
         <TodayContext.Provider value={currentDay.current}>
             <SelectedDayContext.Provider value={selectedDay}>
                 <SetSelectedDayContext.Provider value={setSelectedDay}>{children}</SetSelectedDayContext.Provider>

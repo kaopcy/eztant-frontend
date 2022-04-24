@@ -1,4 +1,4 @@
-import { REQUEST_LOGIN, REQUEST_LOGIN_SUCCESS , REQUEST_LOGIN_FAILURE, LOGOUT } from "../actions/type";
+import { REQUEST_LOGIN, VIEW_NOTIFICATION, REQUEST_LOGIN_SUCCESS, REQUEST_LOGIN_FAILURE, LOGOUT } from "../actions/type";
 
 const oldUser = JSON.parse(localStorage.getItem("user")) || null;
 
@@ -28,6 +28,17 @@ const authReducer = (state = initState, action) => {
             return {
                 user: null,
             };
+
+        case VIEW_NOTIFICATION: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    notification: [],
+                },
+            };
+        }
+
         default:
             return state;
     }

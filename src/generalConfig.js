@@ -80,7 +80,6 @@ export const SORT_TYPE = [
     },
 ];
 
-
 export const DAY_COLOR = {
     sunday: "#FF1B1B",
     monday: "#FFE600",
@@ -101,6 +100,16 @@ export const DAY_SHORT_TH = {
     saturnday: "ส.",
 };
 
+export const DAY_FULL_TH = {
+    sunday: "อาทิตย์",
+    monday: "จันทร์",
+    tuesday: "อังคาร",
+    wednesday: "พุธ",
+    thursday: "พฤหัส",
+    friday: "ศุกร์",
+    saturnday: "เสาร์",
+};
+
 export const DAY_SHORT_EN = {
     sunday: "SUN",
     monday: "MON",
@@ -112,7 +121,6 @@ export const DAY_SHORT_EN = {
 };
 
 export const GRADE_LIST = ["S", "A", "B+", "B", "C+", "C", "D+", "D", "F"];
-
 
 export const ORDER_TYPE = [
     {
@@ -253,7 +261,7 @@ export const REQUEST_LIST = [
             {
                 section: "101",
                 max_ta: "2",
-                day: "monday",
+                day: "thursday",
                 time_from: "09:00",
                 time_to: "20:00",
                 requested: [],
@@ -261,7 +269,7 @@ export const REQUEST_LIST = [
             {
                 section: "102",
                 max_ta: "2",
-                day: "tuesday",
+                day: "thursday",
                 time_from: "09:00",
                 time_to: "20:00",
                 requested: [
@@ -271,6 +279,8 @@ export const REQUEST_LIST = [
                             imgURL: "https://i.pravatar.cc/300",
                             firstname: "ปิยชัย",
                             lastname: "แก้วชุ่ม",
+                            evidenceURL:
+                                "https://c.tenor.com/1Of-DpNBmgsAAAAd/%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89-%E0%B9%80%E0%B8%9E%E0%B8%B4%E0%B8%94%E0%B8%8A%E0%B8%AD%E0%B8%9A%E0%B8%81%E0%B8%B4%E0%B8%99%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89.gif",
                         },
                         is_accepted: false,
                     },
@@ -682,15 +692,127 @@ export const REQUEST_LIST = [
     },
 ];
 
+export const COMMUNITY = {
+    author: "ปิยชัย แก้วชุ่ม",
+    department: "คอมพิวเตอร์",
+    subjectName: "DATA COMMUNICATION",
+    subjectID: "0100127",
+    wage: "600",
+    year: ["2", "3", "4"],
+    minGrade: "B+",
+    authorAvatar: "https://i.pravatar.cc/398",
+    tables: [
+        {
+            section: "101",
+            max_ta: "2",
+            day: "thursday",
+            time_from: "09:00",
+            time_to: "20:00",
+            requested: [],
+        },
+        {
+            section: "102",
+            max_ta: "2",
+            day: "thursday",
+            time_from: "09:00",
+            time_to: "20:00",
+            requested: [
+                {
+                    user: {
+                        studentID: 63010604,
+                        imgURL: "https://i.pravatar.cc/300",
+                        firstname: "ปิยชัย",
+                        lastname: "แก้วชุ่ม",
+                        evidenceURL:
+                            "https://c.tenor.com/1Of-DpNBmgsAAAAd/%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89-%E0%B9%80%E0%B8%9E%E0%B8%B4%E0%B8%94%E0%B8%8A%E0%B8%AD%E0%B8%9A%E0%B8%81%E0%B8%B4%E0%B8%99%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89.gif",
+                    },
+                },
+                {
+                    user: {
+                        studentID: 63010648,
+                        imgURL: "https://i.pravatar.cc/300",
+                        firstname: "พรหมพิริยะ",
+                        lastname: "แก้วชุ่ม",
+                    },
+                },
+                {
+                    user: {
+                        studentID: 63010679,
+                        imgURL: "https://i.pravatar.cc/300",
+                        firstname: "พิชชาภา",
+                        lastname: "เวียงทอง",
+                    },
+                },
+                {
+                    user: {
+                        studentID: 63010467,
+                        imgURL: "https://i.pravatar.cc/300",
+                        firstname: "ธีรภัทร",
+                        lastname: "เกตุสิงห์น้อย",
+                    },
+                },
+            ],
+        },
+        {
+            section: "103",
+            max_ta: "2",
+            day: "wednesday",
+            time_from: "09:00",
+            time_to: "20:00",
+            requested: [
+                {
+                    user: {
+                        studentID: 63010604,
+                        imgURL: "https://i.pravatar.cc/300",
+                        firstname: "ปิยชัย",
+                        lastname: "แก้วชุ่ม",
+                    },
+                },
+            ],
+        },
+        {
+            section: "104",
+            max_ta: "2",
+            day: "friday",
+            time_from: "09:00",
+            time_to: "20:00",
+            requested: [
+                {
+                    user: {
+                        studentID: 63010604,
+                        imgURL: "https://i.pravatar.cc/300",
+                        firstname: "ปิยชัย",
+                        lastname: "แก้วชุ่ม",
+                    },
+                },
+            ],
+        },
+    ],
+    posts: [
+        {
+            id: "1231231313131312341231",
+            created_at: new Date(2022, 3, 22, 1),
+            body: "ให้นักเรียนทุกคนมาประชุมตอน 18.00 น. @everyone",
+            user: {
+                imgURL: "https://i.pravatar.cc/300",
+                firstname: "ปิยชัย",
+                lastname: "แก้วชุ่ม",
+                role: "teacher",
+            },
+            comments: [
+                {
+                    id: "123109381093812",
+                    created_at: new Date(2022, 3, 20, 18),
+                    body: "ที่ไหนคะไอสัส",
+                    user: {
+                        imgURL: "https://i.pravatar.cc/300",
+                        firstname: "พิชชาภา",
+                        lastname: "เวียงทอง",
+                        role: "student",
+                    },
+                },
+            ],
+        },
+    ],
 
-// List of community that PIYACHAI KAEWCHUM own
-// export const COMMUNITY = [
-//     // community 1 (Data Communication)
-//     {   
-//         name: 
-//         ta:[
-
-//         ]
-//     }
-// ]
-
+};

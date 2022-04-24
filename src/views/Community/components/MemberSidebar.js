@@ -35,7 +35,7 @@ const MemberSidebar = () => {
         },
     ];
     return (
-        <div className="flex h-[calc(100vh-120px)] w-[250px] shrink-0 flex-col overflow-auto rounded-bl-md border-2 bg-[#f5f5f5] text-text shadow-lg">
+        <div className="sticky top-[80px] flex h-[calc(100vh-120px)] w-[250px] shrink-0 flex-col overflow-auto rounded-bl-md border-2 bg-[#f5f5f5] text-text shadow-md">
             <div className="mx-4 mt-14 text-xl font-bold">สมาชิก ({20})</div>
             <Teacher />
             <div className="mt-10 w-full px-4 text-lg font-semibold">TA</div>

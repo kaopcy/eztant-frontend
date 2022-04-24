@@ -5,6 +5,8 @@ export const REQUEST_LOGIN_FAILURE = "REQUEST_LOGIN_FAILURE";
 export const LOGOUT = "LOGOUT";
 export const SIGNIN = "SIGHIN";
 
+export const VIEW_NOTIFICATION = 'VIEW_NOTIFICATION'
+
 export const FETCH_ALL_USERS = "FETCH_ALL_USERS";
 
 export const FETCH_ALL_POST = "FETCH_ALL_POST";

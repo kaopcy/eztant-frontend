@@ -32,10 +32,10 @@ const PreviewPost = () => {
             {tableInput &&
                 inputValue &&
                 (isMobile ? (
-                    <div className="flex-col-cen mt-6 w-full space-y-4 text-text">
+                    <div className="flex-col-cen mt-6 w-full space-y-4 text-text pb-20">
                         <PostMobile post={{ ...inputValue, ...tableInput }} />
                         <button type="submit" className="btn-orange flex-col-cen fixed left-0 bottom-0 z-[100] h-14 w-full">
-                            <Link to="/post-list" className="text-xl font-bold ">ไปยังหน้ารวมโพสต์</Link>
+                            <Link to="/post-list" className="text-xl font-bold ">กลับไปหน้ารวมโพสต์</Link>
                         </button>
                     </div>
                 ) : (

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
 import { v4 as uuid } from "uuid";
 import gsap from "gsap";
@@ -7,32 +7,18 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { DAY_COLOR } from "../../../generalConfig";
+import { getMonthDetails, DAY_MAP, MONTH_MAP_TH } from "../../../utils/calendarUtils";
 
 import { useToday, useSelectedDay, useSetSelectedDay } from "./AttendanceContext";
 
-const DAY_MAP = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-const MONTH_MAP = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const MONTH_MAP_TH = [
-    "มกราคม ",
-    "กุมภาพันธ์ ",
-    "มีนาคม ",
-    "เมษายน ",
-    "พฤษภาคม ",
-    "มิถุนายน ",
-    "กรกฎาคม ",
-    "สิงหาคม ",
-    "กันยายน ",
-    "ตุลาคม ",
-    "พฤศจิกายน ",
-    "ธันวาคม ",
-];
+
 
 const Calendar = forwardRef((_, ref) => {
     const [monthDetail, setMonthDetail] = useState([]);
     const [nextMonthDetail, setNextMonthDetail] = useState([]);
     const [previousMonthDetail, setPreviousMonthDetail] = useState([]);
 
-    const today = useToday()
+    const today = useToday();
     const selectedDay = useSelectedDay();
     const setSelectedDay = useSetSelectedDay();
 
@@ -62,14 +48,28 @@ const Calendar = forwardRef((_, ref) => {
         leftAnimate.current = addAnimate(false);
         rightAnimate.current = addAnimate(true);
 
-        const width = document.querySelector(".calendar").clientWidth;
-        console.log(width);
-        gsap.set(wrapperRef.current, {
-            left: `-${width}px`,
-        });
-        gsap.set(".calendar", {
-            x: i => i * width,
-        });
+        const onResize = () => {
+            console.log("resized");
+            const width = document.querySelector(".calendar").clientWidth;
+            setTimeout(() => {
+                const height = document.querySelector(".calendar").clientHeight;
+                gsap.set(wrapperRef.current, {
+                    left: `-${width}px`,
+                    height: height,
+                });
+            }, 1);
+
+            gsap.set(".calendar", {
+                x: i => i * width,
+            });
+        };
+
+        onResize();
+
+        window.addEventListener("resize", onResize);
+        return () => {
+            window.removeEventListener("resize", onResize);
+        };
     }, []);
 
     const getArrayOfMonth = useCallback(
@@ -80,62 +80,6 @@ const Calendar = forwardRef((_, ref) => {
     );
 
     // main logic
-    const getNumberOfDays = useCallback((year, month) => {
-        return 40 - new Date(year, month, 40).getDate();
-    }, []);
-
-    const getDayDetails = useCallback(
-        args => {
-            let date = args.index - args.firstDay;
-            let day = args.index % 7;
-            let prevMonth = args.month - 1;
-            let prevYear = args.year;
-            if (prevMonth < 0) {
-                prevMonth = 11;
-                prevYear--;
-            }
-            let prevMonthNumberOfDays = getNumberOfDays(prevYear, prevMonth);
-            let _date = (date < 0 ? prevMonthNumberOfDays + date : date % args.numberOfDays) + 1;
-            let month = date < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
-            let timestamp = new Date(args.year, args.month, _date).getTime();
-            return {
-                date: _date,
-                day,
-                month,
-                timestamp,
-                dayString: DAY_MAP[day],
-            };
-        },
-        [getNumberOfDays]
-    );
-
-    const getMonthDetails = useCallback(
-        (year, month) => {
-            let firstDay = new Date(year, month).getDay();
-            let numberOfDays = getNumberOfDays(year, month);
-            let monthArray = [];
-            let rows = 6;
-            let currentDay = null;
-            let index = 0;
-            let cols = 7;
-
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    currentDay = getDayDetails({
-                        index,
-                        numberOfDays,
-                        firstDay,
-                        year,
-                        month,
-                    });
-                    monthArray.push(currentDay);
-                    index++;
-                }
-            }
-            return monthArray;
-        },
-        [getDayDetails, getNumberOfDays]
-    );
 
     useEffect(() => {
         const year = selectedDay.getFullYear();
@@ -143,7 +87,7 @@ const Calendar = forwardRef((_, ref) => {
         setMonthDetail(getMonthDetails(year, month));
         setNextMonthDetail(getMonthDetails(month === 11 ? year + 1 : year, month === 11 ? 0 : month + 1));
         setPreviousMonthDetail(getMonthDetails(month === 0 ? year - 1 : year, month === 0 ? 11 : month - 1));
-    }, [selectedDay, getMonthDetails]);
+    }, [selectedDay]);
 
     const handleNextMonth = () => {
         if (leftAnimate.current.isActive() || rightAnimate.current.isActive()) return;
@@ -187,20 +131,17 @@ const Calendar = forwardRef((_, ref) => {
         );
     };
 
-    const handleSetToday = ()=>{
-        setSelectedDay(new Date(today))
-    }
     return (
-        <>
-            <div className="mb-4 flex w-[420px]  items-center justify-between space-x-2 text-xl text-white">
-                <div className="opacity-0">today</div>
+        <div className="flex w-full max-w-[400px] flex-col items-center">
+            <div className="mb-4 flex  w-full items-center justify-center space-x-2 text-xl text-white ">
+                {/* <div className="opacity-0">today</div> */}
                 <div className="flex items-center">
                     <FontAwesomeIcon
                         icon={faChevronRight}
                         onClick={() => handleNextMonth()}
                         className="h-3  w-3 shrink-0 rotate-180 cursor-pointer rounded-full p-1 hover:bg-white hover:text-secondary"
                     />
-                    <div className="flex w-36 justify-center space-x-2">
+                    <div className="flex w-40 justify-center space-x-2">
                         <div className="font-bold">{MONTH_MAP_TH[selectedDay.getMonth()]}</div>
                         <div className="font-bold">{selectedDay.getFullYear() + 543}</div>
                     </div>
@@ -211,14 +152,12 @@ const Calendar = forwardRef((_, ref) => {
                         className="h-3 w-3 shrink-0 cursor-pointer rounded-full p-1 hover:bg-white hover:text-secondary"
                     />
                 </div>
-                <div className="justify-self-end font-bold hover:underline cursor-pointer"
-                    onClick={()=> handleSetToday()}
-                >today</div>
-                {/* </div> */}
+                {/* <div className="cursor-pointer justify-self-end text-base hover:underline" onClick={() => handleSetToday()}>
+                    วันนี้
+                </div> */}
             </div>
-            <div ref={ref} className="flex  w-[420px] flex-col rounded-md border bg-white p-4 shadow-md">
-                <div className="flex w-full items-center justify-between "></div>
-                <div className="mt-4 flex w-full flex-wrap justify-between text-sm">
+            <div ref={ref} className="flex w-full flex-col items-center rounded-md border bg-white p-4 text-xs shadow-md lg:text-sm">
+                <div className="mt-4 flex w-full flex-wrap justify-between ">
                     {DAY_MAP.map((day, i) => (
                         <div key={uuid()} className="flex-col-cen w-[13%] ">
                             <div className="font-bold uppercase opacity-50" style={{ color: Object.values(DAY_COLOR)[i] }}>
@@ -227,15 +166,15 @@ const Calendar = forwardRef((_, ref) => {
                         </div>
                     ))}
                 </div>
-                <div className=" relative h-[255.6px] w-full overflow-hidden ">
-                    <div ref={wrapperRef} className="relative ">
+                <div className="relative w-full overflow-hidden ">
+                    <div ref={wrapperRef} className="relative">
                         <Month handleClick={handleClick} monthDetail={getArrayOfMonth((activeCalendar - 1) % 3)} />
                         <Month handleClick={handleClick} monthDetail={getArrayOfMonth(activeCalendar % 3)} />
                         <Month handleClick={handleClick} monthDetail={getArrayOfMonth((activeCalendar + 1) % 3)} />
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 });
 
@@ -250,18 +189,31 @@ const Month = ({ monthDetail, handleClick }) => {
     const isSelectedDay = (day, month) => {
         return month === 0 && new Date(selectedDay).getTime() === new Date(day).getTime();
     };
+
     return (
-        <div className="calendar absolute top-0 mt-2 flex w-full flex-wrap justify-between  text-sm">
+        <div className="calendar absolute top-0 mt-2 flex w-full flex-wrap justify-between pb-3 ">
             {monthDetail.map((day, i) => (
                 <div
                     onClick={() => handleClick(day)}
                     key={uuid()}
-                    className={`mx-[2%] mt-1 flex aspect-square w-[10%] shrink-0 cursor-pointer items-center justify-center rounded-full font-semibold ${
-                        day.month === 0 ? "text-text " : "text-gray-300"
-                    } ${isCurrentDay(day.timestamp, day.month) ? "text-secondary" : "text-text"}
-                ${isSelectedDay(day.timestamp, day.month) ? "bg-secondary !text-white" : "bg-white text-text"}
+                    style={{
+                        backgroundColor: isSelectedDay(day.timestamp, day.month)
+                            ? Object.values(DAY_COLOR)[new Date(day.timestamp).getDay()]
+                            : undefined,
+                    }}
+                    className={`relative mx-[2%] mt-1 flex aspect-square w-[10%] shrink-0 cursor-pointer items-center justify-center rounded-full font-semibold ${
+                        day.month === 0 ? "text-text " : "text-gray-200"
+                    } 
+                ${isSelectedDay(day.timestamp, day.month) ? " !text-white" : "bg-white text-text"}
                 `}>
-                    <div className="flex-col-cen w-full py-1">{day.date}</div>
+                    <div
+                        className="absolute inset-0 z-10 aspect-square rounded-full bg-red-50 opacity-10"
+                        style={{
+                            backgroundColor: isCurrentDay(day.timestamp, day.month)
+                                ? Object.values(DAY_COLOR)[new Date(day.timestamp).getDay()]
+                                : "transparent",
+                        }}></div>
+                    <div className="flex-col-cen z-20 w-full py-1">{day.date}</div>
                 </div>
             ))}
         </div>

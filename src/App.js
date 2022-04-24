@@ -30,6 +30,10 @@ const CommunityHome = React.lazy(() => import("./views/Community/CommunityHome/C
 const CommunityAttendance = React.lazy(() => import("./views/Community/CommunityAttendance/CommunityAttendance"));
 const CommunityFile = React.lazy(() => import("./views/Community/CommunityFile/CommunityFile"));
 
+// user profile page
+const ProfileTeacher = React.lazy(() => import("./views/Profile/Teacher/ProfileTeacher"));
+const ProfileStudent = React.lazy(() => import("./views/Profile/Student/ProfileStudent"));
+
 const ProtectedRoute = ({ isAuth, children }) => {
     const { user } = useSelector(state => state.user);
     return <Suspense fallback={<div></div>}>{user ? children : <Navigate to="/" />}</Suspense>;
@@ -41,7 +45,11 @@ const UnprotectedRoute = ({ children }) => {
 
 const TeacherOnlyRoute = ({ children }) => {
     const { user } = useSelector(state => state.user);
-    return <Suspense fallback={<div></div>}>{user.role === "teacher" ? children : <Navigate to={"/"} />}</Suspense>;
+    return <Suspense fallback={<div></div>}>{user && user.role === "teacher" ? children : <Navigate to={"/"} />}</Suspense>;
+};
+const StudentOnlyRoute = ({ children }) => {
+    const { user } = useSelector(state => state.user);
+    return <Suspense fallback={<div></div>}>{user && user.role === "student" ? children : <Navigate to={"/"} />}</Suspense>;
 };
 
 const App = () => {
@@ -49,10 +57,9 @@ const App = () => {
     const navigate = useNavigate();
     const state = location.state;
 
-    const { user } = useSelector(state => state.user)
-    const firstCommunity = user?.community?.[0]?.id || 'no-community'
+    const { user } = useSelector(state => state.user);
+    const firstCommunity = user?.community?.[0]?.id || "no-community";
     const isMobile = useResponsive();
-
 
     // prevent user access some route without background state
     useEffect(() => {
@@ -65,7 +72,7 @@ const App = () => {
     }, [state?.backgroundLocation, location.pathname, navigate, isMobile]);
 
     return (
-        <div className="m-0 flex flex-col bg-white p-0">
+        <div className="m-0 flex flex-col  p-0">
             <Navbar height={80} />
             <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
             {/* this logic used for when not in mobile we want to render background for register */}
@@ -93,6 +100,10 @@ const App = () => {
                     <Route path="/community/:id/file" element={<ProtectedRoute children={<CommunityFile />} />} />
                     <Route index element={<ProtectedRoute children={<CommunityHome />} />} />
                 </Route>
+
+
+                <Route path="/profile/student" element={<StudentOnlyRoute children={<ProfileStudent />} />} />
+                <Route path="/profile/teacher" element={<TeacherOnlyRoute children={<ProfileTeacher />} />} />
 
                 {isMobile && (
                     <>
