@@ -34,7 +34,7 @@ const RequestCount = () => {
             ) : (
                 <div ref={container} className="absolute overflow-hidden px-3">
                     <div key={uuid()} className="stagger-post-animation">
-                        Loading......
+                        กำลังโหลด . . .
                     </div>
                 </div>
             )}
