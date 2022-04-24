@@ -13,7 +13,7 @@ const PostList = React.lazy(() => import("./views/mainpost/PostList"));
 const Home = React.lazy(() => import("./views/home/Home"));
 
 const UserTeacherList = React.lazy(() => import("./views/userList/UserTeacherList/UserTeacherList"));
-const UserStudentList = React.lazy(() => import("./views/userList/UserTeacherList/UserTeacherList"));
+const UserStudentList = React.lazy(() => import("./views/userList/UserStudentList/UserStudentList"));
 // CratePost page
 const CreatePost = React.lazy(() => import("./views/createPost/CreatePost"));
 const FillDetail = React.lazy(() => import("./views/createPost/FillDetail"));
