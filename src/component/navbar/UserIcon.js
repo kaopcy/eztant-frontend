@@ -20,8 +20,10 @@ const UserIcon = ({ height }) => {
         {
             icon: faCircleUser,
             name: "โปรไฟล์",
-            to: "/",
-            onclick: () => {},
+            to: "/profile",
+            onclick: () => {
+                navigate(user.role === "teacher" ? "profile/teacher" : "profile/student");
+            },
         },
         {
             icon: faUserPlus,
@@ -29,7 +31,7 @@ const UserIcon = ({ height }) => {
             notShow: user?.role !== "teacher",
             to: "/",
             onclick: () => {
-            navigate("request-list")
+                navigate("request-list");
             },
         },
         {

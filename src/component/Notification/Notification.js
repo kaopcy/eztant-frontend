@@ -13,7 +13,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     const { user } = useSelector(state => state.user);
     const tempType = useRef("all");
     const [type, setType] = useState("all");
-    const notificationList = useMemo(() => user.notification.filter(e => e.type === type), [user, type]);
+    const notificationList = useMemo(() => user?.notification.filter(e => e.type === type), [user, type]);
 
     const container = useRef(null);
     const animation = useRef(null);
@@ -127,10 +127,19 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
             <Nav type={type} setType={setType} />
             <Divider />
             <FontAwesomeIcon icon={faXmark} className="absolute right-4 top-4 p-4 text-red-500" onClick={() => closeAnimation.current.play()} />
-            {notificationList.length > 0 ? (
-                notificationList.map(data => <EachDetail key={data.id} data={data} />)
+            {user ? (
+                notificationList.length > 0 ? (
+                    notificationList.map(data => <EachDetail key={data.id} data={data} />)
+                ) : (
+                    <div className="each-detail-noti"></div>
+                )
             ) : (
-                <div className="each-detail-noti"></div>
+                <>
+                    <div className="each-detail-noti">
+
+                    </div>
+                    <div className="w-full mt-20 text-center ">กรุณาล็อคอินก่อน</div>
+                </>
             )}
         </div>
     );

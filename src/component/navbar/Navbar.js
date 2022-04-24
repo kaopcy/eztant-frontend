@@ -77,7 +77,7 @@ const DesktopMenu = props => {
     const { location, isLogin } = props;
     const [isNoti, setIsNoti] = useState(false);
     const { user } = useSelector(state => state.user);
-    const notiCount = user.notification.filter(e => !e.isWatched).length;
+    const notiCount = user?.notification.filter(e => !e.isWatched).length;
     return (
         <>
             <div className="flex h-full items-center px-4 md:space-x-6 2md:space-x-8 lg:space-x-14">
