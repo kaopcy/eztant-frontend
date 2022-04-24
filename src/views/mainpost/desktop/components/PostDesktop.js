@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import "moment/locale/th";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 
 import TeachTable from "./TeachTable";
@@ -12,18 +12,17 @@ import Like from "../../components/Like";
 
 const PostDesktop = ({ post, setSelectedPost }) => {
     const container = useRef(null);
-    // useLayoutEffect(() => {
-    //     gsap.from(container.current, {
-    //         autoAlpha: 0,
-    //         yPercent: 50,
-    //         scale: 0.8,
-    //         duration: 1,
-    //         ease: "expo.inOut",
-    //     });
-    // }, [ref]);
+    const animate = useRef(null);
+    const flash = () => {
+        gsap.fromTo(
+            container.current,
+            { outlineStyle: "solid", outlineWidth: 5, outlineColor: "#74c0fc" },
+            { outlineWidth: 0, overwrite: true, ease: "power4.out", duration: 1.5, delay: 0.3 }
+        );
+    };
 
     return (
-        <div ref={container} className="mypost w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md">
+        <div ref={container} className="mypost w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md ">
             <Header post={post} />
             <Detail post={post} />
             <div className="flex justify-end space-x-8">
@@ -32,7 +31,7 @@ const PostDesktop = ({ post, setSelectedPost }) => {
                         <div className="btn-orange rounded-lg px-10 py-2" onClick={() => setSelectedPost(post)}>
                             สมัครเป็น TA
                         </div>
-                        <Like />
+                        <Like flashAnimate={flash} />
                     </>
                 )}
             </div>
@@ -136,7 +135,10 @@ const Detail = ({ post }) => {
             <TeachTable tables={post?.tables} />
             {isOverflow && (
                 <div className="opacity-gradient absolute bottom-0  z-10 h-[100px] w-full cursor-pointer " onClick={() => handleClick()}>
-                    <div className="absolute bottom-0 left-0 self-end text-sm text-text underline">{isShowMore ? "ดูน้อยลง" : "ดูเพิ่มเติม"}</div>
+                    <div className="absolute bottom-0 left-0 self-end text-sm text-primary-dark underline">
+                        {isShowMore ? "ดูน้อยลง" : "ดูเพิ่มเติม"}
+                        <FontAwesomeIcon icon={faChevronDown} className={`ml-4 text-text ${isShowMore ? "rotate-0" : "rotate-180"}`} />
+                    </div>
                 </div>
             )}
         </div>

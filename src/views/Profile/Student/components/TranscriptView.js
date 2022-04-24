@@ -66,7 +66,7 @@ const TranscriptView = ({ transcript, setIsOpenTranscript, isOpenTranscript }) =
                 ref={container}
                 className="fixed z-[1001] flex  flex-col items-center overflow-hidden overflow-y-auto whitespace-nowrap rounded-md border-[2px] border-secondary bg-white py-10 px-32">
                 <div className="self-center text-lg font-bold text-secondary">ทรานสคริปต์ของคุณ</div>
-                <FontAwesomeIcon icon={faXmark} className="absolute top-2 left-2 p-2 text-lg text-red-500" onClick={() => close()} />
+                <FontAwesomeIcon icon={faXmark} className="absolute top-2 left-2 cursor-pointer p-2 text-lg text-red-500" onClick={() => close()} />
                 <div className="flex justify-center">
                     <div className="w-[400px] shrink-0 text-secondary">วิชา</div>
                     <div className="flex-col-cen w-[50px] shrink-0 text-secondary">เกรด</div>

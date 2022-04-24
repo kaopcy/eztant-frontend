@@ -45,21 +45,24 @@ const Desktop = () => {
     const line = useRef(null);
     const detail = useRef(null);
     const inputRef = useRef(null);
-    const initScrollAnimation = useCallback(() => {
-        const tl = gsap.timeline();
 
-        tl.fromTo(
-            container.current,
-            { autoAlpha: 0, borderRadius: "30px", scaleY: 0.6, scaleX: 0.8, backgroundColor: "#747474" },
-            { autoAlpha: 1, backgroundColor: "#4F4F4F", scaleX: 1, scaleY: 1, borderRadius: "0", duration: 1, ease: "expo.inOut" }
-        )
+    const animation = useRef(null);
+
+    const initScrollAnimation = useCallback(() => {
+        animation.current = gsap
+            .timeline()
+            .fromTo(
+                container.current,
+                { autoAlpha: 0, borderRadius: "30px", scaleY: 0.6, scaleX: 0.8, backgroundColor: "#747474" },
+                { autoAlpha: 1, backgroundColor: "#4F4F4F", scaleX: 1, scaleY: 1, borderRadius: "0", duration: 1, ease: "expo.inOut" }
+            )
             .fromTo(line.current, { scaleX: 0 }, { scaleX: 1, duration: 3, ease: "expo.inOut" }, "<")
             .to(container.current, { height: "+=150px", borderRadius: "0", duration: 0.5, ease: "power2.out" }, "<0.8")
             .fromTo(inputRef.current, { yPercent: 200, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, ease: "power2.out" }, "<0.2")
             .fromTo(postText.current, { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, ease: "power4.out" }, "<")
             .fromTo(detail.current, { yPercent: 200, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, ease: "power4.out" }, "<0.2");
         ScrollTrigger.create({
-            animation: tl,
+            animation: animation.current,
             trigger: triggerRef.current,
             toggleActions: "play none none none",
             end: "top 20%",
@@ -88,7 +91,7 @@ const Desktop = () => {
                 </div>
             </div>
             {user && (
-                <div className="flex-cen w-full mt-10">
+                <div className="flex-cen mt-10 w-full">
                     <div className="w-[90%] max-w-[1200px] space-x-4 py-8">
                         <FontAwesomeIcon icon={faThumbsUp} className="text-2xl text-yellow-200" />
                         <span className="text-4xl font-bold text-text ">แนะนำ</span>
