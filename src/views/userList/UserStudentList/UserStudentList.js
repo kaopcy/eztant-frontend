@@ -1,8 +1,17 @@
 import React from 'react'
+import Studentsearchbar from './Studentsearchbar'
+import Studentdirectory from './Studentdirectory'
 
 const UserStudentList = () => {
   return (
-    <div>UserStudentList</div>
+    <div>
+        <div>
+          <Studentsearchbar/>
+        </div>
+        <div>
+          <Studentdirectory/>
+        </div>
+      </div>
   )
 }
 

@@ -280,7 +280,7 @@ const InputSecondPage = forwardRef((props, ref) => {
         <form className="flex-col-cen absolute w-full" ref={ref} onSubmit={handleSubmit}>
             <p className="text-xs text-red-500 absolute right-[16%] top-[5px]">{formErrors.studentID}</p>
             <InputField type="text" name={"studentID"} label={"รหัสนักศึกษา"} onChange={handleChange}/>
-            <p className="text-xs text-red-500 absolute right-[16%] top-[16%]">{formErrors.department}</p>
+            <p className="text-xs text-red-500 absolute right-[16%] top-[70px]">{formErrors.department}</p>
             <InputField type="text" name={"department"} label={"ภาควิชา"} onChange={handleChange}/>
             <p className="text-xs text-red-500 absolute right-[16%] top-[135px]">{formErrors.year}</p>
             <InputField type="text" name={"year"} label={"ชั้นปี"} onChange={handleChange}/>

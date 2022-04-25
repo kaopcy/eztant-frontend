@@ -14,8 +14,17 @@ import { getUser } from "./store/actions/authAction";
 const PostList = React.lazy(() => import("./views/mainpost/PostList"));
 const Home = React.lazy(() => import("./views/home/Home"));
 
+// UserList page
 const UserTeacherList = React.lazy(() => import("./views/userList/UserTeacherList/UserTeacherList"));
-const UserStudentList = React.lazy(() => import("./views/userList/UserTeacherList/UserTeacherList"));
+const UserStudentList = React.lazy(() => import("./views/userList/UserStudentList/UserStudentList"));
+
+// UserDetail page
+const DetailStudentClick = React.lazy(() => import("./views/userdetail/Detail_StudentClick/TA_detail"));
+const DetailTeacherClick = React.lazy(() => import("./views/userdetail/Detail_TeacherClick/Teacher_detail"))
+
+// Error page
+const Error = React.lazy(() => import("./views/errorPage/error"))
+
 // CratePost page
 const CreatePost = React.lazy(() => import("./views/createPost/CreatePost"));
 const FillDetail = React.lazy(() => import("./views/createPost/FillDetail"));
@@ -85,11 +94,16 @@ const App = () => {
             <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
                 <Route index path="/" element={<UnprotectedRoute children={<Home />} />} />
 
+                <Route path="*" element={<UnprotectedRoute children={<Error />} />} />
+
                 <Route path="/post-list/:id" element={<ProtectedRoute children={<PostList />} />} />
                 <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
 
                 <Route path="/user-teacher-list" element={<ProtectedRoute children={<UserTeacherList />} />} />
                 <Route path="/user-student-list" element={<ProtectedRoute children={<UserStudentList />} />} />
+
+                <Route path="/TA-detail" element={<ProtectedRoute children={<DetailStudentClick />} />} />
+                <Route path="/TA-teacherViewDetail" element={<ProtectedRoute children={<DetailTeacherClick />} />} />
 
                 <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
                     <Route element={<ProtectedRoute children={<FillDetail />} />} index />
@@ -117,6 +131,7 @@ const App = () => {
                     </>
                 )}
             </Routes>
+            
 
             {state?.backgroundLocation && !isMobile && (
                 <Routes>

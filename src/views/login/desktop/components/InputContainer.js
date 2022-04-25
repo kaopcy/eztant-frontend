@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useRef } from "react";
+import React, { forwardRef, useContext, useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import gsap from "gsap";
@@ -18,14 +18,53 @@ const InputContainer = forwardRef((props, ref) => {
     const navigate = useNavigate();
     const { isLoading, error } = useSelector(state => state.user);
     const { userinput } = useContext(InputContext);
+    const initialValues = { email: "", password: "" };
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
+    const dispatch = useDispatch();
 
     const loadingRef = useRef(null);
     const loadingTextRef = useRef(null);
 
-    const dispatch = useDispatch();
     const login = () => {
         if (isLoading) return;
         dispatch(AuthLogin(userinput, finishedAnimation));
+    };
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+        console.log(name);
+    };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        // console.log(formValues)
+        const check = validate(formValues);
+        setFormErrors(check);
+        console.log(check);
+        if (Object.keys(check).length === 0) {
+            login();
+        }
+    };
+
+    useEffect(() => {
+        // console.log(formErrors);
+        if (Object.keys(formErrors).length === 0) {
+            console.log(formValues);
+        }
+    }, [formErrors, formValues]);
+
+    const validate = values => {
+        const errors = {};
+
+        if (!values.email) {
+            errors.email = "กรุณากรอกอีเมล์";
+        }
+        if (!values.password) {
+            errors.password = "กรุณากรอกรหัสผ่าน";
+        }
+        return errors;
     };
 
     return (
@@ -37,11 +76,13 @@ const InputContainer = forwardRef((props, ref) => {
                 <div className="text-base text-gray-500">หรือ</div>
                 <div className="h-[2px] w-1/4 bg-gray-200"></div>
             </div>
-            <div className="relative flex w-full flex-col items-center">
+            <form onSubmit={handleSubmit} className="relative flex w-full flex-col items-center">
                 {error && <div className="absolute -top-4 text-sm text-red-500 ">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>}
                 <div className="flex-col-cen input-group mb-2 w-[95%] max-w-[380px] items-start xs:w-[85%]">
-                    <Input type="email" label="อีเมล์" />
-                    <Input type="password" inputType="password" label="รหัสผ่าน" />
+                    <p className="absolute right-[115px] top-[225px] text-xs text-red-500">{formErrors.email}</p>
+                    <Input onChange={handleChange} type="email" name={"email"} label="อีเมล์" />
+                    <p className="absolute right-[115px] top-[285px] text-xs text-red-500">{formErrors.password}</p>
+                    <Input onChange={handleChange} type="password" name={"password"} label="รหัสผ่าน" />
                     <div className="mt-2 mb-6 self-end text-xs text-primary underline ">ลืมรหัสผ่าน</div>
                     <div className="input-group mt-4 flex w-full items-center justify-center space-x-8">
                         <button
@@ -52,19 +93,17 @@ const InputContainer = forwardRef((props, ref) => {
                         </button>
                         <div className="w-full">
                             <SmallLoading isLoading={isLoading} gap={4}>
-                                <button
-                                    className="btn-orange flex-cen group h-12 w-full  space-x-3 rounded-2xl border-4 px-6 py-1"
-                                    onClick={() => login()}>
+                                <button className="btn-orange flex-cen group h-12 w-full  space-x-3 rounded-2xl border-4 px-6 py-1">
                                     <SmallLoading.Title>
                                         <div>เข้าสุ่ระบบ</div>
                                     </SmallLoading.Title>
-                                    <SmallLoading.Loader>ควย</SmallLoading.Loader>
+                                    <SmallLoading.Loader>Success</SmallLoading.Loader>
                                 </button>
                             </SmallLoading>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <div className="flex-cen mt-8 w-[80%] items-center justify-center space-x-1">
                 <span className="text-xs text-gray-400">ยังไม่มีบัญชี?</span>
                 <span
@@ -90,8 +129,7 @@ const InputContainer = forwardRef((props, ref) => {
     );
 });
 
-const Input = props => {
-    const { type, label, inputType } = props;
+const Input = ({ type, label, onChange, name }) => {
     const { userinput, handleInputUpdate: handleInput } = useContext(InputContext);
     const { error } = useSelector(state => state.user);
     const inputRef = useRef(null);
@@ -107,18 +145,11 @@ const Input = props => {
             gsap.to(inputRef.current, { outlineStyle: "solid", outlineWidth: 2, outlineOffset: -1, outlineColor: "red" });
         }
     }, [error]);
-    
+
     return (
         <>
             <div className="input-label  ">{label}</div>
-            <input
-                ref={inputRef}
-                type={inputType ?? "text"}
-                value={userinput[type]}
-                onChange={handleInput}
-                name={type}
-                className="input-register py-1 text-xl"
-            />
+            <input type={type} onChange={onChange} name={name} className="input-register py-1 text-xl" />
         </>
     );
 };

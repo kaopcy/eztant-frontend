@@ -60,6 +60,16 @@
     .loading {
         @apply h-8 w-8  rounded-full border-[3px]  border-r-0 border-white bg-transparent;
     }
+    .flex-con-col{
+        @apply flex flex-col items-center justify-center
+    }
+    .flex-con-row{
+        @apply flex flex-row items-center justify-center
+    }
+    .flex-con{
+        @apply flex justify-center
+    }
+
 }
 
 * {
