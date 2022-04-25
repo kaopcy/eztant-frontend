@@ -84,7 +84,7 @@ const CreateTableMobile = () => {
             <Add ref={addRef} index={length} register={register} errors={errors} />
             <button
                 type="button"
-                disabled={isTableEmpty}
+                disabled={isTableEmpty }
                 onClick={() => {
                     if (isOpenChooseDate) {
                         chooseDateRef.current.submit();
@@ -103,7 +103,7 @@ const CreateTableMobile = () => {
 const ChooseCloseDate = forwardRef(({ setIsOpenChooseDate }, ref) => {
     const {
         register,
-        formState: { errors },
+        formState: { errors, isValid },
         handleSubmit,
     } = useForm({ mode: "onChange" });
     const navigate = useNavigate();
@@ -124,8 +124,9 @@ const ChooseCloseDate = forwardRef(({ setIsOpenChooseDate }, ref) => {
         reverse: cb => {
             animate.current.reverse().eventCallback("onReverseComplete", cb || null);
         },
-        submit: async () => {
+        submit: () => {
             const onSubmit = data => {
+                if (!isValid) return;
                 setTableInput(e => ({
                     ...e,
                     ...data,
@@ -133,9 +134,9 @@ const ChooseCloseDate = forwardRef(({ setIsOpenChooseDate }, ref) => {
                     department: user.department,
                     authorAvatar: user.imgURL,
                 }));
+                navigate("/create-post/preview-post");
             };
-            await handleSubmit(onSubmit)();
-            navigate("/create-post/preview-post");
+            handleSubmit(onSubmit)();
         },
     }));
 

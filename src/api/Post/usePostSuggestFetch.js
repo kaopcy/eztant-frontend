@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { POSTS } from "../../generalConfig";
 
 export default function usePostSuggestApi() {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [postSuggest, setPostSuggest] = useState([]);
 

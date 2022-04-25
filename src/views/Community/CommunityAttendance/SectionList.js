@@ -8,7 +8,7 @@ import { useSelectedDay } from "./AttendanceContext";
 
 import { DAY_COLOR, DAY_SHORT_EN, DAY_FULL_TH } from "../../../generalConfig";
 // mocked post list of random user
-import { REQUEST_LIST } from "../../../generalConfig";
+import { COMMUNITY } from "../../../generalConfig";
 
 const SectionList = () => {
     const selectedDay = useSelectedDay();
@@ -43,7 +43,7 @@ const SectionList = () => {
 
     useEffect(() => {
         const selectedDayString = Object.keys(DAY_SHORT_EN)[selectedDay.getDay()];
-        setPost(REQUEST_LIST[0].tables.filter(e => e.day === selectedDayString));
+        setPost(COMMUNITY.tables.filter(e => e.day === selectedDayString));
         setSelectedTa(null);
     }, [selectedDay]);
 

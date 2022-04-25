@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer, useState } from "react";
 import { useSelector } from "react-redux";
-import { COMMUNITY } from "../../../generalConfig";
+import { COMMUNITY } from "../../generalConfig";
 
 import { v4 as uuid } from "uuid";
 
@@ -27,6 +27,7 @@ const reducer = (state, { type, payload }) => {
                         file: {
                             name: payload.file?.name,
                             size: payload.file?.size,
+                            created_at: new Date(),
                         },
                     },
                     ...state.posts,
@@ -75,6 +76,7 @@ const reducer = (state, { type, payload }) => {
 };
 
 export const CommunityContext = createContext();
+export const CommunityActionContext = createContext();
 
 export const Provider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, COMMUNITY);
@@ -84,8 +86,7 @@ export const Provider = ({ children }) => {
         console.log(state);
     }, [state]);
 
-    const value = {
-        community: state,
+    const action = {
         addPost: (newPost, file) => {
             dispatch({ type: actions.ADD_POST, payload: { newPost, user, file } });
         },
@@ -97,5 +98,9 @@ export const Provider = ({ children }) => {
         },
     };
 
-    return <CommunityContext.Provider value={value}>{children}</CommunityContext.Provider>;
+    return (
+        <CommunityActionContext.Provider value={action}>
+            <CommunityContext.Provider value={state}>{children}</CommunityContext.Provider>;
+        </CommunityActionContext.Provider>
+    );
 };

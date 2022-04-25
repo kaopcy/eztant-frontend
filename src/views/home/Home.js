@@ -6,17 +6,31 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import ManyPeople from "../../assets/images/ManyPeople";
 import PostSuggest from "./Components/PostSuggest";
+import CommunitySuggest from "./Components/CommunitySuggest";
+import Member from "./Components/Member";
+import Test from "../home/Components/Test";
 
 const Home = () => {
     return (
-        <div className="relative flex w-full flex-col bg-white pb-10">
+        <div className="relative flex w-full flex-col bg-white">
             <div className="first relative mb-10 flex min-h-[calc(100vh-80px)] w-full flex-col  bg-white px-6 md:flex-row md:px-10">
                 <WelcomQuote />
                 <ImageQuote />
             </div>
-            <PostSuggest />
-            <div className="last h-screen"></div>
-            {/* <BackgroundImage /> */}
+            <div className="h-[1000px] w-full">
+                <PostSuggest />
+            </div>
+            <div className="h-16"></div>
+            <CommunitySuggest />
+            <div className="h-16"></div>
+            <Member />
+            {/* <div className="flex w-full flex-col space-y-4 bg-secondary text-white">
+                <div className="">ปิยชัย แก้วชุ่ม (เก้า)</div>
+                <div className="">พรหมพิริยะ เจริญพานทองดี (บูม)</div>
+                <div className="">พิชชาภา เวียงทอง (เพิร์ธ)</div>
+                <div className="">นาวีฮาน เต๊ะหมาน (นาบิน)</div>
+                <div className="">ธีรพัฒน์ เกตุสิงห์น้อย (โดนัท)</div>
+            </div> */}
         </div>
     );
 };
@@ -45,9 +59,9 @@ const ImageQuote = () => {
         tl.from(".stagger-image-quote", {
             yPercent: i => (i + 1) * -70,
             opacity: 0,
-            delay: 2,
-            duration: 1,
-            ease: "power4.out",
+            delay: 1,
+            duration: 1.4,
+            ease: "elastic.out(1.4,0.8)",
             stagger: { amount: 0.2 },
         });
     }, []);
@@ -77,10 +91,10 @@ const WelcomQuote = () => {
 
     useEffect(() => {
         const tl = gsap.timeline({ delay: 0.3 });
-        tl.to(fadeBackgroundRef.current, { yPercent: 100, autoAlpha: 1, ease: "power2.inOut", duration: 1 })
-            .from(".welcome-quote-animation", { xPercent: 250, duration: 0.8, ease: "power1.in" })
-            .to(fadeBackgroundRef.current, { width: 0, transformOrigin: "0% 100%", autoAlpha: 0, ease: "power2.in", duration: 0.8 }, "<")
-            .from(".welcome-name-animation", { yPercent: -130 });
+        tl.to(fadeBackgroundRef.current, { yPercent: 100, autoAlpha: 1, ease: "elastic.out(1.3,0.7)", duration: 1 })
+            .to(fadeBackgroundRef.current, { width: 0, transformOrigin: "0% 100%", autoAlpha: 0, ease: "power2.in", duration: 0.8 }, "<0.5")
+            .from(".welcome-quote-animation", { xPercent: 250, duration: 0.8, ease: "elastic.out(1,1)" })
+            .from(".welcome-name-animation", { yPercent: -130, ease: "elastic.out(2,1)" }, "<0.2");
         return () => tl.kill();
     }, []);
 

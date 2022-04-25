@@ -726,7 +726,6 @@ export const COMMUNITY = {
                         evidenceURL:
                             "https://c.tenor.com/1Of-DpNBmgsAAAAd/%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89-%E0%B9%80%E0%B8%9E%E0%B8%B4%E0%B8%94%E0%B8%8A%E0%B8%AD%E0%B8%9A%E0%B8%81%E0%B8%B4%E0%B8%99%E0%B8%9B%E0%B8%B5%E0%B9%82%E0%B8%9B%E0%B9%89.gif",
                     },
-                    is_accepted: false,
                 },
                 {
                     user: {
@@ -735,7 +734,6 @@ export const COMMUNITY = {
                         firstname: "พรหมพิริยะ",
                         lastname: "แก้วชุ่ม",
                     },
-                    is_accepted: true,
                 },
                 {
                     user: {
@@ -744,7 +742,6 @@ export const COMMUNITY = {
                         firstname: "พิชชาภา",
                         lastname: "เวียงทอง",
                     },
-                    is_accepted: false,
                 },
                 {
                     user: {
@@ -753,7 +750,6 @@ export const COMMUNITY = {
                         firstname: "ธีรภัทร",
                         lastname: "เกตุสิงห์น้อย",
                     },
-                    is_accepted: false,
                 },
             ],
         },
@@ -771,7 +767,6 @@ export const COMMUNITY = {
                         firstname: "ปิยชัย",
                         lastname: "แก้วชุ่ม",
                     },
-                    is_accepted: false,
                 },
             ],
         },
@@ -789,7 +784,6 @@ export const COMMUNITY = {
                         firstname: "ปิยชัย",
                         lastname: "แก้วชุ่ม",
                     },
-                    is_accepted: false,
                 },
             ],
         },
@@ -820,4 +814,5 @@ export const COMMUNITY = {
             ],
         },
     ],
+
 };
