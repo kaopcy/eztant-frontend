@@ -28,7 +28,7 @@ const InputContainer = forwardRef((props, ref) => {
 
     const login = () => {
         if (isLoading) return;
-        dispatch(AuthLogin(userinput, finishedAnimation));
+        dispatch(AuthLogin(formValues, finishedAnimation));
     };
 
     const handleChange = e => {
@@ -86,6 +86,7 @@ const InputContainer = forwardRef((props, ref) => {
                     <div className="mt-2 mb-6 self-end text-xs text-primary underline ">ลืมรหัสผ่าน</div>
                     <div className="input-group mt-4 flex w-full items-center justify-center space-x-8">
                         <button
+                            type="button"
                             className=" group flex h-12 w-[11rem] items-center justify-center space-x-2 rounded-2xl border-4 border-secondary px-2 py-1 hover:bg-secondary"
                             onClick={() => onClose()}>
                             <FontAwesomeIcon className="text-lg text-secondary group-hover:text-white" icon={faChevronLeft} />
@@ -93,7 +94,7 @@ const InputContainer = forwardRef((props, ref) => {
                         </button>
                         <div className="w-full">
                             <SmallLoading isLoading={isLoading} gap={4}>
-                                <button className="btn-orange flex-cen group h-12 w-full  space-x-3 rounded-2xl border-4 px-6 py-1">
+                                <button type="submit" className="btn-orange flex-cen group h-12 w-full  space-x-3 rounded-2xl border-4 px-6 py-1">
                                     <SmallLoading.Title>
                                         <div>เข้าสุ่ระบบ</div>
                                     </SmallLoading.Title>
@@ -149,7 +150,7 @@ const Input = ({ type, label, onChange, name }) => {
     return (
         <>
             <div className="input-label  ">{label}</div>
-            <input type={type} onChange={onChange} name={name} className="input-register py-1 text-xl" />
+            <input ref={inputRef} type={type} onChange={onChange} name={name} className="input-register py-1 text-xl" />
         </>
     );
 };

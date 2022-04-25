@@ -125,7 +125,7 @@ const WelcomQuote = () => {
                 </div>
             </div>
             {user && (
-                <div className="overflow-hidden">
+                <div className="overflow-hidden mt-10"  >
                     <div className="welcome-name-animation self-center text-[15px] tracking-wider text-text 2md:text-[16px] lg:text-[18px] xl:text-[21px]">
                         <span>
                             ยินดีต้อนรับ{user.role === "teacher" ? "อาจารย์" : "นักศึกษา"} '{user.name?.title} {user?.firstname} {user?.lastname}'

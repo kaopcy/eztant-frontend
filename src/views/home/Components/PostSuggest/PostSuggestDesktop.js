@@ -81,7 +81,7 @@ const PostSuggestDesktop = ({ isLoading, postSuggest }) => {
                         ? [...Array(3)].map((_, index) => (
                               <SwiperSlide
                                   key={index}
-                                  className="testtesttest flex-col-cen w-[350px] justify-start overflow-hidden rounded-xl border-[2px] bg-white ">
+                                  className="testtesttest flex-col-cen w-[350px] justify-start  rounded-xl border-[2px] bg-white ">
                                   <div className="flex-cen h-32 w-full justify-start space-x-4 bg-primary-dark px-3 leading-none text-white">
                                       <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full  bg-blue-800 "></div>
                                       <div className="flex w-full min-w-0 flex-col items-start justify-center">
@@ -120,7 +120,7 @@ const PostSuggestDesktop = ({ isLoading, postSuggest }) => {
                               <SwiperSlide
                                   onClick={e => handlePostClick(e, post.subjectName)}
                                   key={post.subjectID}
-                                  className="testtesttest flex-col-cen w-[350px] justify-start overflow-hidden rounded-xl border-[2px] bg-white ">
+                                  className="testtesttest flex-col-cen w-[350px] justify-start  rounded-xl border-[2px] bg-white ">
                                   <div className="flex-cen h-32 w-full justify-start space-x-4 bg-primary-dark px-3 leading-none text-white">
                                       <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-white bg-orange-200">
                                           <img src={post?.authorAvatar} className="h-full w-full" alt="" />

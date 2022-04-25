@@ -1,4 +1,4 @@
-import React, { Fragment, forwardRef, useRef, useEffect } from "react";
+import React, { Fragment, forwardRef, useRef, useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,10 @@ const RegisterDesktop = props => {
     return (
         <InputProvider>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className="fixed inset-0 z-[1002] flex items-center justify-center overflow-y-auto" onClose={() => handleCloseModal()}>
+                <Dialog
+                    as="div"
+                    className="fixed inset-0 z-[1002] flex items-center justify-center overflow-y-auto"
+                    onClose={() => handleCloseModal()}>
                     <>
                         <Transition.Child
                             as={Fragment}
@@ -64,6 +67,7 @@ const MainBody = forwardRef((props, ref) => {
         setCurRole(role);
     };
     const [isRegSuccess, setIsRegSuccess] = useState(false);
+
     const handleOnRegSuccess = () => {
         setIsRegSuccess(true);
     };
@@ -72,7 +76,6 @@ const MainBody = forwardRef((props, ref) => {
     const secondaryContainer = useRef(null);
     const mainContainer = useRef(null);
     useNonInitialEffect(() => {
-        // document.getElementById('').offsetParent
         const curSecondConH = secondaryContainer.current.offsetHeight;
         const curSecondConW = secondaryContainer.current.offsetWidth;
         const curSecondConT = secondaryContainer.current.offsetParent;
@@ -136,7 +139,7 @@ const MainBody = forwardRef((props, ref) => {
     }, [isRegSuccess]);
 
     return (
-        <div ref={ref} className="flex-cen relative h-[550px] w-[80%] max-w-[1000px] transform transition-all ">
+        <div ref={ref} className="flex-cen relative h-[600px] w-[80%] max-w-[1000px] transform transition-all ">
             <div ref={mainContainer} className="relative flex h-full w-full bg-white shadow-md ">
                 <button></button>
                 <RoleSelecter changeRole={changeRole} role={curRole} />
@@ -157,7 +160,7 @@ const RoleSelecter = ({ changeRole, role }) => {
             {/* role */}
             <div className="absolute bottom-[20px] flex h-full w-full flex-col items-center justify-end overflow-hidden">
                 <div
-                    className="vertical-text flex-col-cen absolute bottom-[183.3px] h-1/4 w-full cursor-pointer text-lg text-gray-800 hover:bg-slate-100  md:h-1/3 md:text-2xl"
+                    className="vertical-text flex-col-cen absolute bottom-[200.3px] h-1/4 w-full cursor-pointer text-lg text-gray-800 hover:bg-slate-100  md:h-1/3 md:text-2xl"
                     onClick={() => changeRole("teacher")}>
                     อาจารย์
                 </div>
@@ -202,16 +205,17 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
     };
 
     useEffect(() => {
+        const offset = taPicture.current.height.animVal.value;
         gsap.set(finishedOverlay.current, { yPercent: -100 });
+        gsap.set(teacherPicture.current, { y: offset });
+        gsap.set(taPicture.current, { y: offset });
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const offset = taPicture.current.height.animVal.value;
-        const tl = gsap.timeline();
-        gsap.set(teacherPicture.current, { y: offset });
-
         if (role === "student") {
-            tl.to(taPicture.current, { ease: Back.easeOut.config(1.4), duration: 1, y: 0 }).to(
+            gsap.timeline().to(taPicture.current, { ease: Back.easeOut.config(1.4), duration: 1, y: 0 })
+            .to(
                 teacherPicture.current,
                 { ease: Power4.easeOut, duration: 1, y: offset },
                 "<"
@@ -219,7 +223,7 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
         }
 
         if (role === "teacher") {
-            tl.to(taPicture.current, { duration: 1, ease: Power4.easeOut, y: offset }).to(
+            gsap.timeline().to(taPicture.current, { duration: 1, ease: Power4.easeOut, y: offset }).to(
                 teacherPicture.current,
                 { ease: Back.easeOut.config(1.4), duration: 1, y: 0 },
                 "<"
@@ -228,16 +232,23 @@ const SecondaryBody = forwardRef(({ role, isRegSuccess }, ref) => {
     }, [role]);
 
     useNonInitialEffect(() => {
-        const tl = gsap.timeline();
-        tl.to(container.current, { y: "100%", duration: 1, ease: "power4.inOut" }, "+=1")
-            .to(finishedOverlay.current, { yPercent: 0, duration: 1, ease: Back.easeInOut.config(2) }, "<")
-            .fromTo(".stagger-animation", { y: e => (5 - e) * -100 }, { y: 0, duration: 0.6, ease: "power4.inOut", stagger: { amount: 0.4 } }, "<");
+        if (isRegSuccess) {
+            const tl = gsap.timeline();
+            tl.to(container.current, { y: "100%", duration: 1, ease: "power4.inOut" }, "+=1")
+                .to(finishedOverlay.current, { yPercent: 0, duration: 1, ease: Back.easeInOut.config(2) }, "<")
+                .fromTo(
+                    ".stagger-animation",
+                    { y: e => (5 - e) * -100 },
+                    { y: 0, duration: 0.6, ease: "power4.inOut", stagger: { amount: 0.4 } },
+                    "<"
+                );
+        }
     }, [isRegSuccess]);
 
     return (
         <div
             ref={ref}
-            className=" relative hidden h-[605px] w-full self-center overflow-hidden bg-primary text-lg  font-medium text-white shadow-2xl md:flex">
+            className=" relative hidden h-[650px] w-full self-center overflow-hidden bg-primary text-lg  font-medium text-white shadow-2xl md:flex">
             <div className="relative flex h-full w-full flex-col items-center space-y-2 " ref={container}>
                 <span className="mt-4 text-3xl font-medium text-white">ลงทะเบียน</span>
                 <span className="h-[1.5px] w-[65%] bg-white "></span>

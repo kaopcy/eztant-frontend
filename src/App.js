@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
 
+import { QueryClientProvider, QueryClient } from "react-query";
+
 import Navbar from "./component/navbar/Navbar";
 
 import { getUser } from "./store/actions/authAction";
@@ -20,10 +22,10 @@ const UserStudentList = React.lazy(() => import("./views/userList/UserStudentLis
 
 // UserDetail page
 const DetailStudentClick = React.lazy(() => import("./views/userdetail/Detail_StudentClick/TA_detail"));
-const DetailTeacherClick = React.lazy(() => import("./views/userdetail/Detail_TeacherClick/Teacher_detail"))
+const DetailTeacherClick = React.lazy(() => import("./views/userdetail/Detail_TeacherClick/Teacher_detail"));
 
 // Error page
-const Error = React.lazy(() => import("./views/errorPage/error"))
+const Error = React.lazy(() => import("./views/errorPage/error"));
 
 // CratePost page
 const CreatePost = React.lazy(() => import("./views/createPost/CreatePost"));
@@ -68,6 +70,8 @@ const App = () => {
     const navigate = useNavigate();
     const state = location.state;
 
+    const queryClient = new QueryClient();
+
     const { user } = useSelector(state => state.user);
     const firstCommunity = user?.community?.[0]?.id || "no-community";
     const isMobile = useResponsive();
@@ -87,59 +91,60 @@ const App = () => {
     }, [state?.backgroundLocation, location.pathname, navigate, isMobile]);
 
     return (
-        <div className="m-0 flex flex-col  p-0">
-            <Navbar height={80} />
-            <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
-            {/* this logic used for when not in mobile we want to render background for register */}
-            <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
-                <Route index path="/" element={<UnprotectedRoute children={<Home />} />} />
+        <QueryClientProvider client={queryClient}>
+            <div className="m-0 flex flex-col  p-0">
+                <Navbar height={80} />
+                <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
+                {/* this logic used for when not in mobile we want to render background for register */}
+                <Routes location={!isMobile ? state?.backgroundLocation : null || location}>
+                    <Route index path="/" element={<UnprotectedRoute children={<Home />} />} />
 
-                <Route path="*" element={<UnprotectedRoute children={<Error />} />} />
+                    <Route path="*" element={<UnprotectedRoute children={<Error />} />} />
 
-                <Route path="/post-list/:id" element={<ProtectedRoute children={<PostList />} />} />
-                <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
+                    <Route path="/post-list/:id" element={<ProtectedRoute children={<PostList />} />} />
+                    <Route path="/post-list/" element={<ProtectedRoute children={<Navigate to="/post-list/all-department" replace />} />} />
 
-                <Route path="/user-teacher-list" element={<ProtectedRoute children={<UserTeacherList />} />} />
-                <Route path="/user-student-list" element={<ProtectedRoute children={<UserStudentList />} />} />
+                    <Route path="/user-teacher-list" element={<ProtectedRoute children={<UserTeacherList />} />} />
+                    <Route path="/user-student-list" element={<ProtectedRoute children={<UserStudentList />} />} />
 
-                <Route path="/TA-detail" element={<ProtectedRoute children={<DetailStudentClick />} />} />
-                <Route path="/TA-teacherViewDetail" element={<ProtectedRoute children={<DetailTeacherClick />} />} />
+                    <Route path="/TA-detail" element={<ProtectedRoute children={<DetailStudentClick />} />} />
+                    <Route path="/TA-teacherViewDetail" element={<ProtectedRoute children={<DetailTeacherClick />} />} />
 
-                <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
-                    <Route element={<ProtectedRoute children={<FillDetail />} />} index />
-                    <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
-                    <Route path="/create-post/preview-post" element={<ProtectedRoute children={<PreviewPost />} />} />
-                </Route>
+                    <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
+                        <Route element={<ProtectedRoute children={<FillDetail />} />} index />
+                        <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
+                        <Route path="/create-post/preview-post/:id" element={<ProtectedRoute children={<PreviewPost />} />} />
+                    </Route>
 
-                <Route path="request-list" element={<TeacherOnlyRoute children={<RequestList />} />} />
+                    <Route path="request-list" element={<TeacherOnlyRoute children={<RequestList />} />} />
 
-                <Route path="community" element={<ProtectedRoute children={<Navigate to={`/community/${firstCommunity}`} replace />} />} />
-                <Route path="community/:id" element={<ProtectedRoute children={<Community />} />}>
-                    <Route path="/community/:id/attendance" element={<ProtectedRoute children={<CommunityAttendance />} />} />
-                    <Route path="/community/:id/receipt" element={<ProtectedRoute children={<CommunityReceipt />} />} />
-                    <Route path="/community/:id/file" element={<ProtectedRoute children={<CommunityFile />} />} />
-                    <Route index element={<ProtectedRoute children={<CommunityHome />} />} />
-                </Route>
+                    <Route path="community" element={<ProtectedRoute children={<Navigate to={`/community/${firstCommunity}`} replace />} />} />
+                    <Route path="community/:id" element={<ProtectedRoute children={<Community />} />}>
+                        <Route path="/community/:id/attendance" element={<ProtectedRoute children={<CommunityAttendance />} />} />
+                        <Route path="/community/:id/receipt" element={<ProtectedRoute children={<CommunityReceipt />} />} />
+                        <Route path="/community/:id/file" element={<ProtectedRoute children={<CommunityFile />} />} />
+                        <Route index element={<ProtectedRoute children={<CommunityHome />} />} />
+                    </Route>
 
-                <Route path="/profile/student" element={<StudentOnlyRoute children={<ProfileStudent />} />} />
-                <Route path="/profile/teacher" element={<TeacherOnlyRoute children={<ProfileTeacher />} />} />
+                    <Route path="/profile/student" element={<StudentOnlyRoute children={<ProfileStudent />} />} />
+                    <Route path="/profile/teacher" element={<TeacherOnlyRoute children={<ProfileTeacher />} />} />
 
-                {isMobile && (
-                    <>
-                        <Route path="/register" element={<RegisterMobile />} />
-                        <Route path="/login" element={<LoginMobile />} />
-                    </>
-                )}
-            </Routes>
-            
-
-            {state?.backgroundLocation && !isMobile && (
-                <Routes>
-                    <Route path="/register" element={<RegisterDesktop />} />
-                    <Route path="/login" element={<LoginDesktop />} />
+                    {isMobile && (
+                        <>
+                            <Route path="/register" element={<RegisterMobile />} />
+                            <Route path="/login" element={<LoginMobile />} />
+                        </>
+                    )}
                 </Routes>
-            )}
-        </div>
+
+                {state?.backgroundLocation && !isMobile && (
+                    <Routes>
+                        <Route path="/register" element={<RegisterDesktop />} />
+                        <Route path="/login" element={<LoginDesktop />} />
+                    </Routes>
+                )}
+            </div>
+        </QueryClientProvider>
     );
 };
 

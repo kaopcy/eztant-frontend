@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useLayoutEffect, useMemo } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { useResponsive } from "../../composables/context/useResponsive";
 
@@ -10,37 +10,44 @@ import PostMobile from "../mainpost/mobile/components/PostMobile";
 import PostDesktop from "../mainpost/desktop/components/PostDesktop";
 
 import { POSTS } from "../../generalConfig";
+import { useFetchPostByID } from "../../composables/fetch/useFetchPost";
+import { castPostFromDatabase } from "../../utils/castDataName";
 
 const PreviewPost = () => {
     const navigate = useNavigate();
-
-    const inputValue = useInput();
-    const tableInput = useTableInput();
+    const { id } = useParams();
 
     const isMobile = useResponsive();
+    const { data, isLoading, error , mutate } = useFetchPostByID();
 
-    useEffect(() => {
-        if (!inputValue || !tableInput) {
-            navigate("/create-post");
-        } else {
-            POSTS.push({ ...inputValue, ...tableInput });
-        }
-    }, [inputValue, tableInput, navigate]);
+    useEffect(()=>{
+        mutate(id)
+    },[mutate , id])
+
+    const isReady = useMemo(() => {
+        return data && !isLoading ;
+    }, [data, isLoading]);
+
+    const post = useMemo(() => {
+        console.log(data.data[0]);
+        return data?.data[0] && castPostFromDatabase(data?.data);
+    }, [data]);
 
     return (
         <div className="w-full">
-            {tableInput &&
-                inputValue &&
+            {/* {post &&
                 (isMobile ? (
-                    <div className="flex-col-cen mt-6 w-full space-y-4 text-text pb-20">
-                        <PostMobile post={{ ...inputValue, ...tableInput }} />
+                    <div className="flex-col-cen mt-6 w-full space-y-4 pb-20 text-text">
+                        <PostMobile post={post} />
                         <button type="submit" className="btn-orange flex-col-cen fixed left-0 bottom-0 z-[100] h-14 w-full">
-                            <Link to="/post-list" className="text-xl font-bold ">กลับไปหน้ารวมโพสต์</Link>
+                            <Link to="/post-list" className="text-xl font-bold ">
+                                กลับไปหน้ารวมโพสต์
+                            </Link>
                         </button>
                     </div>
                 ) : (
                     <div className="flex-col-cen mt-6 space-y-4 text-text">
-                        <PostDesktop post={{ ...inputValue, ...tableInput }} />
+                        <PostDesktop post={post} />
                         <div className="flex w-[768px] space-x-6">
                             <Link
                                 to="/create-post"
@@ -52,7 +59,7 @@ const PreviewPost = () => {
                             </Link>
                         </div>
                     </div>
-                ))}
+                ))} */}
         </div>
     );
 };

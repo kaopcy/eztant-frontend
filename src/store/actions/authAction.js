@@ -23,6 +23,7 @@ export const getUser = () => async dispatch => {
             },
         });
     } catch (error) {
+        localStorage.clear("jwt");
         console.log(error);
     }
 };
@@ -40,23 +41,18 @@ export const login = (userinput, cb) => async dispatch => {
         console.log(error);
         dispatch({ type: REQUEST_LOGIN_FAILURE });
     }
-    dispatch(getUser())
+    dispatch(getUser());
 };
 
 export const register = (userinput, cb) => async dispatch => {
     try {
-        dispatch({ type: REQUEST_LOGIN });
-        const {
-            data: { token },
-        } = await axios.post(`${url}/api/users/login`, userinput);
-        await localStorage.setItem("jwt", JSON.stringify(token));
-        dispatch({ type: REQUEST_LOGIN_SUCCESS });
+        const { data } = await axios.post(`${url}/api/users/register`, userinput);
+        console.log(data);
         if (cb) cb();
+        console.log("success");
     } catch (error) {
-        console.log(error);
-        dispatch({ type: REQUEST_LOGIN_FAILURE });
+        console.log(error.response.data);
     }
-    dispatch(getUser())
 };
 
 export const logout = () => {
