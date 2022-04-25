@@ -13,7 +13,7 @@ export const Studentdisplay = ({ users, loading}) => {
         <div className='list-group border-b-[1.5px]'>
             <div className='bg-white group-hover:ring-1 ring-slate-300 flex w-full items-center py-[1%] justify-between'>
                 <div className='flex h-[full] w-[80%] items-center px-2 md:space-x-6 xs:space-x-3'>
-                    <img className='lg:h-[80px] md:h-[65px] h-[50px] w-auto rounded-[70%] overflow-hidden m-[1%] items-center' src={(boomImg)}></img>
+                    <img className='lg:h-[80px] md:h-[65px] h-[50px] w-auto rounded-[70%] overflow-hidden m-[1%] items-center  object-cover' src={(boomImg)} alt=""></img>
                     <div key={users.id}>
                         <h1 className='font-bold text-sm lg:text-xl md:text-lg'>
                             {users.name}

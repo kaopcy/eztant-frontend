@@ -11,7 +11,7 @@ const Teacherdisplay = ({post, loading}) => {
     return (
         <div className='p-[1%] group'>
             <div className='bg-white group-hover:ring-1 ring-slate-300 w-[230px] h-[270px] p-[3%] justify-center'>
-                <img className=' h-[40%] w-auto rounded-[70%] overflow-hidden m-0 items-center mx-[27%] mt-[5%]' src={(boomImg)}></img>
+                <img className=' h-[40%] w-auto rounded-[70%] overflow-hidden m-0 items-center mx-[27%] mt-[5%] object-cover' src={(boomImg)} alt=""></img>
                 <div key={post.id} className='font-bold text-center justify-center flex-col text-lg pt-[10%]'>
                     {post.name}
                 </div>
