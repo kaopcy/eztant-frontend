@@ -13,7 +13,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     const { user } = useSelector(state => state.user);
     const tempType = useRef("all");
     const [type, setType] = useState("all");
-    const notificationList = useMemo(() => user?.notification.filter(e => e.type === type), [user, type]);
+    const notificationList = useMemo(() => user?.notifications.filter(e => e.type === type), [user, type]);
 
     const container = useRef(null);
     const animation = useRef(null);
@@ -121,7 +121,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     return (
         <div
             ref={container}
-            className="absolute top-[140%] -right-10 w-[450px]  overflow-hidden  whitespace-nowrap rounded-lg border-2  bg-white font-normal  text-text shadow-md">
+            className="absolute top-[140%] -right-10 max-w-[450px] w-screen  overflow-hidden  whitespace-nowrap rounded-lg border-2  bg-white font-normal  text-text shadow-md">
             <Triangle />
             <div className="py-4  px-4 text-2xl">การแจ้งเตือน</div>
             <Nav type={type} setType={setType} />

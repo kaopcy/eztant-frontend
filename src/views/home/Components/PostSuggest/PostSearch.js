@@ -50,10 +50,10 @@ const Desktop = () => {
 
     useLayoutEffect(() => {
         animation.current = gsap
-            .timeline({ scrollTrigger: { trigger: triggerRef.current, markers: true, start: "top 80%" } })
+            .timeline({ scrollTrigger: { trigger: triggerRef.current, start: "top 80%" } })
             .fromTo(postText.current, { yPercent: 200 }, { yPercent: 0, ease: "elastic.out(1.2,1)", duration: 1 })
-            .fromTo(detail.current, { yPercent: 250 }, { yPercent: 0, ease: "elastic.out(1.3,1)", duration: 1.6 } , '<')
-            .fromTo(line.current, { scaleX: 0 }, { scaleX: 1, ease: "elastic.out(1.2,1)", duration: 1 } , '<');
+            .fromTo(detail.current, { yPercent: 250 }, { yPercent: 0, ease: "elastic.out(1.3,1)", duration: 1.6 }, "<")
+            .fromTo(line.current, { scaleX: 0 }, { scaleX: 1, ease: "elastic.out(1.2,1)", duration: 1 }, "<");
     }, []);
 
     return (

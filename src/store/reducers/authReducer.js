@@ -1,15 +1,20 @@
-import { REQUEST_LOGIN, VIEW_NOTIFICATION, REQUEST_LOGIN_SUCCESS, REQUEST_LOGIN_FAILURE, LOGOUT } from "../actions/type";
+import { GET_USER, REQUEST_LOGIN, VIEW_NOTIFICATION, REQUEST_LOGIN_SUCCESS, REQUEST_LOGIN_FAILURE, LOGOUT } from "../actions/type";
 
-const oldUser = JSON.parse(localStorage.getItem("user")) || null;
 
-const initState = { user: oldUser, isLoading: false, error: false };
+const initState = { user: null, isLoading: false, error: false };
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
+        case GET_USER:
+        return{
+            ...state,
+            user: action?.payload
+        };
         case REQUEST_LOGIN:
             return {
                 ...state,
                 isLoading: true,
+                error: false
             };
         case REQUEST_LOGIN_SUCCESS:
             return {

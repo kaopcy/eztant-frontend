@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 import { useResponsive } from "../../composables/context/useResponsive";
 
@@ -77,7 +77,9 @@ const DesktopMenu = props => {
     const { location, isLogin } = props;
     const [isNoti, setIsNoti] = useState(false);
     const { user } = useSelector(state => state.user);
-    const notiCount = user?.notification.filter(e => !e.isWatched).length;
+    const notiCount = useMemo(() => {
+        return user?.notifications.filter(e => !e.isWatched).length;
+    }, [user]);
     return (
         <>
             <div className="flex h-full items-center px-4 md:space-x-6 2md:space-x-8 lg:space-x-14">
@@ -114,7 +116,9 @@ const DesktopMenu = props => {
                         }}
                     />
                     {notiCount > 0 && (
-                        <div className="absolute bottom-[60%]  left-[60%]  aspect-square w-5  rounded-full flex-col-cen bg-red-500 text-[10px] text-white">{notiCount}</div>
+                        <div className="flex-col-cen absolute  bottom-[60%]  left-[60%] aspect-square  w-5 rounded-full bg-red-500 text-[10px] text-white">
+                            {notiCount}
+                        </div>
                     )}
                     {isNoti && <Notification isNoti={isNoti} setIsNoti={setIsNoti} />}
                 </div>

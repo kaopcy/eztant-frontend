@@ -156,7 +156,7 @@ const MockUser = forwardRef(({ name, id, img, role }, ref) => {
         };
     }, []);
     return (
-        <div ref={ref} className="haha -mb-4 flex w-[400px] flex-col items-center text-lg ">
+        <div ref={ref} className="haha -mb-4 flex w-[33%] flex-col items-center text-lg ">
             <div ref={roleRef} className="z-10 mb-2 text-xl font-bold uppercase text-secondary ">
                 {role}
             </div>

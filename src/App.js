@@ -1,13 +1,15 @@
 import React, { Suspense, useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate, Navigate, Link } from "react-router-dom";
 import { useResponsive } from "./composables/context/useResponsive";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
 
 import Navbar from "./component/navbar/Navbar";
+
+import { getUser } from "./store/actions/authAction";
 
 const PostList = React.lazy(() => import("./views/mainpost/PostList"));
 const Home = React.lazy(() => import("./views/home/Home"));
@@ -60,6 +62,10 @@ const App = () => {
     const { user } = useSelector(state => state.user);
     const firstCommunity = user?.community?.[0]?.id || "no-community";
     const isMobile = useResponsive();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getUser());
+    }, [dispatch]);
 
     // prevent user access some route without background state
     useEffect(() => {
@@ -100,7 +106,6 @@ const App = () => {
                     <Route path="/community/:id/file" element={<ProtectedRoute children={<CommunityFile />} />} />
                     <Route index element={<ProtectedRoute children={<CommunityHome />} />} />
                 </Route>
-
 
                 <Route path="/profile/student" element={<StudentOnlyRoute children={<ProfileStudent />} />} />
                 <Route path="/profile/teacher" element={<TeacherOnlyRoute children={<ProfileTeacher />} />} />
