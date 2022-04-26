@@ -77,9 +77,15 @@ const DesktopMenu = props => {
     const { location, isLogin } = props;
     const [isNoti, setIsNoti] = useState(false);
     const { user } = useSelector(state => state.user);
+
+    const [watchedNoti , setWatchedNoti] = useState(false)
+    useEffect(()=>{
+        if(isNoti && !watchedNoti) setWatchedNoti(true)
+    }, [isNoti , watchedNoti])
+
     const notiCount = useMemo(() => {
-        return user?.notifications.filter(e => !e.isWatched).length;
-    }, [user]);
+        return !watchedNoti ? user?.notifications.filter(e => !e.is_watched).length : 0;
+    }, [user , watchedNoti]);
     return (
         <>
             <div className="flex h-full items-center px-4 md:space-x-6 2md:space-x-8 lg:space-x-14">
@@ -120,7 +126,7 @@ const DesktopMenu = props => {
                             {notiCount}
                         </div>
                     )}
-                    {isNoti && <Notification isNoti={isNoti} setIsNoti={setIsNoti} />}
+                    {isNoti && <Notification  isNoti={isNoti} setIsNoti={setIsNoti} />}
                 </div>
                 <UserlistDropdown />
                 <UserIcon height={40} />

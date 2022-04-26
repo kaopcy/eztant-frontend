@@ -6,7 +6,6 @@ const url = "http://localhost:8000";
 export const getUser = setIsloading => async dispatch => {
     const jwt = JSON.parse(localStorage.getItem("jwt")) || null;
     if (!jwt) return setIsloading();
-    console.log("dwadadwadwada");
     try {
         const { data: userData } = await axios.get(`${url}/api/users/getme`, {
             headers: {
@@ -31,7 +30,6 @@ export const getUser = setIsloading => async dispatch => {
 };
 
 export const login = (userinput, cb) => async dispatch => {
-    console.log("wadwadwada");
     try {
         dispatch({ type: REQUEST_LOGIN });
         const {

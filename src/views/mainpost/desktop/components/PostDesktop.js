@@ -12,6 +12,7 @@ import Like from "../../components/Like";
 import { useSelector } from "react-redux";
 
 const PostDesktop = ({ post, setSelectedPost }) => {
+    const { user } = useSelector(state => state.user);
     const container = useRef(null);
     const animate = useRef(null);
     const flash = () => {
@@ -26,13 +27,22 @@ const PostDesktop = ({ post, setSelectedPost }) => {
         <div ref={container} className="mypost w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md ">
             <Header post={post} />
             <Detail post={post} />
-            <div className="flex justify-end space-x-8">
+            <div className="relative flex justify-end space-x-8">
                 {setSelectedPost && (
                     <>
-                        <div className="btn-orange rounded-lg px-10 py-2" onClick={() => setSelectedPost(post)}>
+                        <button
+                            type="button"
+                            disabled={user?.role === "teacher"}
+                            className="btn-orange group relative rounded-lg px-10 py-2"
+                            onClick={() => setSelectedPost(post)}>
+                            {user?.role === "teacher" && (
+                                <div className="invisible absolute left-1/2  bottom-[120%] z-20  h-full  -translate-x-1/2 whitespace-nowrap  rounded-md  border  bg-white px-4 py-3 text-sm text-text transition-all group-hover:visible">
+                                    สำหรับนักเรียนเท่านั้น
+                                </div>
+                            )}
                             สมัครเป็น TA
-                        </div>
-                        <Like flashAnimate={flash} />
+                        </button>
+                        <Like flashAnimate={flash} likes={post.likes} postID={post._id} />
                     </>
                 )}
             </div>

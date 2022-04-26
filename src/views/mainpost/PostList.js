@@ -23,7 +23,7 @@ const PostList = () => {
 const Inside = () => {
     const isMobile = useResponsive();
     const { id } = useParams();
-    const { error, isLoading, posts } = usePostListFetch(id);
+    const { error, isLoading, posts , totalPage } = usePostListFetch(id);
 
     useEffect(() => {
         console.log(posts);
@@ -31,7 +31,7 @@ const Inside = () => {
 
     return (
         <div className="min-h-screen w-full bg-[#f5f5f5]">
-            {!isMobile && <PostListDesktop postList={posts} isLoading={isLoading} />}
+            {!isMobile && <PostListDesktop totalPage={totalPage} postList={posts} isLoading={isLoading} />}
             {isMobile && <PostListMobile postList={posts} isLoading={isLoading} />}
         </div>
     );

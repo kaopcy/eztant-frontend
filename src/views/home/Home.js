@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -23,7 +23,6 @@ const Home = () => {
             <div className="h-16"></div>
             <CommunitySuggest />
             <div className="h-16"></div>
-            <Member />
             {/* <div className="flex w-full flex-col space-y-4 bg-secondary text-white">
                 <div className="">ปิยชัย แก้วชุ่ม (เก้า)</div>
                 <div className="">พรหมพิริยะ เจริญพานทองดี (บูม)</div>
@@ -31,6 +30,7 @@ const Home = () => {
                 <div className="">นาวีฮาน เต๊ะหมาน (นาบิน)</div>
                 <div className="">ธีรพัฒน์ เกตุสิงห์น้อย (โดนัท)</div>
             </div> */}
+            <Member />
         </div>
     );
 };
@@ -125,7 +125,7 @@ const WelcomQuote = () => {
                 </div>
             </div>
             {user && (
-                <div className="overflow-hidden mt-10"  >
+                <div className="mt-10 overflow-hidden">
                     <div className="welcome-name-animation self-center text-[15px] tracking-wider text-text 2md:text-[16px] lg:text-[18px] xl:text-[21px]">
                         <span>
                             ยินดีต้อนรับ{user.role === "teacher" ? "อาจารย์" : "นักศึกษา"} '{user.name?.title} {user?.firstname} {user?.lastname}'

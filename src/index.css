@@ -52,7 +52,7 @@
         clip-path: polygon(0 0, 0% 100%, 100% 100%);
     }
     .btn-orange {
-        @apply cursor-pointer border border-transparent bg-secondary text-white transition-colors duration-200 hover:border-secondary hover:bg-white hover:text-secondary disabled:cursor-default  disabled:border-gray-200  disabled:bg-white disabled:!text-gray-200;
+        @apply cursor-pointer border border-transparent bg-secondary text-white transition-colors duration-200 hover:border-secondary hover:bg-white hover:text-secondary disabled:!cursor-default  disabled:border-gray-200  disabled:bg-white disabled:!text-gray-200;
     }
     .btn-white {
         @apply cursor-pointer border border-secondary bg-white text-secondary transition-colors duration-200  hover:border-transparent  hover:bg-secondary  hover:text-white;
