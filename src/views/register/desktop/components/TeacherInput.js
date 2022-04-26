@@ -1,26 +1,42 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useRef, useState, useLayoutEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { InputContext } from "../../contexts/InputContext";
+import { RoughEase } from "gsap/EasePack";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
-import GoogleRegister from "./GoogleRegister";
 import SmallLoading from "../../../../component/utils/SmallLoading";
-import { register } from "../../../../store/actions/authAction";
-import { useDispatch } from "react-redux";
+import { useRegister } from "../../useRegister";
 
 const TeacherInput = props => {
     const { role, onClose, handleOnRegSuccess } = props;
-    const dispatch = useDispatch()
     const navigate = useNavigate();
     const initialValues = { firstname: "", lastname: "", email: "", password: "", phone: "" };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
 
+    const onErrorAnimation = () => {
+        gsap.fromTo(
+            ".input-register",
+            { x: -1 },
+            { x: 1, ease: RoughEase.ease.config({ strength: 8, points: 20, randomize: false }), clearProps: "x" }
+        );
+    };
+
+    const { data, error, isLoading, mutate } = useRegister(handleOnRegSuccess, onErrorAnimation);
+
     const handleChange = e => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (name === "firstname" || name === "lastname") {
+            if (/[^ก-๏]/g.test(value)) setFormErrors({ ...formErrors, [name]: "กรุณากรอกชื่อภาษาไทยเท่านั้น" });
+            else
+                setFormErrors(old => {
+                    const { [name]: firstname, ...other } = old;
+                    return other;
+                });
+        }
+        if (name === "firstname" || name === "lastname") value = value.replace(/[^ก-๏]/g, "");
         setFormValues({ ...formValues, [name]: value });
     };
 
@@ -29,12 +45,17 @@ const TeacherInput = props => {
         const check = validate(formValues);
         setFormErrors(check);
         if (Object.keys(check).length === 0) {
-            dispatch(register({...formValues , role: 'teacher'}, handleOnRegSuccess))
+            mutate({ ...formValues, role: "teacher" });
         }
     };
 
+    const errorMessage = useMemo(() => {
+        return error?.response?.data?.message || null;
+    }, [error]);
+
     const container = useRef(null);
-    useEffect(() => {
+
+    useLayoutEffect(() => {
         gsap.set(container.current, {
             position: "absolute",
             y: container.current.offsetHeight * 1.2,
@@ -43,7 +64,7 @@ const TeacherInput = props => {
         });
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const tl = gsap.timeline();
         if (role === "teacher") {
             tl.to(container.current, {
@@ -110,8 +131,6 @@ const TeacherInput = props => {
         return errors;
     };
 
-    const [isLoading, setIsLoading] = useState(false);
-
     return (
         <div ref={container} className="flex-col-cen h-full w-full">
             {/* <GoogleRegister />
@@ -120,37 +139,38 @@ const TeacherInput = props => {
                 <span className="text-[13px] text-gray-500">หรือ</span>
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400"></span>
             </div> */}
-            <div className="text-xl text-text mb-6">อาจารย์</div>
+            <div className="mb-6 text-xl text-text">อาจารย์</div>
+            {errorMessage && <div className="text-sm tracking-tight text-red-500">{errorMessage}</div>}
             <form onSubmit={handleSubmit} className="flex-col-cen w-full">
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
                     <p className="absolute right-[70px] top-[100px] text-xs text-red-500">{formErrors.firstname}</p>
                     <div className="input-label  ">ชื่อ</div>
-                    <input type="text" onChange={handleChange} name={"firstname"} className="input-register" />
+                    <input type="text" onChange={handleChange} value={formValues.firstname} name={"firstname"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
                     <p className="absolute right-[70px] top-[165px] text-xs text-red-500">{formErrors.lastname}</p>
                     <div className="input-label  ">นามสกุล</div>
-                    <input type="text" onChange={handleChange} name={"lastname"} className="input-register" />
+                    <input type="text" onChange={handleChange} value={formValues.lastname} name={"lastname"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
                     <p className="absolute right-[70px] top-[230px] text-xs text-red-500">{formErrors.email}</p>
                     <div className="input-label  ">อีเมล์</div>
-                    <input type="email" onChange={handleChange} name={"email"} className="input-register" />
+                    <input type="email" onChange={handleChange} name={"email"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
                     <p className="absolute right-[70px] top-[295px] text-xs text-red-500">{formErrors.password}</p>
                     <div className="input-label  ">รหัสผ่าน</div>
-                    <input type="password" onChange={handleChange} name={"password"} className="input-register" />
+                    <input type="password" onChange={handleChange} name={"password"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
                     <p className="absolute right-[70px] top-[360px] text-xs text-red-500">{formErrors.phone}</p>
                     <div className="input-label  ">เบอร์โทรศัพท์</div>
-                    <input type="text" onChange={handleChange} name={"phone"} className="input-register" />
+                    <input type="text" onChange={handleChange} name={"phone"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
                     <p className="absolute right-[70px] top-[360px] text-xs text-red-500">{formErrors.phone}</p>
                     <div className="input-label  ">ภาควิชา</div>
-                    <input type="text" onChange={handleChange} name={"department"} className="input-register" />
+                    <input type="text" onChange={handleChange} name={"department"} className="input-register " />
                 </div>
                 {/* btn wrapper */}
                 <div className="input-group mt-4 flex items-center justify-center space-x-8">

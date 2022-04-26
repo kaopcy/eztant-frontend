@@ -18,24 +18,24 @@ const PreviewPost = () => {
     const { id } = useParams();
 
     const isMobile = useResponsive();
-    const { data, isLoading, error , mutate } = useFetchPostByID();
+    const { data, isLoading, error, mutate } = useFetchPostByID();
 
-    useEffect(()=>{
-        mutate(id)
-    },[mutate , id])
+    useEffect(() => {
+        mutate(id);
+    }, [mutate, id]);
 
     const isReady = useMemo(() => {
-        return data && !isLoading ;
+        return data && !isLoading;
     }, [data, isLoading]);
 
     const post = useMemo(() => {
-        console.log(data.data[0]);
-        return data?.data[0] && castPostFromDatabase(data?.data);
+        console.log(data?.data[0]);
+        return data?.data[0] && castPostFromDatabase(data?.data[0]);
     }, [data]);
 
     return (
         <div className="w-full">
-            {/* {post &&
+            {post &&
                 (isMobile ? (
                     <div className="flex-col-cen mt-6 w-full space-y-4 pb-20 text-text">
                         <PostMobile post={post} />
@@ -59,7 +59,7 @@ const PreviewPost = () => {
                             </Link>
                         </div>
                     </div>
-                ))} */}
+                ))}
         </div>
     );
 };

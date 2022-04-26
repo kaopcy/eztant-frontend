@@ -72,14 +72,12 @@ const Desktop = () => {
                     <SearchBarDesktop ref={inputRef} />
                 </div>
             </div>
-            {user && (
                 <div className="flex-cen mt-10 w-full">
                     <div className="w-[90%] max-w-[1200px] space-x-4 py-8">
                         <FontAwesomeIcon icon={faThumbsUp} className="text-2xl text-primary-dark" />
                         <span className="text-4xl font-bold text-text ">แนะนำ</span>
                     </div>
                 </div>
-            )}
         </>
     );
 };
