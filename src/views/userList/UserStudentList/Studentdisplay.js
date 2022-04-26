@@ -13,11 +13,10 @@ const Studentdisplay = ({user}) => {
                     <img className='lg:h-[80px] md:h-[65px] h-[50px] w-auto rounded-[70%] overflow-hidden m-[1%] items-center  object-cover' src={(boomImg)} alt=""></img>
                     <div>
                         <h1 className='font-bold text-sm lg:text-xl md:text-lg'>
-                            {user.firstname}
+                            {user.firstname} {user.lastname}
                         </h1>
-                        <p className='text-text-light text-sm lg:text-xl md:text-lg'>
-                        {user.studentID}
-                        {user.department}
+                        <p className='text-text-light text-xs lg:text-xl md:text-lg'>
+                        {user.student_id} {user.department}
                         </p>
                     </div>
                 </div>

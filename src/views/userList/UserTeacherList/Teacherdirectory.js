@@ -12,15 +12,15 @@ const Teacherdirectory =()=>{
     }, [mutate ]);
 
     useEffect(()=>{
-        console.log(user?.data)
+        console.log(user?.data.users)
     },[user])
-    const newUser = useMemo(()=>{
-        return user?.data?.slice(0,-1)
-    },[user])
+    // const newUser = useMemo(()=>{
+    //     return user?.data.slice(0,-1)
+    // },[user])
     return(
         <div className="w-full h-full min-h-screen bg-zinc-100 pb-[7%] py-[2%] px-[10%]">
             <div  className='flex justify-center flex-wrap'>
-                {!isLoading && newUser?.map(personalData => {
+                {!isLoading && user?.data.users.map(personalData => {
                     return <Teacherdisplay key={uuid()} user={personalData}/>
                 })}
             </div>

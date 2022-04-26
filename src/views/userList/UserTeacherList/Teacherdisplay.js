@@ -11,7 +11,7 @@ const Teacherdisplay = ({user}) => {
             <div className='bg-white group-hover:ring-1 ring-slate-300 w-[230px] h-[270px] p-[3%] justify-center'>
                 <img className=' h-[40%] w-auto rounded-[70%] overflow-hidden m-0 items-center mx-[27%] mt-[5%] object-cover' src={(boomImg)} alt=""></img>
                 <div className='font-bold text-center justify-center flex-col text-lg pt-[10%]'>
-                    {user.firstname}
+                    {user.firstname} {user.lastname}
                 </div>
                 <div className='font-thin text-center justify-center flex-col text-sm p-[2%]'>
                     {user.department}

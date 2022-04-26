@@ -16,7 +16,7 @@ const Studentdirectory = () =>{
     }, [mutate ]);
 
     useEffect(()=>{
-        console.log(user?.data)
+        console.log(user?.data.users)
     },[user])
 
     // Get current posts
@@ -27,7 +27,7 @@ const Studentdirectory = () =>{
     return(
         <div className="w-full h-full min-h-screen bg-zinc-100 pt-[4%] pb-[7%] px-[5%] md:px-[10%] lg:px-[20%]" >
             <div className='flex justify-center flex-col ring-slate-900'>
-                {!isLoading && user?.data.map(personalData => {
+                {!isLoading && user?.data.users.map(personalData => {
                     return <Studentdisplay key={uuid()} user={personalData} />
                 })}
             </div>
