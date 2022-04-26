@@ -52,7 +52,7 @@ export const max_taValidate = {
     onChange: e => (e.target.value = /[0-9]+/g.exec(e.target.value)?.[0] || ""),
     validate: {
         min_Length: value => value.length > 0 || "กรุณากรอกจำนวน TA",
-        max: value => (value.length <= 0 ? true : parseInt(value) <= 15 || "รับ TA ได้ไม่เกิน 15 คน"),
+        max: value => (value.length <= 0 ? true : parseInt(value) <= 10 || "รับ TA ได้ไม่เกิน 15 คน"),
         min: value => (value.length <= 0 ? true : parseInt(value) > 0 || "ต้องมี TA อย่างน้อย 1 คน"),
     },
 };

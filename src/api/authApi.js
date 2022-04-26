@@ -1,16 +1,13 @@
 import axios from "axios";
 
-const url = "http://localhost:5000";
+const url = "http://localhost:8000";
 
 export const fetchUser = async userinput => {
-    console.log("fetching...");
-    const data = await new Promise(resolve => {
-        setTimeout(async () => {
-            const res = await axios.get(`https://randomuser.me/api/?seed=${userinput.email}`);
-            resolve(res);
-        }, 1000);
-    });
-    return data;
+    try {
+        
+    } catch (error) {
+        
+    }    
 };
 
 export const register = async (userinput, setIsLoading, setError) => {

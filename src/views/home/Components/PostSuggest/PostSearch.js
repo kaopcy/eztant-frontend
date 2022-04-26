@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useResponsive } from "../../../../composables/context/useResponsive";
 import { useSelector } from "react-redux";
 
@@ -48,35 +48,17 @@ const Desktop = () => {
 
     const animation = useRef(null);
 
-    const initScrollAnimation = useCallback(() => {
+    useLayoutEffect(() => {
         animation.current = gsap
-            .timeline()
-            .fromTo(
-                container.current,
-                { autoAlpha: 0, borderRadius: "30px", scaleY: 0.6, scaleX: 0.8, backgroundColor: "#747474" },
-                { autoAlpha: 1, backgroundColor: "#4F4F4F", scaleX: 1, scaleY: 1, borderRadius: "0", duration: 1, ease: "expo.inOut" }
-            )
-            .fromTo(line.current, { scaleX: 0 }, { scaleX: 1, duration: 3, ease: "expo.inOut" }, "<")
-            .to(container.current, { height: "+=150px", borderRadius: "0", duration: 0.5, ease: "power2.out" }, "<0.8")
-            .fromTo(inputRef.current, { yPercent: 200, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, ease: "power2.out" }, "<0.2")
-            .fromTo(postText.current, { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, ease: "power4.out" }, "<")
-            .fromTo(detail.current, { yPercent: 200, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, ease: "power4.out" }, "<0.2");
-        ScrollTrigger.create({
-            animation: animation.current,
-            trigger: triggerRef.current,
-            toggleActions: "play none none none",
-            end: "top 20%",
-            start: "top 100%",
-        });
+            .timeline({ scrollTrigger: { trigger: triggerRef.current, start: "top 80%" } })
+            .fromTo(postText.current, { yPercent: 200 }, { yPercent: 0, ease: "elastic.out(1.2,1)", duration: 1 })
+            .fromTo(detail.current, { yPercent: 250 }, { yPercent: 0, ease: "elastic.out(1.3,1)", duration: 1.6 }, "<")
+            .fromTo(line.current, { scaleX: 0 }, { scaleX: 1, ease: "elastic.out(1.2,1)", duration: 1 }, "<");
     }, []);
-
-    useEffect(() => {
-        initScrollAnimation();
-    }, [initScrollAnimation]);
 
     return (
         <>
-            <div ref={triggerRef} className="m-auto h-[330px] w-[90%] max-w-[1200px] ">
+            <div ref={triggerRef} className="m-auto  w-[90%] max-w-[1200px] ">
                 <div ref={container} className="flex-col-cen h-[calc(100%-150px)] w-full overflow-hidden bg-text px-20  text-white">
                     <div className="flex-col-cen mt-16 mb-8 w-full space-y-7">
                         <div ref={postText} className="text-4xl font-semibold">
@@ -90,14 +72,12 @@ const Desktop = () => {
                     <SearchBarDesktop ref={inputRef} />
                 </div>
             </div>
-            {user && (
                 <div className="flex-cen mt-10 w-full">
                     <div className="w-[90%] max-w-[1200px] space-x-4 py-8">
-                        <FontAwesomeIcon icon={faThumbsUp} className="text-2xl text-yellow-200" />
+                        <FontAwesomeIcon icon={faThumbsUp} className="text-2xl text-primary-dark" />
                         <span className="text-4xl font-bold text-text ">แนะนำ</span>
                     </div>
                 </div>
-            )}
         </>
     );
 };

@@ -8,22 +8,22 @@ import { useSelector } from "react-redux";
 
 const NavSidebar = () => {
     const {
-        user: { community },
+        user: { communities },
     } = useSelector(state => state.user);
     const subjectLinks = [
         {
             color: "bg-red-500",
-            to: community?.[0]?.id,
+            to: communities?.[0]?.id,
             name: "DATA COMMUNICATION",
         },
         {
             color: "bg-blue-600",
-            to: community?.[1]?.id,
+            to: communities?.[1]?.id,
             name: "DATA COMMUNICATION",
         },
         {
             color: "bg-green-600",
-            to: community?.[2]?.id,
+            to: communities?.[2]?.id,
             name: "DATA COMMUNICATION",
         },
     ];

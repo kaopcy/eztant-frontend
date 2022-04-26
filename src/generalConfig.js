@@ -814,5 +814,19 @@ export const COMMUNITY = {
             ],
         },
     ],
+};
 
+export const DEPARTMENT_MAP = {
+    'All Department': "รวมทุกภาควิชา",
+    Agricultural: "การเกษตร",
+    Computer: "คอมพิวเตอร์",
+    Chemistry: "เคมี",
+    Mechanical: "เครื่องกล",
+    Industial: "อุตสาหการ",
+    Biomedical: "ชีวการแพทย์",
+    Telecommunications: "โทรคมนาคม",
+    Electrical: "ไฟฟ้า",
+    Civil: "โยธา",
+    Food: "อาหาร",
+    Electronic: "อิเล็กโทรนิคส์",
 };

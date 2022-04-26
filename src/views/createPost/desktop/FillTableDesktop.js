@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { faChevronRight, faClose, faWarning, faPlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import gsap from "gsap";
+import { RoughEase } from "gsap/EasePack";
 
 import { useSetTableInput, useTableInput } from "../context/tableCreatePostContext";
 import { useInput } from "../context/inputCreatePostContext";
 import { timeValidate, sectionValidate, max_taValidate, closeDateValidate } from "../../../utils/createTableInputValidate";
 import { useSelector } from "react-redux";
+import useCreatePost from "../useCreatePost";
 
 const FillTableDesktop = () => {
     const tableMatch = useMatch("/create-post/fill-table");
@@ -17,10 +20,12 @@ const FillTableDesktop = () => {
     const [isPreviousEmpty, setIsPreviousEmpty] = useState(false);
     const navigate = useNavigate();
 
-    const { user } = useSelector(state=> state.user)
+    const { user } = useSelector(state => state.user);
     const setTableInput = useSetTableInput();
     const tableInput = useTableInput();
     const inputValue = useInput();
+
+    const { mutate: createPost, error: createPostError, isLoading, data: createPostData } = useCreatePost();
 
     useEffect(() => {
         if (!inputValue) {
@@ -32,18 +37,18 @@ const FillTableDesktop = () => {
         register,
         handleSubmit,
         control,
-        formState: { errors, isValid },
+        formState: { errors },
         setError,
     } = useForm({ mode: "onChange", defaultValues: tableInput || {} });
 
     const onSubmit = data => {
-        let iserr = false
+        let iserr = false;
         data.tables.forEach((element, index) => {
             const numberTimeTo = parseInt(element.time_to.split(":").join(""));
             const numberTimeFrom = parseInt(element.time_from.split(":").join(""));
-            if (numberTimeFrom >= numberTimeTo){
+            if (numberTimeFrom >= numberTimeTo) {
                 setError(`tables[${index}].time_to`, { type: "formatError", message: "เวลาเลิกคาบเรียนต้องหลังจากเวลาเริ่มคาบ" });
-                iserr = true
+                iserr = true;
             }
         });
         if (iserr) return;
@@ -57,18 +62,29 @@ const FillTableDesktop = () => {
             department: user.department,
             authorAvatar: user.imgURL,
         });
-        navigate("/create-post/preview-post");
+
+        createPost({ ...inputValue, ...data, author: `${user.firstname} ${user.lastname}`, department: user.department, authorAvatar: user.imgURL });
     };
 
     useEffect(() => {
-        console.log(tableInput);
-    }, [tableInput]);
+        if (createPostData) {
+            console.log(createPostData);
+            navigate(`/create-post/preview-post/${createPostData?.data?._id}`);
+        }
+    }, [createPostData, navigate]);
+
+    const tableRef = useRef(null);
+    const dueDateRef = useRef(null);
+    const onError = e => {
+        if (e?.close_date) dueDateRef.current.shake();
+        if (e?.tables) tableRef.current.shake();
+    };
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-10 flex w-full items-start justify-center space-x-4 px-2 lg:space-x-20 ">
-                <Table errors={errors} register={register} control={control} />
-                <DueDate isPreviousEmpty={isPreviousEmpty} register={register} errors={errors} />
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="mt-10 flex w-full items-start justify-center space-x-4 px-2 lg:space-x-20 ">
+                <Table ref={tableRef} errors={errors} register={register} control={control} />
+                <DueDate ref={dueDateRef} createPostError={createPostError} isPreviousEmpty={isPreviousEmpty} register={register} errors={errors} />
             </form>
             <div className="mt-20 flex w-full items-center justify-center space-x-2">
                 <Link type="submit" to="/create-post" className="relative">
@@ -102,7 +118,7 @@ const FillTableDesktop = () => {
     );
 };
 
-const Table = ({ errors, control, register }) => {
+const Table = forwardRef(({ errors, control, register }, ref) => {
     const { fields, append, remove: removeData } = useFieldArray({ control, name: "tables" });
     const remove = index => {
         if (fields.length <= 1) return;
@@ -114,9 +130,22 @@ const Table = ({ errors, control, register }) => {
         if (tableInput) return;
         append();
     }, [append, tableInput]);
+
+    const container = useRef(null);
+    useImperativeHandle(ref, () => ({
+        shake: () => {
+            gsap.fromTo(
+                container.current,
+                { x: -1 },
+                { x: 1, ease: RoughEase.ease.config({ strength: 8, points: 20, randomize: false }), clearProps: "x" }
+            );
+            gsap.to(container.current, { outlineStyle: "solid", outlineWidth: 2, outlineOffset: -1, outlineColor: "red" });
+        },
+    }));
+
     return (
         <div className={`mr-10 flex min-h-[323px] flex-col  items-center`}>
-            <div className="flex  flex-col items-start ">
+            <div ref={container} className="flex  flex-col items-start ">
                 <div className="z-10 flex w-full bg-gray-300 text-text">
                     <div className=" shrink-0 border-r ">
                         <div type="text" className=" flex-col-cen my-[0.375rem]  mx-2 w-12 rounded-md py-1 font-bold lg:w-20 lg:px-2">
@@ -147,7 +176,7 @@ const Table = ({ errors, control, register }) => {
             </div>
         </div>
     );
-};
+});
 
 const AddedTable = ({ index, remove, errors, register }) => {
     const error = errors?.tables?.[index];
@@ -258,11 +287,22 @@ const AddedTable = ({ index, remove, errors, register }) => {
     );
 };
 
-const DueDate = ({ isPreviousEmpty, register, errors }) => {
+const DueDate = forwardRef(({ isPreviousEmpty, register, errors, createPostError }, ref) => {
+    const container = useRef(null);
+    useImperativeHandle(ref, () => ({
+        shake: () => {
+            gsap.fromTo(
+                container.current,
+                { x: -1 },
+                { x: 1, ease: RoughEase.ease.config({ strength: 8, points: 20, randomize: false }), clearProps: "x" }
+            );
+            gsap.to(container.current, { outlineStyle: "solid", outlineWidth: 2, outlineOffset: -1, outlineColor: "red" });
+        },
+    }));
     return (
         <div className={`flex w-[220px] flex-col items-center space-y-6 `}>
             <div className="font-bold text-secondary underline ">กำหนดวันปิดรับสมัคร</div>
-            <div className="relative flex w-full items-center ">
+            <div ref={container} className="relative flex w-full items-center ">
                 {errors?.close_date ? (
                     <div className="absolute left-0 top-full z-[100] whitespace-nowrap text-xs text-red-500">{errors?.close_date?.message}</div>
                 ) : (
@@ -281,8 +321,9 @@ const DueDate = ({ isPreviousEmpty, register, errors }) => {
             <button disabled={isPreviousEmpty} type="submit" className="  btn-orange flex-cen w-full rounded-md py-2 text-xl font-bold">
                 โพสต์
             </button>
+            {createPostError && <div className="text-sm text-red-500">{createPostError?.response?.data?.message}</div>}
         </div>
     );
-};
+});
 
 export default FillTableDesktop;

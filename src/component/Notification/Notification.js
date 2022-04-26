@@ -13,7 +13,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     const { user } = useSelector(state => state.user);
     const tempType = useRef("all");
     const [type, setType] = useState("all");
-    const notificationList = useMemo(() => user?.notification.filter(e => e.type === type), [user, type]);
+    const notificationList = useMemo(() => user?.notifications.filter(e => e.type === type), [user, type]);
 
     const container = useRef(null);
     const animation = useRef(null);
@@ -33,16 +33,11 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     useEffect(() => {
         animation.current = gsap
             .timeline({
-                yoyo: true,
                 defaults: {
                     ease: "none",
                 },
             })
-            .fromTo(
-                container.current,
-                { height: 0, borderStyle: "none" },
-                { height: "500px", borderStyle: "solid", yoyoEase: true, ease: "expo.out" }
-            )
+            .fromTo(container.current, { height: 0 }, { height: "500px", ease: "elastic.out(1.2,0.9)", duration: 1 })
             .fromTo(
                 ".each-detail-noti",
                 {
@@ -64,7 +59,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
         console.log("change aniamtion");
         closeAnimation.current = gsap
             .timeline({ paused: true, onComplete: () => setIsNoti(false) })
-            .to(container.current, { height: 0, borderStyle: "none" })
+            .to(container.current, { height: 0 })
             .to(
                 ".each-detail-noti",
                 {
@@ -121,7 +116,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     return (
         <div
             ref={container}
-            className="absolute top-[140%] -right-10 w-[450px]  overflow-hidden  whitespace-nowrap rounded-lg border-2  bg-white font-normal  text-text shadow-md">
+            className="absolute top-[140%] -right-10 w-screen max-w-[450px]  overflow-hidden  whitespace-nowrap rounded-lg border-2  bg-white font-normal  text-text shadow-md">
             <Triangle />
             <div className="py-4  px-4 text-2xl">การแจ้งเตือน</div>
             <Nav type={type} setType={setType} />
@@ -135,10 +130,8 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
                 )
             ) : (
                 <>
-                    <div className="each-detail-noti">
-
-                    </div>
-                    <div className="w-full mt-20 text-center ">กรุณาล็อคอินก่อน</div>
+                    <div className="each-detail-noti"></div>
+                    <div className="mt-20 w-full text-center ">กรุณาล็อคอินก่อน</div>
                 </>
             )}
         </div>

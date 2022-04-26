@@ -1,264 +1,68 @@
-import { REQUEST_LOGIN, REQUEST_LOGIN_FAILURE, REQUEST_LOGIN_SUCCESS, LOGOUT, VIEW_NOTIFICATION } from "./type";
-import * as api from "../../api/authApi";
-import { v4 as uuid } from "uuid";
+import { REQUEST_LOGIN, REQUEST_LOGIN_FAILURE, REQUEST_LOGIN_SUCCESS, LOGOUT, VIEW_NOTIFICATION, GET_USER } from "./type";
+import axios from "axios";
+
+const url = "http://localhost:8000";
+
+export const getUser = setIsloading => async dispatch => {
+    const jwt = JSON.parse(localStorage.getItem("jwt")) || null;
+    if (!jwt) return setIsloading();
+    console.log("dwadadwadwada");
+    try {
+        const { data: userData } = await axios.get(`${url}/api/users/getme`, {
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            },
+        });
+        dispatch({
+            type: GET_USER,
+            payload: {
+                ...userData,
+                imgURL: "https://scontent.fbkk22-4.fna.fbcdn.net/v/t1.6435-9/145036933_2024789844329614_5665229284832997399_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeF-G4NBaMMqLeOMgBnXW7Y4zrMy5swv9THOszLmzC_1MUQZpLV0TqUXN4WUpLNo9-pMK8A4LzDscC6NXxX3D41R&_nc_ohc=cKxLkjtPEJkAX_e0ZGq&_nc_ht=scontent.fbkk22-4.fna&oh=00_AT-kYGDUvINidCsJGtx4H2g6dGYrNIDtvUEIICrj5-YoSA&oe=628C67ED",
+                studentID: userData.student_id || null,
+                studentYear: userData.student_year || null,
+            },
+        });
+    } catch (error) {
+        localStorage.clear("jwt");
+        console.log(error);
+    } finally {
+        if (setIsloading) setIsloading();
+    }
+};
 
 export const login = (userinput, cb) => async dispatch => {
-    console.log("fetching...");
-    const { email, password } = userinput;
+    console.log("wadwadwada");
     try {
         dispatch({ type: REQUEST_LOGIN });
-        const { data } = await api.fetchUser({ email, password });
-        const user = data.results[0] || null;
-        if (!user) throw new Error();
-
-        const shapedUser = {
-            ...user,
-            id: "oiawdjaiojdoadoawdjoiawdjoadjioajdiowa",
-            role: user.name.first === "Tobias" ? "teacher" : "student",
-            imgURL: user.picture.large,
-            studentID: "6310604",
-            firstname: "ปิยชัย",
-            lastname: "แก้วชุ่ม",
-            department: "computer",
-            notification: [
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "พรหมพิริยะ",
-                    type: "all",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "พรหมพิริยะ",
-                    type: "post",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "พรหมพิริยะ",
-                    type: "post",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "พรหมพิริยะ",
-                    type: "post",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "พรหมพิริยะ",
-                    type: "all",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "ไกไฟก",
-                    type: "all",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "ไกไฟก",
-                    type: "community",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "ไกไฟก",
-                    type: "community",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "ไกไฟก",
-                    type: "community",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "ไกไฟก",
-                    type: "community",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-                {
-                    id: uuid(),
-                    isWatched: true,
-                    firstname: "ฟไกไฟ",
-                    type: "all",
-                    lastname: "เจริญพานทองดี",
-                    created_at: new Date(2022, 3, 22).getTime(),
-                    imgURL: "https://i.pravatar.cc/300",
-                    body: "สมัครโพสต์ของคุณ",
-                },
-            ],
-            community: [
-                {
-                    id: "123465",
-                },
-                {
-                    id: "23131",
-                },
-                {
-                    id: "124124",
-                },
-            ],
-            transcript: [
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 4,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 4,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 4,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 4,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 1,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 1,
-                    studySemestry: 2,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 1,
-                    studySemestry: 2,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 1,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 1,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 1,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 2,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 2,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 2,
-                    studySemestry: 1,
-                    grade: 'A',
-                },
-                {
-                    subjectID: '0100123',
-                    subjectName: 'DATA COMMUNICATION',
-                    studyYear: 2,
-                    studySemestry: 2,
-                    grade: 'A',
-                },
-            ]
-        };
-
-        localStorage.setItem("user", JSON.stringify(shapedUser));
-        dispatch({ type: REQUEST_LOGIN_SUCCESS, payload: shapedUser });
+        const {
+            data: { token },
+        } = await axios.post(`${url}/api/users/login`, userinput);
+        await localStorage.setItem("jwt", JSON.stringify(token));
+        dispatch({ type: REQUEST_LOGIN_SUCCESS });
         if (cb) cb();
     } catch (error) {
+        console.log(error);
         dispatch({ type: REQUEST_LOGIN_FAILURE });
-        console.log(error.message);
+    }
+    dispatch(getUser());
+};
+
+export const register = (userinput, cb) => async dispatch => {
+    try {
+        const { data } = await axios.post(`${url}/api/users/register`, userinput);
+        console.log(data);
+        if (cb) cb();
+        console.log("success");
+    } catch (error) {
+        console.log(error.response.data);
     }
 };
 
 export const logout = () => {
-    localStorage.clear("user");
+    localStorage.clear("jwt");
     return { type: LOGOUT };
 };
 
-export const viewNotification = ()=>{
-    return { type: VIEW_NOTIFICATION }
-}
+export const viewNotification = () => {
+    return { type: VIEW_NOTIFICATION };
+};

@@ -1,44 +1,61 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useRef, useState, useLayoutEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { InputContext } from "../../contexts/InputContext";
+import { RoughEase } from "gsap/EasePack";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
-import GoogleRegister from "./GoogleRegister";
 import SmallLoading from "../../../../component/utils/SmallLoading";
-import { register } from "../../../../api/authApi";
+import { useRegister } from "../../useRegister";
 
 const TeacherInput = props => {
-
     const { role, onClose, handleOnRegSuccess } = props;
-    const { userinput } = useContext(InputContext); // del handleInputUpdate: handleInput
     const navigate = useNavigate();
-    const initialValues = {firstname : "", lastnamet: "", email: "", password: "", phone: ""}
-    const [formValues, setFormValues]= useState(initialValues);
-    const [formErrors, setFormErrors]= useState({});
+    const initialValues = { firstname: "", lastname: "", email: "", password: "", phone: "" };
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
 
-    const handleChange = (e) => {
-        const { name, value}= e.target;
+    const onErrorAnimation = () => {
+        gsap.fromTo(
+            ".input-register",
+            { x: -1 },
+            { x: 1, ease: RoughEase.ease.config({ strength: 8, points: 20, randomize: false }), clearProps: "x" }
+        );
+    };
+
+    const { data, error, isLoading, mutate } = useRegister(handleOnRegSuccess, onErrorAnimation);
+
+    const handleChange = e => {
+        let { name, value } = e.target;
+        if (name === "firstname" || name === "lastname") {
+            if (/[^ก-๏]/g.test(value)) setFormErrors({ ...formErrors, [name]: "กรุณากรอกชื่อภาษาไทยเท่านั้น" });
+            else
+                setFormErrors(old => {
+                    const { [name]: firstname, ...other } = old;
+                    return other;
+                });
+        }
+        if (name === "firstname" || name === "lastname") value = value.replace(/[^ก-๏]/g, "");
         setFormValues({ ...formValues, [name]: value });
-        // console.log(name)
     };
 
     const handleSubmit = e => {
         e.preventDefault();
-        // register(userinput, setIsLoading);
-        // console.log(formValues)
-        const check = validate(formValues)
+        const check = validate(formValues);
         setFormErrors(check);
-        // console.log(check)
-        if(Object.keys(check).length === 0 ){
-            handleOnRegSuccess();
+        if (Object.keys(check).length === 0) {
+            mutate({ ...formValues, role: "teacher" });
         }
     };
 
+    const errorMessage = useMemo(() => {
+        return error?.response?.data?.message || null;
+    }, [error]);
+
     const container = useRef(null);
-    useEffect(() => {
+
+    useLayoutEffect(() => {
         gsap.set(container.current, {
             position: "absolute",
             y: container.current.offsetHeight * 1.2,
@@ -47,7 +64,7 @@ const TeacherInput = props => {
         });
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const tl = gsap.timeline();
         if (role === "teacher") {
             tl.to(container.current, {
@@ -68,99 +85,92 @@ const TeacherInput = props => {
         }
     }, [role]);
 
-    useEffect(() => {
-        // console.log(formErrors);
-        if(Object.keys(formErrors).length === 0){
-            console.log(formValues);
-        }
-    }, [formErrors,formValues]);
+    const validate = values => {
+        const errors = {};
+        const number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        const special = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "{", "}", "[", "]", "?", "<", ">", ";", ":", "'", '"'];
 
-    const validate = (values) => {
-        const errors = {}
-        const number = [1,2,3,4,5,6,7,8,9,0]
-        const special = ["!","@","#","$","%","^","&","*","(",")","-","_","=","+","{","}","[","]","?","<",">",";",":","'",'"']
-        
-        if (!values.firstname){
-            errors.firstname = "กรุณากรอกชื่อ"
-        }else if(number.some((e) => values.firstname.includes(e))){
-            errors.firstname = "ไม่สามารถใส่ตัวเลขได้"
-        }else if(special.some((e) => values.firstname.includes(e))){
-            errors.firstname = "ไม่สามารถใส่อักษรพิเศษได้"
-        }else if (values.firstname.length > 40){
-            errors.firstname = "ชื่อต้องไม่เกิน 40 ตัว"
+        if (!values.firstname) {
+            errors.firstname = "กรุณากรอกชื่อ";
+        } else if (number.some(e => values.firstname.includes(e))) {
+            errors.firstname = "ไม่สามารถใส่ตัวเลขได้";
+        } else if (special.some(e => values.firstname.includes(e))) {
+            errors.firstname = "ไม่สามารถใส่อักษรพิเศษได้";
+        } else if (values.firstname.length > 40) {
+            errors.firstname = "ชื่อต้องไม่เกิน 40 ตัว";
         }
-        if (!values.lastname){
-            errors.lastname = "กรุณากรอกนามสกุล"
-        }else if(number.some((e) => values.lastname.includes(e))){
-            errors.lastname = "ไม่สามารถใส่ตัวเลขได้"
-        }else if(special.some((e) => values.lastname.includes(e))){
-            errors.lastname = "ไม่สามารถใส่อักษรพิเศษได้"
-        }else if (values.lastname.length > 40){
-            errors.lastname = "นามสกุลต้องไม่เกิน 40 ตัว"
+        if (!values.lastname) {
+            errors.lastname = "กรุณากรอกนามสกุล";
+        } else if (number.some(e => values.lastname.includes(e))) {
+            errors.lastname = "ไม่สามารถใส่ตัวเลขได้";
+        } else if (special.some(e => values.lastname.includes(e))) {
+            errors.lastname = "ไม่สามารถใส่อักษรพิเศษได้";
+        } else if (values.lastname.length > 40) {
+            errors.lastname = "นามสกุลต้องไม่เกิน 40 ตัว";
         }
-        if (!values.email){
-            errors.email = "กรุณากรอกอีเมล์"
+        if (!values.email) {
+            errors.email = "กรุณากรอกอีเมล์";
         }
-        if (!values.password){
-            errors.password = "กรุณากรอกรหัสผ่าน"
-        }else if (values.password.length < 8){
-            errors.password = "รหัสผ่านต้องมีอย่างน้อย 8 ตัว"
-        }else if (values.password.length > 25){
-            errors.password = "รหัสผ่านต้องมีไม่เกิน 25 ตัว"
+        if (!values.password) {
+            errors.password = "กรุณากรอกรหัสผ่าน";
+        } else if (values.password.length < 8) {
+            errors.password = "รหัสผ่านต้องมีอย่างน้อย 8 ตัว";
+        } else if (values.password.length > 25) {
+            errors.password = "รหัสผ่านต้องมีไม่เกิน 25 ตัว";
         }
-        if (!values.phone){
-            errors.phone = "กรุณากรอกเบอร์โทรศัพท์"
-        }else if (values.phone.length < 10 || values.phone.length > 10){
-            errors.phone = "เบอร์โทรศัพท์ต้องมี 10 ตัว"
-        }else if (values.phone.match(/[A-Za-z]/i)){
-            errors.phone = "เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น"
-        }else if(special.some((e) => values.phone.includes(e))){
-            errors.phone = "ไม่สามารถใส่อักษรพิเศษได้"
+        if (!values.phone) {
+            errors.phone = "กรุณากรอกเบอร์โทรศัพท์";
+        } else if (values.phone.length < 10 || values.phone.length > 10) {
+            errors.phone = "เบอร์โทรศัพท์ต้องมี 10 ตัว";
+        } else if (values.phone.match(/[A-Za-z]/i)) {
+            errors.phone = "เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น";
+        } else if (special.some(e => values.phone.includes(e))) {
+            errors.phone = "ไม่สามารถใส่อักษรพิเศษได้";
         }
 
-        return errors
-    }
-
-    const [isLoading, setIsLoading] = useState(false);
-    // const [error, setError] = useState(null);
-
-    
+        return errors;
+    };
 
     return (
         <div ref={container} className="flex-col-cen h-full w-full">
-            <GoogleRegister />
-            {/* divider */}
+            {/* <GoogleRegister />
             <div className="flex-cen mt-4 space-x-1">
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400 "></span>
                 <span className="text-[13px] text-gray-500">หรือ</span>
                 <span className="h-[1.6px] w-24 bg-gray-200 text-gray-400"></span>
-            </div>
-
+            </div> */}
+            <div className="mb-6 text-xl text-text">อาจารย์</div>
+            {errorMessage && <div className="text-sm tracking-tight text-red-500">{errorMessage}</div>}
             <form onSubmit={handleSubmit} className="flex-col-cen w-full">
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                <p className="text-xs text-red-500 absolute right-[70px] top-[100px]">{formErrors.firstname}</p>
+                    <p className="absolute right-[70px] top-[100px] text-xs text-red-500">{formErrors.firstname}</p>
                     <div className="input-label  ">ชื่อ</div>
-                    <input type="text" onChange={handleChange} name={"firstname"} className="input-register" />
+                    <input type="text" onChange={handleChange} value={formValues.firstname} name={"firstname"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                <p className="text-xs text-red-500 absolute right-[70px] top-[165px]">{formErrors.lastname}</p>
+                    <p className="absolute right-[70px] top-[165px] text-xs text-red-500">{formErrors.lastname}</p>
                     <div className="input-label  ">นามสกุล</div>
-                    <input type="text" onChange={handleChange} name={"lastname"} className="input-register" />
+                    <input type="text" onChange={handleChange} value={formValues.lastname} name={"lastname"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                <p className="text-xs text-red-500 absolute right-[70px] top-[230px]">{formErrors.email}</p>
+                    <p className="absolute right-[70px] top-[230px] text-xs text-red-500">{formErrors.email}</p>
                     <div className="input-label  ">อีเมล์</div>
-                    <input type="email" onChange={handleChange} name={"email"} className="input-register" />
+                    <input type="email" onChange={handleChange} name={"email"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                <p className="text-xs text-red-500 absolute right-[70px] top-[295px]">{formErrors.password}</p>
+                    <p className="absolute right-[70px] top-[295px] text-xs text-red-500">{formErrors.password}</p>
                     <div className="input-label  ">รหัสผ่าน</div>
-                    <input type="password" onChange={handleChange} name={"password"} className="input-register" />
+                    <input type="password" onChange={handleChange} name={"password"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                <p className="text-xs text-red-500 absolute right-[70px] top-[360px]">{formErrors.phone}</p>
+                    <p className="absolute right-[70px] top-[360px] text-xs text-red-500">{formErrors.phone}</p>
                     <div className="input-label  ">เบอร์โทรศัพท์</div>
-                    <input type="text" onChange={handleChange} name={"phone"} className="input-register" />
+                    <input type="text" onChange={handleChange} name={"phone"} className="input-register " />
+                </div>
+                <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
+                    <p className="absolute right-[70px] top-[360px] text-xs text-red-500">{formErrors.phone}</p>
+                    <div className="input-label  ">ภาควิชา</div>
+                    <input type="text" onChange={handleChange} name={"department"} className="input-register " />
                 </div>
                 {/* btn wrapper */}
                 <div className="input-group mt-4 flex items-center justify-center space-x-8">
@@ -177,9 +187,7 @@ const TeacherInput = props => {
                             <SmallLoading.Title>
                                 <span className="text-lg text-white">ลงทะเบียน</span>
                             </SmallLoading.Title>
-                            <SmallLoading.Loader>
-                                {/* <span>Success</span> */}
-                            </SmallLoading.Loader>
+                            <SmallLoading.Loader>{/* <span>Success</span> */}</SmallLoading.Loader>
                         </button>
                     </SmallLoading>
                 </div>
