@@ -26,7 +26,7 @@ const ApplyPopup = ({ setSelectedPost, selectedPost }) => {
                     setSelectedPost(null);
                 },
             })
-            .to(overlay.current, { opacity: 0.3, duration: 0.3 })
+            .to(overlay.current, { opacity: 0.5, duration: 0.3 })
             .to(mainContainer.current, { opacity: 1, y: 0, scale: 1, duration: 0.3 }, "<");
         tl.current.play();
         return () => {
@@ -40,7 +40,7 @@ const ApplyPopup = ({ setSelectedPost, selectedPost }) => {
     };
 
     return (
-        <div className="flex-col-cen fixed bottom-0 right-0 z-[102] h-screen w-full text-sm text-text sm:text-base">
+        <div className="flex-col-cen fixed bottom-0 right-0 z-[1000] h-screen w-full text-sm text-text sm:text-base">
             <div ref={overlay} className="absolute h-full w-full bg-black opacity-0" onClick={() => handleOnClose()}></div>
             <div className="absolute  h-[320px] min-w-[500px] rounded-lg bg-white" ref={mainContainer}>
                 <div className="relative flex h-full w-full flex-col items-center">
