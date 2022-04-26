@@ -4,38 +4,61 @@ import gsap from "gsap";
 import Post, { PostFallBack } from "../../../mainpost/desktop/components/PostDesktop";
 import { v4 as uuid } from "uuid";
 import usePostListFetch from "../../../../api/Post/usePostListFetch";
+import { useFetchPostByOwnerID } from "../../../../composables/fetch/useFetchPost";
+import { useSelector } from "react-redux";
+import { castPostFromDatabase } from "../../../../utils/castDataName";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const OwnedPost = () => {
-    const { isLoading, postList } = usePostListFetch("allDepartment", 1);
+    const { mutate, data, error, isLoading } = useFetchPostByOwnerID();
+    const { user } = useSelector(state => state.user);
+    const navigate = useNavigate();
+    useEffect(() => {
+        mutate(user._id);
+    }, [mutate, user._id]);
 
-    const isDataReady = useMemo(() => {
-        if (!postList || isLoading || postList.length === 0) return false;
-        return true;
-    }, [postList, isLoading]);
+    const posts = useMemo(() => {
+        console.log(data?.data?.posts?.map(e => castPostFromDatabase(e)));
+        return data?.data?.posts && data?.data?.posts?.map(e => castPostFromDatabase(e));
+    }, [data]);
 
     const container = useRef(null);
 
     useEffect(() => {
-        gsap.fromTo(
-            ".stagger-post-animation",
-            { x: gsap.getProperty(container.current, "width") },
-            { x: 0, stagger: { amount: 0.3, each: 0.3 }, ease: "elastic.out(1,1)" }
-        );
-    }, [isDataReady, postList]);
+        gsap.fromTo(container.current, { x: gsap.getProperty(container.current, "width") }, { x: 0, ease: "elastic.out(1,1)" });
+    }, [posts]);
 
     return (
         <div className="mt-10 flex w-full flex-col items-center">
-            {isDataReady ? (
-                <div ref={container} className="absolute overflow-hidden px-3">
-                    {postList.map(post => (
-                        <div key={uuid()} className="stagger-post-animation">
-                            <Post post={post} />
+            {posts && !isLoading ? (
+                posts.length ? (
+                    <div className="absolute mt-10 overflow-hidden px-3 pb-20">
+                        <div className="" ref={container}>
+                            {posts.map(post => (
+                                <div key={uuid()}>
+                                    <Post post={post} />
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ) : (
+                    <div className="absolute mt-10 overflow-hidden px-3">
+                        <div ref={container} className="flex flex-col items-center ">
+                            <div className="mb-4">ไม่มีโพสต์</div>
+                            <div
+                                className="btn-white flex items-center space-x-3 rounded-md border-2 px-4 py-2"
+                                onClick={() => navigate("/create-post")}>
+                                <div className="">สร้างเลย!</div>
+                                <FontAwesomeIcon icon={faArrowRightLong} />
+                            </div>
+                        </div>
+                    </div>
+                )
             ) : (
-                <div ref={container} className="absolute overflow-hidden px-3">
-                    <div key={uuid()} className="stagger-post-animation">
+                <div className="absolute mt-10 overflow-hidden px-3">
+                    <div key={uuid()} ref={container}>
                         <PostFallBack />
                     </div>
                 </div>

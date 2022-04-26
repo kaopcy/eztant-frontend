@@ -51,14 +51,14 @@ const PostListDesktop = ({ postList, isLoading }) => {
         <div className="my-10 flex  w-full items-start justify-center space-x-4 ">
             {!isDepartmentPanel && <DepartmentPanel onChangeDepartment={scrollThenCallback} />}
             <div className="flex-col-cen space-y-4 text-text">
-                {isLoading ? (
+                {postList && !isLoading ? (
+                    postList.map((post, i) => <PostDesktop post={post} key={post.subjectID} setSelectedPost={setSelectedPost} />)
+                ) : (
                     <>
                         <PostFallBack />
                         <PostFallBack />
                         <PostFallBack />
                     </>
-                ) : (
-                    postList.map((post, i) => <PostDesktop post={post} key={post.subjectID} setSelectedPost={setSelectedPost} />)
                 )}
                 {<Pagination currentPage={page} setPage={scrollThenNextPage} />}
             </div>
