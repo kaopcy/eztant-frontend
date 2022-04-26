@@ -12,19 +12,23 @@ import GoogleRegister from "../../../register/desktop/components/GoogleRegister"
 import { InputContext } from "../../contexts/inputContext";
 import SmallLoading from "../../../../component/utils/SmallLoading";
 import { login as AuthLogin } from "../../../../store/actions/authAction";
+import { useNonInitialEffect } from "../../../../composables/useNonInitialEffect";
+import { RESET_ERROR } from "../../../../store/actions/type";
 
 const InputContainer = forwardRef((props, ref) => {
     const { onClose, finishedAnimation } = props;
     const navigate = useNavigate();
     const { isLoading, error } = useSelector(state => state.user);
-    const { userinput } = useContext(InputContext);
     const initialValues = { email: "", password: "" };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const dispatch = useDispatch();
 
-    const loadingRef = useRef(null);
-    const loadingTextRef = useRef(null);
+    useEffect(() => {
+        return () => {
+            dispatch({ type: RESET_ERROR });
+        };
+    }, [dispatch]);
 
     const login = () => {
         if (isLoading) return;
@@ -39,7 +43,6 @@ const InputContainer = forwardRef((props, ref) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // console.log(formValues)
         const check = validate(formValues);
         setFormErrors(check);
         console.log(check);
@@ -49,7 +52,6 @@ const InputContainer = forwardRef((props, ref) => {
     };
 
     useEffect(() => {
-        // console.log(formErrors);
         if (Object.keys(formErrors).length === 0) {
             console.log(formValues);
         }
@@ -135,7 +137,7 @@ const Input = ({ type, label, onChange, name }) => {
     const { error } = useSelector(state => state.user);
     const inputRef = useRef(null);
 
-    useEffect(() => {
+    useNonInitialEffect(() => {
         if (error) {
             console.log("error");
             gsap.fromTo(

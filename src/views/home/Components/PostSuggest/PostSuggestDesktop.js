@@ -46,6 +46,7 @@ const PostSuggestDesktop = ({ isLoading, postSuggest }) => {
     }, [triggerUpdate]);
 
     const swiperOption = {
+        autoplay: true,
         slidesPerView: 1,
         spaceBetween: 2,
         slidesPerGroup: 1,

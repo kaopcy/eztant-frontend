@@ -1,27 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
+import { useMutation } from "react-query";
 
-export default function useRegister() {
-    const [loading, setIsLoading] = useState(false);
-    const [error, setError] = useState(false);
+const register = userdata => {
+    return axios.post(`${process.env.REACT_APP_API_URL}/api/users/register`, userdata);
+};
 
-    const onRegister = async (userData, callback) => {
-        setIsLoading(true);
-        try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/register`, userData);
-            console.log(res)
-            if (callback) callback();
-
-        } catch (error) {
-            setError(JSON.stringify(error));
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return {
-        loading,
-        error,
-        onRegister,
-    };
-}
+export const useRegister = (onSuccess, onError) => {
+    return useMutation(register, { onSuccess, onError });
+};

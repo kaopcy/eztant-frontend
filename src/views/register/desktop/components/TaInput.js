@@ -11,7 +11,7 @@ import { InputContext } from "../../contexts/InputContext";
 import { useTwoComTransition } from "../../../../composables/animation/useTwoComTransition";
 import SmallLoading from "../../../../component/utils/SmallLoading";
 import { useDispatch } from "react-redux";
-import useRegister from "../../useRegister";
+import { useRegister } from "../../useRegister";
 
 const TaInput = props => {
     const { role } = props;
@@ -202,7 +202,6 @@ const InputFirstPage = forwardRef((props, ref) => {
 });
 
 const InputSecondPage = forwardRef((props, ref) => {
-    const [isLoading, setIsLoading] = useState(false);
     const { setPage, handleOnRegSuccess, input } = props;
 
     const initialValues = { student_id: "", department: "", student_year: "" };
@@ -214,13 +213,13 @@ const InputSecondPage = forwardRef((props, ref) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const { error, loading, onRegister } = useRegister();
+    const { data, isLoading, error, mutate: register } = useRegister(handleOnRegSuccess);
     const handleSubmit = e => {
         e.preventDefault();
         const check = validate(formValues);
         setFormErrors(check);
         if (Object.keys(check).length === 0) {
-            onRegister({ ...input, ...formValues, role: "student" }, handleOnRegSuccess);
+            register({ ...input, ...formValues, role: "student" });
         }
     };
 

@@ -23,5 +23,6 @@ export const castPostFromDatabase = postInput => {
         requirement: postInput.description,
         tables: postInput.schedules,
         close_date: postInput.expired,
+        author: `${postInput?.owner_id?.firstname} ${postInput?.owner_id?.lastname}`
     };
 };

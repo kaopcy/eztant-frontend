@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigate, Navigate, Link } from "react-router-dom";
 import { useResponsive } from "./composables/context/useResponsive";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,8 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { LoginDesktop, LoginMobile } from "./views/login";
 import { RegisterDesktop, RegisterMobile } from "./views/register";
-
-import { QueryClientProvider, QueryClient } from "react-query";
 
 import Navbar from "./component/navbar/Navbar";
 
@@ -47,7 +45,7 @@ const CommunityFile = React.lazy(() => import("./views/Community/CommunityFile/C
 const ProfileTeacher = React.lazy(() => import("./views/Profile/Teacher/ProfileTeacher"));
 const ProfileStudent = React.lazy(() => import("./views/Profile/Student/ProfileStudent"));
 
-const ProtectedRoute = ({ isAuth, children }) => {
+const ProtectedRoute = ({ children }) => {
     const { user } = useSelector(state => state.user);
     return <Suspense fallback={<div></div>}>{user ? children : <Navigate to="/" />}</Suspense>;
 };
@@ -70,14 +68,14 @@ const App = () => {
     const navigate = useNavigate();
     const state = location.state;
 
-    const queryClient = new QueryClient();
-
     const { user } = useSelector(state => state.user);
     const firstCommunity = user?.community?.[0]?.id || "no-community";
     const isMobile = useResponsive();
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
-        dispatch(getUser());
+        dispatch(getUser(() => setIsLoading(false)));
     }, [dispatch]);
 
     // prevent user access some route without background state
@@ -91,7 +89,7 @@ const App = () => {
     }, [state?.backgroundLocation, location.pathname, navigate, isMobile]);
 
     return (
-        <QueryClientProvider client={queryClient}>
+        !isLoading && (
             <div className="m-0 flex flex-col  p-0">
                 <Navbar height={80} />
                 <div className={`${isMobile ? "h-[60px]" : "h-[80px]"}`}></div>
@@ -144,7 +142,7 @@ const App = () => {
                     </Routes>
                 )}
             </div>
-        </QueryClientProvider>
+        )
     );
 };
 
