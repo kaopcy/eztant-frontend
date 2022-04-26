@@ -29,8 +29,8 @@ const PreviewPost = () => {
     }, [data, isLoading]);
 
     const post = useMemo(() => {
-        console.log(data?.data[0]);
-        return data?.data[0] && castPostFromDatabase(data?.data[0]);
+        console.log(data?.data?.posts[0]);
+        return data?.data?.posts[0] && castPostFromDatabase(data?.data.posts[0]);
     }, [data]);
 
     return (

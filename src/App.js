@@ -108,10 +108,10 @@ const App = () => {
                     <Route path="/TA-detail" element={<ProtectedRoute children={<DetailStudentClick />} />} />
                     <Route path="/TA-teacherViewDetail" element={<ProtectedRoute children={<DetailTeacherClick />} />} />
 
-                    <Route path="/create-post" element={<ProtectedRoute children={<CreatePost />} />}>
-                        <Route element={<ProtectedRoute children={<FillDetail />} />} index />
-                        <Route path="/create-post/fill-table" element={<ProtectedRoute children={<FillTable />} />} />
-                        <Route path="/create-post/preview-post/:id" element={<ProtectedRoute children={<PreviewPost />} />} />
+                    <Route path="/create-post" element={<TeacherOnlyRoute children={<CreatePost />} />}>
+                        <Route element={<TeacherOnlyRoute children={<FillDetail />} />} index />
+                        <Route path="/create-post/fill-table" element={<TeacherOnlyRoute children={<FillTable />} />} />
+                        <Route path="/create-post/preview-post/:id" element={<TeacherOnlyRoute children={<PreviewPost />} />} />
                     </Route>
 
                     <Route path="request-list" element={<TeacherOnlyRoute children={<RequestList />} />} />

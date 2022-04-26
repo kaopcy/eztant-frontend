@@ -4,7 +4,7 @@ import { useResponsive } from "../../composables/context/useResponsive";
 
 import { ControlProvider } from "./context/ControlContext";
 import { PageProvider } from "./context/PageContext";
-import usePostListFetch from "../../api/Post/usePostListFetch";
+import { usePostListFetch } from "../../composables/fetch/useFetchPost";
 import useSearchQuery from "../../composables/useSearchQuery";
 
 import PostListDesktop from "./desktop/PostListDesktop";
@@ -23,16 +23,16 @@ const PostList = () => {
 const Inside = () => {
     const isMobile = useResponsive();
     const { id } = useParams();
+    const { error, isLoading, posts } = usePostListFetch(id);
 
-    const { query } = useSearchQuery();
+    useEffect(() => {
+        console.log(posts);
+    }, [posts]);
 
-    const page = query?.page || 1;
-    
-    const { postList, isLoading } = usePostListFetch(page, id);
     return (
         <div className="min-h-screen w-full bg-[#f5f5f5]">
-            {!isMobile && <PostListDesktop postList={postList} isLoading={isLoading} />}
-            {isMobile && <PostListMobile postList={postList} isLoading={isLoading} />}
+            {!isMobile && <PostListDesktop postList={posts} isLoading={isLoading} />}
+            {isMobile && <PostListMobile postList={posts} isLoading={isLoading} />}
         </div>
     );
 };

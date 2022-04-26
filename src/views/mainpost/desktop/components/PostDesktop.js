@@ -5,10 +5,11 @@ import "moment/locale/th";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartRegular, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
 import TeachTable from "./TeachTable";
 import Like from "../../components/Like";
+import { useSelector } from "react-redux";
 
 const PostDesktop = ({ post, setSelectedPost }) => {
     const container = useRef(null);
@@ -40,6 +41,9 @@ const PostDesktop = ({ post, setSelectedPost }) => {
 };
 
 const Header = ({ post }) => {
+    const { user } = useSelector(state => state.user);
+    const [isEllipsis, setIsEllipsis] = useState(false);
+
     const left = () => (
         <div className="flex-cen w-full justify-start space-x-4">
             <div className="h-16 w-16 overflow-hidden rounded-full">
@@ -55,9 +59,14 @@ const Header = ({ post }) => {
     const right = post => (
         <div className="flex-cen space-x-3">
             <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow>
-                {new Date("2022-04-01T08:30-0500")}
+                {post.createdAt}
             </Moment>
-            <FontAwesomeIcon icon={faEllipsis} className="text-lg " />
+            {post.owner_id._id === user._id && (
+                <div className="relative">
+                    <FontAwesomeIcon icon={faEllipsis} className="text-lg " onClick={() => setIsEllipsis(e => !e)} />
+                    {isEllipsis && <DeleteButton setIsEllipsis={setIsEllipsis} />}
+                </div>
+            )}
         </div>
     );
 
@@ -65,6 +74,25 @@ const Header = ({ post }) => {
         <div className="flex-cen w-full">
             {left(post)}
             {right(post)}
+        </div>
+    );
+};
+
+const DeleteButton = ({ setIsEllipsis }) => {
+    const deleteRef = useRef(null);
+    useEffect(() => {
+        const onClick = e => {
+            if (!deleteRef.current.contains(e.target)) {
+                setIsEllipsis(false);
+            }
+        };
+        window.addEventListener("click", onClick);
+        return () => window.removeEventListener("click", onClick);
+    }, [setIsEllipsis]);
+    return (
+        <div ref={deleteRef} className="absolute bottom-full right-0  flex items-center whitespace-nowrap rounded-md border-2 bg-white px-4 py-2 ">
+            <div className="mr-3 text-base">ลบโพสต์</div>
+            <FontAwesomeIcon className="text-sm text-red-500" icon={faTrashAlt} />
         </div>
     );
 };
