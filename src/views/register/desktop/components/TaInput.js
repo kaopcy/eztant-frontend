@@ -1,16 +1,14 @@
-import React, { forwardRef, useEffect, useRef, useState, useContext } from "react";
+import React, { forwardRef, useEffect, useRef, useState, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
+import { RoughEase } from "gsap/EasePack";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
-import GoogleRegister from "./GoogleRegister";
-import { register } from "../../../../store/actions/authAction";
 import { InputContext } from "../../contexts/InputContext";
 import { useTwoComTransition } from "../../../../composables/animation/useTwoComTransition";
 import SmallLoading from "../../../../component/utils/SmallLoading";
-import { useDispatch } from "react-redux";
 import { useRegister } from "../../useRegister";
 
 const TaInput = props => {
@@ -83,12 +81,11 @@ const TaInput = props => {
     );
 };
 
-const InputField = ({ type, label, onChange, name }) => {
-    const { userinput, handleInputUpdate: handleInput, handleOnBlur } = useContext(InputContext);
+const InputField = ({ formValues, type, label, onChange, name }) => {
     return (
         <div className="flex-col-cen input-group mb-2 w-[70%] items-start">
             <div className="input-label  ">{label}</div>
-            <input type={type} onBlur={handleOnBlur} onChange={onChange} name={name} className="input-register" />
+            <input value={formValues?.[name]} type={type} onChange={onChange} name={name} className="input-register" />
         </div>
     );
 };
@@ -101,7 +98,16 @@ const InputFirstPage = forwardRef((props, ref) => {
     const [formErrors, setFormErrors] = useState({});
 
     const handleChange = e => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (name === "firstname" || name === "lastname") {
+            if (/[^ก-๏]/g.test(value)) setFormErrors({ ...formErrors, [name]: "กรุณากรอกชื่อภาษาไทยเท่านั้น" });
+            else
+                setFormErrors(old => {
+                    const { [name]: firstname, ...other } = old;
+                    return other;
+                });
+        }
+        if (name === "firstname" || name === "lastname") value = value.replace(/[^ก-๏]/g, "");
         setFormValues({ ...formValues, [name]: value });
     };
 
@@ -171,15 +177,15 @@ const InputFirstPage = forwardRef((props, ref) => {
             </div> */}
             <div className="mb-10 text-xl text-text">นักศึกษา</div>
             <p className="absolute right-[16%] top-[75px] text-xs text-red-500">{formErrors.firstname}</p>
-            <InputField type="text" name={"firstname"} label={"ชื่อ"} onChange={handleChange} />
+            <InputField formValues={formValues} type="text" name={"firstname"} label={"ชื่อ"} onChange={handleChange} />
             <p className="absolute right-[16%] top-[140px] text-xs text-red-500">{formErrors.lastname}</p>
-            <InputField type="text" name={"lastname"} label={"นามสกุล"} onChange={handleChange} />
+            <InputField formValues={formValues} type="text" name={"lastname"} label={"นามสกุล"} onChange={handleChange} />
             <p className="absolute right-[16%] top-[205px] text-xs text-red-500">{formErrors.email}</p>
-            <InputField type="email" name={"email"} label={"อีเมล์"} onChange={handleChange} />
+            <InputField formValues={formValues} type="email" name={"email"} label={"อีเมล์"} onChange={handleChange} />
             <p className="absolute right-[16%] top-[270px] text-xs text-red-500">{formErrors.password}</p>
-            <InputField type="password" name={"password"} label={"รหัสผ่าน"} onChange={handleChange} />
+            <InputField formValues={formValues} type="password" name={"password"} label={"รหัสผ่าน"} onChange={handleChange} />
             <p className="absolute right-[16%] top-[335px] text-xs text-red-500">{formErrors.phone}</p>
-            <InputField type="text" name={"phone"} label={"เบอร์โทรศัพท์"} onChange={handleChange} />
+            <InputField formValues={formValues} type="text" name={"phone"} label={"เบอร์โทรศัพท์"} onChange={handleChange} />
 
             {/* btn wrapper */}
             {/* <pre>{JSON.stringify(formValues, undefined, 2)}</pre> */}
@@ -213,15 +219,27 @@ const InputSecondPage = forwardRef((props, ref) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const { data, isLoading, error, mutate: register } = useRegister(handleOnRegSuccess);
+    const onErrorAnimation = () => {
+        gsap.fromTo(
+            ".input-register",
+            { x: -1 },
+            { x: 1, ease: RoughEase.ease.config({ strength: 8, points: 20, randomize: false }), clearProps: "x" }
+        );
+    };
+    const { data, error, isLoading, mutate } = useRegister(handleOnRegSuccess, onErrorAnimation);
+
     const handleSubmit = e => {
         e.preventDefault();
         const check = validate(formValues);
         setFormErrors(check);
         if (Object.keys(check).length === 0) {
-            register({ ...input, ...formValues, role: "student" });
+            mutate({ ...input, ...formValues, role: "student" });
         }
     };
+
+    const errorMessage = useMemo(() => {
+        return error?.response?.data?.message || null;
+    }, [error]);
 
     useEffect(() => {
         console.log(error);
@@ -261,6 +279,7 @@ const InputSecondPage = forwardRef((props, ref) => {
     };
     return (
         <form className="flex-col-cen absolute w-full" ref={ref} onSubmit={handleSubmit}>
+            {errorMessage && <div className="text-sm tracking-tight text-red-500">{errorMessage}</div>}
             <p className="absolute right-[16%] top-[5px] text-xs text-red-500">{formErrors.student_id}</p>
             <InputField type="text" name={"student_id"} label={"รหัสนักศึกษา"} onChange={handleChange} />
             <p className="absolute right-[16%] top-[70px] text-xs text-red-500">{formErrors.department}</p>

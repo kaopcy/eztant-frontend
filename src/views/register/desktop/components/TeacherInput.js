@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext, useState, useLayoutEffect, useMemo } from "react";
+import React, { useRef, useState, useLayoutEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { RoughEase } from "gsap/EasePack";
