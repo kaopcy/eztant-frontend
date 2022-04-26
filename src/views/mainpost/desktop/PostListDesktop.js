@@ -11,7 +11,7 @@ import SortPanel from "./components/SortPanel";
 import Pagination from "../../../component/Pagination";
 import ApplyPopup from "./components/ApplyPopup";
 
-const PostListDesktop = ({ postList, isLoading }) => {
+const PostListDesktop = ({ postList, isLoading , totalPage }) => {
     gsap.registerPlugin(ScrollToPlugin);
 
     const { appendQuery, query } = useSearchQuery();
@@ -52,7 +52,7 @@ const PostListDesktop = ({ postList, isLoading }) => {
             {!isDepartmentPanel && <DepartmentPanel onChangeDepartment={scrollThenCallback} />}
             <div className="flex-col-cen space-y-4 text-text">
                 {postList && !isLoading ? (
-                    postList.map((post, i) => <PostDesktop post={post} key={post.subjectID} setSelectedPost={setSelectedPost} />)
+                    postList.map((post, i) => <PostDesktop post={post} key={post._id} setSelectedPost={setSelectedPost} />)
                 ) : (
                     <>
                         <PostFallBack />
@@ -60,7 +60,9 @@ const PostListDesktop = ({ postList, isLoading }) => {
                         <PostFallBack />
                     </>
                 )}
-                {<Pagination currentPage={page} setPage={scrollThenNextPage} />}
+                <div className="h-10 w-[768px]"></div>
+                {<Pagination totalPage={totalPage} currentPage={page} setPage={scrollThenNextPage} />}
+                <div className="h-10"></div>
             </div>
             {!isHideSortPanel && <SortPanel setPage={scrollThenCallback} />}
             {selectedPost && <ApplyPopup setSelectedPost={setSelectedPost} selectedPost={selectedPost} />}

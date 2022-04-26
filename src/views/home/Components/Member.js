@@ -58,44 +58,46 @@ const Member = () => {
         },
     ];
 
-    useEffect(() => {
-        const properties = [
-            {
-                autoAlpha: 0,
-                scale: 0,
-                xPercent: 100,
-            },
-            {
-                autoAlpha: 1,
-                scale: 1,
-                xPercent: 0,
-                ease: "elastic.out(2,1)",
-                duration: 0.5,
-            },
-        ];
-        tl.current = gsap
-            .timeline({
-                scrollTrigger: {
-                    trigger: container.current,
-                    pin: true,
-                    start: "60px bottom",
-                    end: "bottom bottom",
-                    scrub: 2,
-                },
-            })
-            .fromTo(
-                overlay.current,
+    useLayoutEffect(() => {
+        setTimeout(() => {
+            const properties = [
                 {
                     autoAlpha: 0,
+                    scale: 0,
+                    xPercent: 100,
                 },
-                { autoAlpha: 1 }
-            )
-            .to(container.current, { yPercent: -50 }, "<")
-            .fromTo(kaoRef.current, ...properties, "<")
-            .fromTo(boomRef.current, ...properties, "<0.1")
-            .fromTo(perthRef.current, ...properties, "<0.1")
-            .fromTo(nabinRef.current, ...properties, "<0.1")
-            .fromTo(donutRef.current, ...properties, "<0.1");
+                {
+                    autoAlpha: 1,
+                    scale: 1,
+                    xPercent: 0,
+                    ease: "elastic.out(2,1)",
+                    duration: 0.5,
+                },
+            ];
+            tl.current = gsap
+                .timeline({
+                    scrollTrigger: {
+                        trigger: container.current,
+                        pin: true,
+                        start: "60px bottom",
+                        end: "bottom bottom",
+                        scrub: 2,
+                    },
+                })
+                .fromTo(
+                    overlay.current,
+                    {
+                        autoAlpha: 0,
+                    },
+                    { autoAlpha: 1 }
+                )
+                .to(container.current, { yPercent: -50 }, "<")
+                .fromTo(kaoRef.current, ...properties, "<")
+                .fromTo(boomRef.current, ...properties, "<0.1")
+                .fromTo(perthRef.current, ...properties, "<0.1")
+                .fromTo(nabinRef.current, ...properties, "<0.1")
+                .fromTo(donutRef.current, ...properties, "<0.1");
+        }, 100);
     }, []);
 
     return (

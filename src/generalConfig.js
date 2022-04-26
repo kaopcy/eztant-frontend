@@ -64,7 +64,7 @@ export const DEPARTMENT_LINK = [
 export const SORT_TYPE = [
     {
         label: "ตามชื่อผู้สอน",
-        value: "teacherName",
+        value: "owner_id.firstname",
     },
     {
         label: "ตามจำนวนเงิน",
@@ -72,11 +72,11 @@ export const SORT_TYPE = [
     },
     {
         label: "ตามชื่อวิชา",
-        value: "subjectName",
+        value: "subject_name",
     },
     {
         label: "ตามรหัสวิชา",
-        value: "subjectID",
+        value: "subject_id",
     },
 ];
 

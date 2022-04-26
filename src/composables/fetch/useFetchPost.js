@@ -39,6 +39,9 @@ export const usePostListFetch = id => {
         const key = Object.keys(DEPARTMENT_MAP).map(e => e.toLowerCase().replace(/[^\w]/gi, ""));
         const index = key.indexOf(id.toLowerCase().replace(/[^\w\s]/gi, ""));
         const departmentValue = Object.values(DEPARTMENT_MAP);
+
+        const orderBy = allQuery?.orderBy === "ascending" ? 1 : -1;
+
         const postQuery = {
             filter:
                 departmentValue[index] && departmentValue[index] === "รวมทุกภาควิชา"
@@ -48,14 +51,26 @@ export const usePostListFetch = id => {
                       },
 
             page: allQuery?.page || "1",
+            sort:
+                allQuery?.sortBy === "owner_id.firstname"
+                    ? {
+                          owner_id: {
+                              "owner_id.firstname": orderBy,
+                          },
+                      }
+                    : {
+                          [allQuery?.sortBy || "createdAt"]: orderBy,
+                      },
             // search: allQuery?.search || "",
             // sortBy: allQuery?.sortBy || "teacherName",
             // orderBy: allQuery?.orderBy || "ascending",
         };
+        console.log(allQuery?.sortBy);
+        console.log(postQuery);
         mutate(postQuery);
     }, [id, allQuery, mutate]);
 
-    return { isLoading, error, posts: data?.data?.posts?.map(e => castPostFromDatabase(e)) };
+    return { isLoading, error, posts: data?.data?.posts?.map(e => castPostFromDatabase(e)), totalPage: data?.data?.total };
 };
 
 const fetchAllPost = query => {

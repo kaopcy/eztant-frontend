@@ -9,6 +9,9 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { viewNotification } from "../../store/actions/authAction";
 
+import { useNotification } from "../../composables/interact/useNotifcation";
+import { NEW_NOTIFICATION } from "../../store/actions/type";
+
 const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     const { user } = useSelector(state => state.user);
     const tempType = useRef("all");
@@ -25,10 +28,12 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
         play: () => animation.current.play(),
     }));
 
+    const { data: newNoti } = useNotification();
     const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatch(viewNotification);
-    }, [dispatch]);
+        if (newNoti) dispatch({ type: NEW_NOTIFICATION, payload: newNoti.data });
+    }, [newNoti, dispatch]);
 
     useEffect(() => {
         animation.current = gsap

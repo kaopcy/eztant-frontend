@@ -1,11 +1,14 @@
-import React, { useRef, useEffect, useLayoutEffect } from "react";
+import React, { useRef, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import gsap from "gsap";
+
+import { useLike } from "../../../composables/interact/useLike";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { useSelector } from "react-redux";
 
-const Like = ({ flashAnimate }) => {
+const Like = ({ flashAnimate, likes, postID }) => {
     const heartBorderRef = useRef(null);
     const heartSolidRef = useRef(null);
     const circleRef = useRef(null);
@@ -17,6 +20,13 @@ const Like = ({ flashAnimate }) => {
         gsap.set(circleWhiteRef.current, { scale: 0 });
         gsap.set(heartSolidRef.current, { scale: 0 });
     }, []);
+
+    const { user } = useSelector(state => state.user);
+    const { mutate } = useLike();
+
+    const initLike = useRef(likes.some(e => e._id === user._id));
+    const [isLike, setIsLike] = useState(initLike.current);
+    
     useEffect(() => {
         animation.current = gsap
             .timeline({ paused: true, reversed: true })
@@ -27,21 +37,24 @@ const Like = ({ flashAnimate }) => {
             .to(heartBorderRef.current, { autoAlpha: 0 }, "<")
             .to(heartSolidRef.current, { color: "red", duration: 0.3 }, "<")
             .to(heartSolidRef.current, { scale: 1, duration: 0.4, ease: "back.out(7)" }, "<");
+        initLike.current ? animation.current.progress(100) : animation.current.progress(0);
         return () => {
             animation.current.kill();
         };
     }, []);
 
     const toggleAnimation = () => {
-        animation.current.reversed() ? animation.current.play() : animation.current.reverse();
+        !isLike ? animation.current.play() : animation.current.reverse();
     };
 
     return (
         <div
             className="z-20 mb-1 flex cursor-pointer space-x-2 self-end"
             onClick={() => {
+                setIsLike(e => !e);
                 flashAnimate();
                 toggleAnimation();
+                mutate(postID);
             }}>
             <div className="flex-col-cen relative ">
                 <div
@@ -57,7 +70,7 @@ const Like = ({ flashAnimate }) => {
                     <FontAwesomeIcon icon={faHeart} className="" />
                 </div>
             </div>
-            <div className="self-end text-sm text-text-light">17</div>
+            <div className="self-end text-sm text-text-light">{likes?.length - (initLike.current ? 1 : 0) + (isLike ? 1 : 0)}</div>
         </div>
     );
 };

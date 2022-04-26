@@ -7,6 +7,7 @@ export const LOGOUT = "LOGOUT";
 export const SIGNIN = "SIGHIN";
 export const NO_USER = "NO_USER";
 export const RESET_ERROR = "RESET_ERROR";
+export const NEW_NOTIFICATION = "NEW_NOTIFICATION";
 
 export const VIEW_NOTIFICATION = 'VIEW_NOTIFICATION'
 
