@@ -259,20 +259,10 @@ const InputSecondPage = forwardRef((props, ref) => {
             errors.student_id = "ไม่สามารถใส่อักษรพิเศษได้";
         }
         if (!values.department) {
-            errors.department = "กรุณากรอกภาควิชา";
-        } else if (special.some(e => values.department.includes(e))) {
-            errors.department = "ไม่สามารถใส่อักษรพิเศษได้";
-        } else if (values.department.length > 30) {
-            errors.department = "ภาควิชาควรไม่เกิน 30 ตัว";
+            errors.department = "กรุณาเลือกภาควิชา";
         }
         if (!values.student_year) {
-            errors.student_year = "กรุณากรอกชั้นปี";
-        } else if (values.student_year.length < 1 || values.student_year.length > 1) {
-            errors.student_year = "ชั้นปีไม่ถูกต้อง";
-        } else if (values.student_year.match(/[A-Za-z]/i)) {
-            errors.student_year = "ชั้นปีต้องเป็นตัวเลขเท่านั้น";
-        } else if (special.some(e => values.student_year.includes(e))) {
-            errors.student_year = "ไม่สามารถใส่อักษรพิเศษได้";
+            errors.student_year = "กรุณาเลือกชั้นปี";
         }
 
         return errors;
@@ -283,9 +273,30 @@ const InputSecondPage = forwardRef((props, ref) => {
             <p className="absolute right-[16%] top-[5px] text-xs text-red-500">{formErrors.student_id}</p>
             <InputField type="text" name={"student_id"} label={"รหัสนักศึกษา"} onChange={handleChange} />
             <p className="absolute right-[16%] top-[70px] text-xs text-red-500">{formErrors.department}</p>
-            <InputField type="text" name={"department"} label={"ภาควิชา"} onChange={handleChange} />
+            <div className="relative right-[28%] top-[0px]  ">ภาควิชา</div>
+            <select type="text" onChange={handleChange} name={"department"} className="w-[70%] rounded-md border px-1 py-[0.45rem] text-xs outline-none focus:border-gray-300 mb-[8px]">
+                <option>การเกษตร</option>
+                <option>คอมพิวเตอร์</option>
+                <option>เคมี</option>
+                <option>เครื่องกล</option>
+                <option>อุตสาหการ</option>
+                <option>ชีวการแพทย์</option>
+                <option>โทรคมนาคม</option>
+                <option>ไฟฟ้า</option>
+                <option>โยธา</option>
+                <option>อาหาร</option>
+                <option>อิเล็กโทรนิคส์</option>
+            </select>
+            {/* <InputField type="text" name={"department"} label={"ภาควิชา"} onChange={handleChange} /> */}
             <p className="absolute right-[16%] top-[135px] text-xs text-red-500">{formErrors.student_year}</p>
-            <InputField type="text" name={"student_year"} label={"ชั้นปี"} onChange={handleChange} />
+            <div className="relative right-[31%] top-[0px]  ">ชั้นปี</div>
+            <select type="text" onChange={handleChange} name={"student_year"} className="w-[70%] rounded-md border px-1 py-[0.45rem] text-xs outline-none focus:border-gray-300 mb-[8px]">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+            {/* <InputField type="text" name={"student_year"} label={"ชั้นปี"} onChange={handleChange} /> */}
             {/* btn wrapper */}
             <div className="input-group mt-4 flex items-center justify-center space-x-8">
                 <button

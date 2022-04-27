@@ -14,9 +14,8 @@ return (
             <input className='form-input w-44 h-7 px-3 py-2 rounded-lg ring-1 ring-gray-300'></input>
             <FontAwesomeIcon icon={faSearch} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
             {<select className=' w-20 h-7 rounded-lg ring-1 ring-gray-300 m-0 focus:text-gray-500'>
-            <option className='text-sm'>A-Z</option>
-            <option className='text-sm'>Newest</option>
-            <option className='text-sm'>Oldest</option>
+            <option className='text-sm'>มาก-น้อย</option>
+            <option className='text-sm'>น้อย-มาก</option>
             </select>}
             <FontAwesomeIcon icon={faSort} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
         </div>

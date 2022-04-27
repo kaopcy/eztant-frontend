@@ -127,6 +127,13 @@ const TeacherInput = props => {
         } else if (special.some(e => values.phone.includes(e))) {
             errors.phone = "ไม่สามารถใส่อักษรพิเศษได้";
         }
+        if (!values.department) {
+            errors.department = "กรุณาเลือกภาควิชา";
+        }  else if (values.department.match(/[A-Za-z]/i)) {
+            errors.department = "เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น";
+        } else if (special.some(e => values.department.includes(e))) {
+            errors.department = "ไม่สามารถใส่อักษรพิเศษได้";
+        }
 
         return errors;
     };
@@ -143,34 +150,47 @@ const TeacherInput = props => {
             {errorMessage && <div className="text-sm tracking-tight text-red-500">{errorMessage}</div>}
             <form onSubmit={handleSubmit} className="flex-col-cen w-full">
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                    <p className="absolute right-[70px] top-[100px] text-xs text-red-500">{formErrors.firstname}</p>
+                    <p className="absolute right-[70px] top-[80px] text-xs text-red-500">{formErrors.firstname}</p>
                     <div className="input-label  ">ชื่อ</div>
                     <input type="text" onChange={handleChange} value={formValues.firstname} name={"firstname"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                    <p className="absolute right-[70px] top-[165px] text-xs text-red-500">{formErrors.lastname}</p>
+                    <p className="absolute right-[70px] top-[145px] text-xs text-red-500">{formErrors.lastname}</p>
                     <div className="input-label  ">นามสกุล</div>
                     <input type="text" onChange={handleChange} value={formValues.lastname} name={"lastname"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                    <p className="absolute right-[70px] top-[230px] text-xs text-red-500">{formErrors.email}</p>
+                    <p className="absolute right-[70px] top-[210px] text-xs text-red-500">{formErrors.email}</p>
                     <div className="input-label  ">อีเมล์</div>
                     <input type="email" onChange={handleChange} name={"email"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                    <p className="absolute right-[70px] top-[295px] text-xs text-red-500">{formErrors.password}</p>
+                    <p className="absolute right-[70px] top-[275px] text-xs text-red-500">{formErrors.password}</p>
                     <div className="input-label  ">รหัสผ่าน</div>
                     <input type="password" onChange={handleChange} name={"password"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                    <p className="absolute right-[70px] top-[360px] text-xs text-red-500">{formErrors.phone}</p>
+                    <p className="absolute right-[70px] top-[340px] text-xs text-red-500">{formErrors.phone}</p>
                     <div className="input-label  ">เบอร์โทรศัพท์</div>
                     <input type="text" onChange={handleChange} name={"phone"} className="input-register " />
                 </div>
                 <div className="flex-col-cen input-group mb-2 w-[70%] items-start ">
-                    <p className="absolute right-[70px] top-[360px] text-xs text-red-500">{formErrors.phone}</p>
+                    <p className="absolute right-[70px] top-[405px] text-xs text-red-500">{formErrors.department}</p>
                     <div className="input-label  ">ภาควิชา</div>
-                    <input type="text" onChange={handleChange} name={"department"} className="input-register " />
+                    <select type="text" onChange={handleChange} name={"department"} className="input-register px-[5px]">
+                        <option>การเกษตร</option>
+                        <option>คอมพิวเตอร์</option>
+                        <option>เคมี</option>
+                        <option>เครื่องกล</option>
+                        <option>อุตสาหการ</option>
+                        <option>ชีวการแพทย์</option>
+                        <option>โทรคมนาคม</option>
+                        <option>ไฟฟ้า</option>
+                        <option>โยธา</option>
+                        <option>อาหาร</option>
+                        <option>อิเล็กโทรนิคส์</option>
+                    </select>
+                    {/* <input type="text" onChange={handleChange} name={"department"} className="input-register " /> */}
                 </div>
                 {/* btn wrapper */}
                 <div className="input-group mt-4 flex items-center justify-center space-x-8">
