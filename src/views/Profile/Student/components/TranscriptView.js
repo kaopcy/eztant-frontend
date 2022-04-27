@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const TranscriptView = ({ transcript, setIsOpenTranscript, isOpenTranscript }) => {
+    console.log(transcript);
+
     const [isloading, setIsloading] = useState(true);
     useEffect(() => {
         setTimeout(() => {
@@ -13,26 +15,27 @@ const TranscriptView = ({ transcript, setIsOpenTranscript, isOpenTranscript }) =
         }, 500);
     });
 
-    const sortedTranscript = useMemo(() => {
-        let newTranscript = [];
-        let maxYear = 4;
-        let maxSemestry = 2;
-        for (let year = 1; year <= maxYear; year++) {
-            for (let semestry = 1; semestry <= maxSemestry; semestry++) {
-                newTranscript.push({
-                    year: year,
-                    semestry: semestry,
-                    transcript: transcript.filter(e => e.studyYear === year && e.studySemestry === semestry),
-                });
-            }
-        }
-        return newTranscript;
-    }, [transcript]);
+    // const sortedTranscript = useMemo(() => {
+    //     let newTranscript = [];
+    //     let maxYear = 4;
+    //     let maxSemestry = 2;
+    //     for (let year = 1; year <= maxYear; year++) {
+    //         for (let semestry = 1; semestry <= maxSemestry; semestry++) {
+    //             newTranscript.push({
+    //                 year: year,
+    //                 semestry: semestry,
+    //                 transcript: transcript.filter(e => e.studyYear === year && e.studySemestry === semestry),
+    //             });
+    //         }
+    //     }
+    //     return newTranscript;
+    // }, [transcript]);
 
     const isReady = useMemo(() => {
-        if (!sortedTranscript || sortedTranscript.length <= 0 || isloading) return false;
+        // if (!sortedTranscript || sortedTranscript.length <= 0 || isloading) return false;
         return true;
-    }, [sortedTranscript, isloading]);
+    }, []);
+    // }, [sortedTranscript, isloading]);
 
     const container = useRef(null);
     const overlay = useRef(null);
@@ -68,29 +71,24 @@ const TranscriptView = ({ transcript, setIsOpenTranscript, isOpenTranscript }) =
                 <div className="self-center text-lg font-bold text-secondary">ทรานสคริปต์ของคุณ</div>
                 <FontAwesomeIcon icon={faXmark} className="absolute top-2 left-2 cursor-pointer p-2 text-lg text-red-500" onClick={() => close()} />
                 <div className="flex justify-center">
-                    <div className="w-[400px] shrink-0 text-secondary">วิชา</div>
+                    <div className="w-[600px] shrink-0 text-secondary">วิชา</div>
                     <div className="flex-col-cen w-[50px] shrink-0 text-secondary">เกรด</div>
                 </div>
                 {!isReady ? (
                     <div className="stagger-subject-animation  whitespace-nowrap text-lg text-text-light">กำลังโหลด...</div>
                 ) : (
-                    sortedTranscript.map(
-                        year =>
-                            year.transcript.length > 0 && (
-                                <div className="mt-2 flex-col" key={uuid()}>
-                                    <div className="flex w-full items-center">
-                                        <div className="h-[1px] w-full bg-gray-200"></div>
-                                        <div className="flex items-center whitespace-nowrap text-xs text-text-light">
-                                            ปี{year.year} เทอม{year.semestry}
-                                        </div>
-                                        <div className="h-[1px] w-full bg-gray-200"></div>
-                                    </div>
-                                    {year.transcript.map(e => (
-                                        <EachSubject transcript={e} key={uuid()} />
-                                    ))}
-                                </div>
-                            )
-                    )
+                    transcript?.semesters.map(semester => (
+                        <div className="mt-2 flex-col" key={uuid()}>
+                            <div className="mb-1 flex w-full items-center">
+                                <div className="h-[1px] w-full bg-gray-200"></div>
+                                <div className="flex items-center whitespace-nowrap text-xs text-text-light">{semester.title}</div>
+                                <div className="h-[1px] w-full bg-gray-200"></div>
+                            </div>
+                            {semester.subjects.map(e => (
+                                <EachSubject transcript={e} key={uuid()} />
+                            ))}
+                        </div>
+                    ))
                 )}
             </div>
         </>
@@ -100,10 +98,11 @@ const TranscriptView = ({ transcript, setIsOpenTranscript, isOpenTranscript }) =
 const EachSubject = ({ transcript }) => {
     return (
         <div className="stagger-subject-animation mb-3 flex justify-center">
-            <div className="w-[400px] text-text ">
-                {transcript.subjectID} {transcript.subjectName}
+            <div className="flex w-[600px] items-center text-text">
+                <div className="mr-4">{transcript.subject_id}</div>
+                <div className="">{transcript.subject_name}</div>
             </div>
-            <div className="flex-col-cen w-[50px] text-text">{transcript.grade}</div>
+            <div className="flex-col-cen w-[50px] text-text">{transcript.subject_grade}</div>
         </div>
     );
 };

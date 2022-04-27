@@ -67,6 +67,10 @@ export const SORT_TYPE = [
         value: "owner_id.firstname",
     },
     {
+        label: "ชั้นปีที่รับ",
+        value: "requirement_year",
+    },
+    {
         label: "ตามจำนวนเงิน",
         value: "wage",
     },

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const AcceptedList = ({ post, activeSubject, activeSection, setActiveSection }) => {
-    const allRequestList = post?.tables?.map(table => table.requested);
+    const allRequestList = post?.schedules?.map(table => table.requested);
 
     const allRequestCount = useMemo(() => {
         let temp = 0;
@@ -31,7 +31,7 @@ const AcceptedList = ({ post, activeSubject, activeSection, setActiveSection }) 
             <div className="mb-5 text-xl font-bold">
                 ยืนยันคำขอแล้ว ({allAcceptCount}/{allRequestCount})
             </div>
-            {post.tables.map((table, index) => (
+            {post.schedules.map((table, index) => (
                 <EachSection
                     setActive={setActiveSection}
                     index={index}
@@ -80,15 +80,18 @@ const EachSection = ({ index, table, isActive, setActive, activeSubject }) => {
 };
 
 const EachStudent = request => {
-    const user = request.request.user;
+    const user = request.request;
+    console.log(user);
     return (
         <div className="mt-3 flex w-full items-center space-x-3 px-2">
-            <img src={user.imgURL} className="aspect-square bg-blue-50 w-12 shrink-0 rounded-full " alt="" />
+            <div className="aspect-square  w-12 shrink-0 overflow-hidden rounded-full lg:ml-5">
+                <img src={user?.imgURL || ""} className="h-full w-full" alt="" />
+            </div>
             <div className="flex w-full min-w-0 flex-col -space-y-1">
                 <div className="ellipsis text-base font-normal">
-                    {user.firstname} {user.lastname}
+                    {user?.firstname} {user?.lastname}
                 </div>
-                <div className="text-sm font-normal">{user.studentID}</div>
+                <div className="text-sm font-normal">{user?.student_id}</div>
             </div>
         </div>
     );

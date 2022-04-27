@@ -1,11 +1,13 @@
 import { createContext, useContext, useState } from "react";
+import { useSelector } from "react-redux";
 import { REQUEST_LIST } from "../../generalConfig";
 
 const UserPostContext = createContext();
 const SetUserPostContext = createContext();
 
 export const RequestListProvider = ({ children }) => {
-    const [userpost, setUserpost] = useState(REQUEST_LIST);
+    const { user }  = useSelector(state => state.user)
+    const [userpost, setUserpost] = useState(user.recruit_posts);
     return (
         <UserPostContext.Provider value={userpost}>
             <SetUserPostContext.Provider value={setUserpost}>{children}</SetUserPostContext.Provider>
@@ -24,7 +26,7 @@ export const useHandleUserPost = (postNum, sectionNum, userNum) => {
                 if (index === postNum) {
                     return {
                         ...post,
-                        tables: post.tables.map((section, i) => {
+                        schedules: post.schedules.map((section, i) => {
                             if (i === sectionNum) {
                                 return {
                                     ...section,
@@ -51,7 +53,7 @@ export const useHandleUserPost = (postNum, sectionNum, userNum) => {
                 if (index === postNum) {
                     return {
                         ...post,
-                        tables: post.tables.map((section, i) => {
+                        schedules: post.schedules.map((section, i) => {
                             if (i === sectionNum) {
                                 return {
                                     ...section,
@@ -78,7 +80,7 @@ export const useHandleUserPost = (postNum, sectionNum, userNum) => {
                 if (index === postNum) {
                     return {
                         ...post,
-                        tables: post.tables.map((section, i) => {
+                        schedules: post.schedules.map((section, i) => {
                             if (i === sectionNum) {
                                 return {
                                     ...section,

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTrash, faTrashAlt, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { useHandleUserPost } from "../../RequestListContext";
+import { useAcceptRequest } from "../../../../composables/interact/useAcceptRequest";
 
 const MainRequest = ({ post, postNum, setActiveSection }) => {
     return (
@@ -13,7 +14,7 @@ const MainRequest = ({ post, postNum, setActiveSection }) => {
             <div className="mb-5 flex w-full  items-center border-b-2 py-5 px-5 text-xl font-semibold text-text">
                 นักศึกษาที่สมัครเป็น TA วิชา {post.subjectName} {post.subjectID}
             </div>
-            {post.tables.map((table, index) => (
+            {post.schedules.map((table, index) => (
                 <EachSection setActiveSection={setActiveSection} postNum={postNum} sectionNum={index} table={table} key={index} />
             ))}
         </div>
@@ -48,7 +49,7 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
 
     return (
         <div
-            className={`mx-auto bg-white flex w-full max-w-[800px] flex-col px-10 text-text outline-2 outline-gray-200 hover:rounded-md hover:outline `}
+            className={`mx-auto flex w-full max-w-[800px] flex-col bg-white px-10 text-text outline-2 outline-gray-200 hover:rounded-md hover:outline `}
             ref={container}>
             <div className="mb-2 flex items-center text-base  ">
                 เซค {table.section}{" "}
@@ -67,6 +68,8 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
                                 </div>
                             )}
                             <EachUser
+                                userID={request._id}
+                                scheduleID={table}
                                 acceptNum={acceptNum}
                                 max_ta={table.max_ta}
                                 sectionNum={sectionNum}
@@ -85,23 +88,38 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
 };
 
 const EachUser = ({ acceptNum, max_ta, request, userNum, postNum, sectionNum }) => {
-    const user = request.user;
+    const user = request;
     const { setAccept, reject, unAccept } = useHandleUserPost(postNum, sectionNum, userNum);
-    useEffect(() => {
-        console.log("yaya");
-    }, [user]);
+    const { mutate , isLoading , error } = useAcceptRequest()
+
+    useEffect(()=>{
+        console.log(request)
+    },[request])
+
+    const onAccept = ()=>{
+        mutate()
+        setAccept()
+    }
+
+    useEffect(()=>{
+        if(error)
+        console.log(error.response);
+    },[error])
+
     return (
         <div
             className={`relative flex w-full items-center justify-between  rounded-md bg-zinc-100 px-2 py-3 shadow-sm hover:bg-zinc-200 ${
                 !request.is_accepted && acceptNum >= max_ta && "opacity-30"
             }`}>
             <div className="flex space-x-5">
-                <img src={user.imgURL} className="aspect-square  w-12 shrink-0 rounded-full lg:ml-5 " alt="" />
+                <div className="aspect-square  w-12 shrink-0 overflow-hidden rounded-full lg:ml-5">
+                    <img src={user.imgURL || ""} className="h-full w-full" alt="" />
+                </div>
                 <div className="flex w-full min-w-0 flex-col -space-y-1">
                     <div className="ellipsis text-lg  font-semibold tracking-wide">
                         {user.firstname} {user.lastname}
                     </div>
-                    <div className="text-sm font-normal">{user.studentID}</div>
+                    <div className="text-sm font-normal">{user.student_id}</div>
                 </div>
             </div>
 

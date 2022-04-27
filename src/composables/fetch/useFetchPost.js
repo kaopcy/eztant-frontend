@@ -61,7 +61,7 @@ export const usePostListFetch = id => {
                     : {
                           [allQuery?.sortBy || "createdAt"]: orderBy,
                       },
-            // search: allQuery?.search || "",
+            search: allQuery?.search || "",
             // sortBy: allQuery?.sortBy || "teacherName",
             // orderBy: allQuery?.orderBy || "ascending",
         };

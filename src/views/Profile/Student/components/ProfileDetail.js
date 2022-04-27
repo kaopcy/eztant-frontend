@@ -10,6 +10,7 @@ import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { fileValidate } from "../../../../utils/fileUploadValidate";
 import { fileIcon } from "../../../../utils/fileIcon";
 import TranscriptView from "./TranscriptView";
+import { useUploadTranscript } from "../../../../composables/interact/useTranscript";
 
 const ProfileDetail = () => {
     const { user } = useSelector(state => state.user);
@@ -33,7 +34,7 @@ const ProfileDetail = () => {
                 <TranscriptView transcript={user.transcript} isOpenTranscript={isOpenTranscript} setIsOpenTranscript={setIsOpenTranscript} />
             )}
 
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 flex  w-full max-w-[1000px] items-stretch space-x-5 ">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 flex w-full  max-w-[1000px] items-stretch space-x-5 pb-20 ">
                 <div className="w-full overflow-hidden">
                     <div ref={editDetail} className="relative flex w-full  flex-col space-y-4 rounded-md border-2 border-gray-200 p-8 pt-10">
                         <EditButton canEdit={canEdit} setCanEdit={setCanEdit} />
@@ -41,10 +42,11 @@ const ProfileDetail = () => {
                         <Input {...form} canEdit={canEdit} name="lastname" label="นามสกุล" />
                         <Input {...form} canEdit={canEdit} name="department" label="ภาควิชา" />
                         <Input {...form} canEdit={canEdit} name="studentID" label="รหัสนักศึกษา" />
+                        <Input {...form} canEdit={canEdit} name="student_year" label="ชั้นปีที่เรียน" />
                         <Input {...form} canEdit={canEdit} name="email" label="อีเมล์" />
                         <Input {...form} canEdit={canEdit} name="password" label="รหัสผ่าน" />
                         <Input {...form} canEdit={canEdit} name="password" label="เบอร์โทร" />
-                        <FileInput {...form} name="transcript" label="ทรานสคริปต์" setIsOpenTranscript={setIsOpenTranscript} />
+                        <FileInput {...form} canEdit={canEdit} name="transcript" label="ทรานสคริปต์" setIsOpenTranscript={setIsOpenTranscript} />
                     </div>
                 </div>
                 <div className="w-full max-w-[350px]  overflow-hidden">
@@ -165,62 +167,123 @@ const Input = ({ name, label, register, formState, canEdit, setValue, clearError
     );
 };
 
-const FileInput = ({ name, label, register, formState, watch, resetField, setIsOpenTranscript }) => {
+const FileInput = ({ name, label, register, formState, watch, resetField, setIsOpenTranscript, canEdit }) => {
     const { user } = useSelector(state => state.user);
     const error = useMemo(() => {
         return formState.errors?.[name];
     }, [formState, name]);
 
+    const onSuccess = () => {
+        console.log("upload transcript success");
+    };
+    const { mutate, isLoading, error: uploadError, isSuccess } = useUploadTranscript(onSuccess);
+
+    useEffect(() => {
+        if (!uploadError) return;
+        console.log(uploadError.response.data.message);
+    }, [uploadError]);
+
     const fileWatch = watch("file");
     const [fileInputName, setFileInputName] = useState(null);
     useEffect(() => {
+        if (!fileWatch?.[0]) return;
         console.log(fileWatch?.[0]?.name);
         setFileInputName(fileWatch?.[0]?.name);
-    }, [fileWatch]);
+
+        const formData = new FormData();
+        formData.append("pdfFile", fileWatch?.[0]);
+        mutate(formData);
+    }, [fileWatch, mutate]);
+
+    const icon = useRef(null);
+    const firstTime = useRef(true);
+    const animate = useRef(null);
+    useLayoutEffect(() => {
+        if (firstTime.current) {
+            animate.current = gsap
+                .timeline({ paused: true, reversed: true })
+                .fromTo(icon.current, { xPercent: -110 }, { xPercent: 0, ease: "elastic.out(1,1)", duration: 1 }, "<");
+            firstTime.current = false;
+            return;
+        }
+        if (!canEdit) {
+            animate.current.play();
+        } else {
+            animate.current.reverse();
+        }
+    }, [canEdit]);
 
     return (
-        <div className="relative flex items-center">
-            <div className="w-[110px]">{label}</div>
-            {user.transcript ? (
-                <div onClick={() => setIsOpenTranscript(true)} className="text-secondary underline cursor-pointer">
-                    ดูทรานสคริปต์
-                </div>
-            ) : (
-                <>
-                    <input className="hidden" type="file" {...register("file", fileValidate)} id="transcript" />
-
-                    <label
-                        htmlFor="transcript"
-                        className={` btn-white flex  items-center rounded-md border-[1.7px]  px-2 py-1 disabled:text-text-light ${
-                            error ? "border-red-500" : ""
-                        }`}>
-                        <FontAwesomeIcon className="mr-2" icon={faFileUpload} />
-                        <div>อัพโหลดทรานสคริปต์</div>
-                    </label>
-
-                    {error && (
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                            <FontAwesomeIcon icon={faInfoCircle} className="text-red-500" />
-                            <div className="absolute text-xs text-red-500">{error.message}</div>
+        <>
+            <div className="relative flex items-center">
+                <div className="w-[110px]">{label}</div>
+                {user.transcript ? (
+                    <div className="flex items-center">
+                        <div onClick={() => setIsOpenTranscript(true)} className="cursor-pointer text-secondary underline">
+                            ดูทรานสคริปต์
                         </div>
-                    )}
-                    {fileInputName && (
-                        <div className="ml-4 flex min-w-0  items-center rounded-full bg-gray-200 px-3 py-1 text-sm font-normal text-text">
-                            <FontAwesomeIcon icon={fileIcon(fileInputName)} />
-                            <div className="ellipsis ml-2 max-w-[100px] ">{fileInputName}</div>
-                            <FontAwesomeIcon
-                                icon={faXmarkCircle}
-                                className="ml-2 text-xs"
-                                onClick={() => {
-                                    setFileInputName(null);
-                                    resetField("file");
-                                }}
-                            />
+                        <div className="ml-10 overflow-hidden">
+                            <input className="hidden" type="file" {...register("file", fileValidate)} id="transcript" />
+
+                            <label
+                                ref={icon}
+                                htmlFor="transcript"
+                                className={` btn-white flex  items-center rounded-md border-[1.7px]  px-2 py-1 disabled:text-text-light ${
+                                    error ? "border-red-500" : ""
+                                }`}>
+                                <FontAwesomeIcon className="mr-2" icon={faFileUpload} />
+                                <div>อัพโหลดอีกครั้ง</div>
+                            </label>
                         </div>
-                    )}
-                </>
+                        {isLoading && <div className="ml-4 text-xs text-text">กำลังโหลด ...</div>}
+                        {isSuccess && <div className="ml-4 text-xs text-green-400">สำเร็จ</div>}
+                        {uploadError && <div className="ml-4 text-xs text-red-400">{uploadError.response.data.message}</div>}
+                    </div>
+                ) : (
+                    <>
+                        <input className="hidden" type="file" {...register("file", fileValidate)} id="transcript" />
+
+                        <label
+                            htmlFor="transcript"
+                            className={` btn-white flex  items-center rounded-md border-[1.7px]  px-2 py-1 disabled:text-text-light ${
+                                error ? "border-red-500" : ""
+                            }`}>
+                            <FontAwesomeIcon className="mr-2" icon={faFileUpload} />
+                            <div>อัพโหลดทรานสคริปต์</div>
+                        </label>
+
+                        {error && (
+                            <div className="absolute right-0 top-1/2 -translate-y-1/2">
+                                <FontAwesomeIcon icon={faInfoCircle} className="text-red-500" />
+                                <div className="absolute text-xs text-red-500">{error.message}</div>
+                            </div>
+                        )}
+                        {fileInputName && (
+                            <div className="ml-4 flex min-w-0  items-center rounded-full bg-gray-200 px-3 py-1 text-sm font-normal text-text">
+                                <FontAwesomeIcon icon={fileIcon(fileInputName)} />
+                                <div className="ellipsis ml-2 max-w-[100px] ">{fileInputName}</div>
+                                <FontAwesomeIcon
+                                    icon={faXmarkCircle}
+                                    className="ml-2 text-xs"
+                                    onClick={() => {
+                                        setFileInputName(null);
+                                        resetField("file");
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+            {/* <div className="flex items-center">
+                <div className="w-[110px]"></div>
+            {fileInputName && (
+                <button type="button" className="">
+                    อัพโหลดทรานสคริปต์
+                </button>
             )}
-        </div>
+            </div> */}
+        </>
     );
 };
 

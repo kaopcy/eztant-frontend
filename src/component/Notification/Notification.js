@@ -16,7 +16,12 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     const { user } = useSelector(state => state.user);
     const tempType = useRef("all");
     const [type, setType] = useState("all");
-    const notificationList = useMemo(() => user?.notifications.filter(e => e.type === type), [user, type]);
+    useEffect(() => {
+        console.log(user?.notifications);
+    }, [user.notifications]);
+    const notificationList = useMemo(() => {
+        return user?.notifications.filter(e => (type === "all" ? true : e.event_type.split()[0] === ""));
+    }, [user, type]);
 
     const container = useRef(null);
     const animation = useRef(null);
@@ -32,7 +37,9 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (newNoti) dispatch({ type: NEW_NOTIFICATION, payload: newNoti.data });
+        return () => {
+            if (newNoti) dispatch({ type: NEW_NOTIFICATION, payload: newNoti.data });
+        };
     }, [newNoti, dispatch]);
 
     useEffect(() => {
@@ -129,7 +136,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
             <FontAwesomeIcon icon={faXmark} className="absolute right-4 top-4 p-4 text-red-500" onClick={() => closeAnimation.current.play()} />
             {user ? (
                 notificationList.length > 0 ? (
-                    notificationList.map(data => <EachDetail key={data.id} data={data} />)
+                    notificationList.map(data => <EachDetail key={data._id} data={data} />)
                 ) : (
                     <div className="each-detail-noti"></div>
                 )
@@ -180,17 +187,24 @@ const Nav = ({ type, setType }) => {
 };
 
 const EachDetail = forwardRef(({ data }, ref) => {
+    const interactUser = useMemo(() => {
+        return data.description.split(" ")?.slice(0, 3)?.join(" ");
+    }, [data.description]);
+
+    const interactDescription = useMemo(() => {
+        return data.description.split(" ")?.slice(3)?.join(" ");
+    }, [data.description]);
+
     return (
         <>
-            <div ref={ref} className="each-detail-noti flex w-full items-center px-4 py-3">
+            <div  ref={ref} className={`each-detail-noti flex w-full items-center px-4 py-3 ${data.is_watched ? 'bg-white' : 'bg-slate-100'}`}>
                 <div className="mr-6 aspect-square w-10 shrink-0 overflow-hidden rounded-full">
                     <img src={data.imgURL} alt="" className="mr-4 h-full w-full bg-slate-100 object-cover" />
                 </div>
                 <div className="flex w-full flex-col items-start">
-                    <div className="flex w-full items-center space-x-2 ">
-                        <div className="whitespace-nowrap  text-base ">{data.firstname}</div>
-                        <div className="whitespace-nowrap  ">{data.lastname}</div>
-                        <div className="whitespace-nowrap  text-blue-600">{data.body}</div>
+                    <div className="w-full space-x-2 whitespace-normal">
+                        <span className="  text-base ">{interactUser}</span>
+                        <span className="  text-blue-600">{interactDescription}</span>
                     </div>
                     <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow date={data.created_at} />
                     <div className="-mt-[2px]  text-xs text-text-light ">{}</div>

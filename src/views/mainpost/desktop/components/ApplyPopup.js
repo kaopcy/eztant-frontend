@@ -1,20 +1,43 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+import { useRequestPost } from "../../../../composables/interact/useRequestPost";
 import DisclosureAnimate from "../../../../component/utils/DisclosureAnimate";
+import { getUser } from "../../../../store/actions/authAction";
+import { useDispatch } from "react-redux";
 
-const ApplyPopup = ({ setSelectedPost, selectedPost }) => {
+const ApplyPopup = ({ setSelectedPost, selectedPost, setIsRequest, flash , setRequestedSection }) => {
     const overlay = useRef(null);
     const mainContainer = useRef(null);
 
+    const dispatch = useDispatch()
+    const onSuccess = () => {
+        dispatch(getUser())
+        setIsRequest(true);
+        flash("#22C55E");
+        flashPopupContainer("#22C55E");
+        // gsap.to(mainContainer.current, { backgroundColor: "#22C55E" });
+    };
+    const { mutate, isLoading, error, isSuccess } = useRequestPost(onSuccess);
+    useEffect(() => {
+        if (error) console.log(error.response.data.message);
+    }, [error]);
     const tl = useRef(null);
 
     useLayoutEffect(() => {
         gsap.set(mainContainer.current, { opacity: 0, y: "100px", scale: 0.8 });
     }, []);
+
+    const flashPopupContainer = color => {
+        gsap.fromTo(
+            mainContainer.current,
+            { outlineStyle: "solid", outlineWidth: 5, outlineColor: color || "#74c0fc" },
+            { outlineWidth: 0, overwrite: true, ease: "power4.out", duration: 1.5, delay: 0.3 }
+        );
+    };
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -23,7 +46,7 @@ const ApplyPopup = ({ setSelectedPost, selectedPost }) => {
                 paused: true,
                 onReverseComplete: () => {
                     document.body.style.overflow = "auto";
-                    setSelectedPost(null);
+                    setSelectedPost(false);
                 },
             })
             .to(overlay.current, { opacity: 0.5, duration: 0.3 })
@@ -38,34 +61,52 @@ const ApplyPopup = ({ setSelectedPost, selectedPost }) => {
     const handleOnClose = () => {
         tl.current.reverse();
     };
+    const [selectedSec, setSelectedSec] = useState(selectedPost.tables[0].section);
+
+    const selectedSectionID = useMemo(() => {
+        return selectedPost.tables.find(e => e.section === selectedSec)._id;
+    }, [selectedSec, selectedPost]);
+
+    useEffect(() => {
+        console.log(`selectedsec: ${selectedSectionID}`);
+    }, [selectedSectionID]);
+
+    const handleRequestPost = () => {
+        setRequestedSection(selectedSectionID)
+        mutate(selectedSectionID);
+    };
 
     return (
         <div className="flex-col-cen fixed bottom-0 right-0 z-[1000] h-screen w-full text-sm text-text sm:text-base">
             <div ref={overlay} className="absolute h-full w-full bg-black opacity-0" onClick={() => handleOnClose()}></div>
             <div className="absolute  h-[320px] min-w-[500px] rounded-lg bg-white" ref={mainContainer}>
-                <div className="relative flex h-full w-full flex-col items-center">
-                    <FontAwesomeIcon icon={faXmark} onClick={() => handleOnClose()} className="mt-4 mr-4 self-end text-3xl text-text" />
-                    <div className="mt-2 text-2xl font-bold text-secondary ">สมัครเป็น TA</div>
-                    <div className="mt-2 h-[3px] w-[200px] bg-gray-200"></div>
-                    <div className="mt-8 font-semibold">
-                        วิชา <b>{selectedPost.subjectName}</b>
+                 {isSuccess ? (
+                    <div className="flex-col-cen h-full w-full">สำเร็จ</div>
+                ) : (
+                    <div className="relative flex h-full w-full flex-col items-center">
+                        <FontAwesomeIcon icon={faXmark} onClick={() => handleOnClose()} className="mt-4 mr-4 self-end text-3xl text-text" />
+                        <div className="mt-2 text-2xl font-bold text-secondary ">สมัครเป็น TA</div>
+                        <div className="mt-2 h-[3px] w-[200px] bg-gray-200"></div>
+                        <div className="mt-8 font-semibold">
+                            วิชา <b>{selectedPost.subjectName}</b>
+                        </div>
+                        <div className="mt-4 flex items-center space-x-4">
+                            <div className="">เลือกเซคที่ต้องการสมัคร</div>
+                            <Disclosure selectedSec={selectedSec} setSelectedSec={setSelectedSec} section={selectedPost.tables.map(e => e.section)} />
+                        </div>
+                        <div onClick={() => handleRequestPost()} className="btn-orange mt-12 rounded-lg px-16 py-2 relative">
+                            {error && <div className="text-sm text-red-500 absolute bottom-[120%] left-1/2 -translate-x-1/2  whitespace-nowrap">{error.response.data.message}</div>}
+                            สมัคร TA
+                        </div>
                     </div>
-                    <div className="mt-8 flex items-center space-x-4">
-                        <div className="">เลือกเซคที่ต้องการสมัคร</div>
-                        <Disclosure section={selectedPost.tables.map(e => e.section)} />
-                    </div>
-                    <div onClick={() => handleOnClose()} className="btn-orange mt-8 rounded-lg px-16 py-2">
-                        สมัคร TA
-                    </div>
-                </div>
+                )}
             </div>
         </div>
     );
 };
 
-const Disclosure = ({ section }) => {
+const Disclosure = ({ section, selectedSec, setSelectedSec }) => {
     const [open, setOpen] = useState(false);
-    const [selectedSec, setSelectedSec] = useState(section[0]);
     return (
         <DisclosureAnimate toggle={open}>
             {({ childRelativeContainer, childAbsoluteContainer }) => (

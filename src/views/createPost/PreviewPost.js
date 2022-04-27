@@ -46,7 +46,7 @@ const PreviewPost = () => {
                         </button>
                     </div>
                 ) : (
-                    <div className="flex-col-cen mt-6 space-y-4 text-text">
+                    <div className="flex-col-cen mt-6 space-y-4 text-text pb-20">
                         <PostDesktop post={post} />
                         <div className="flex w-[768px] space-x-6">
                             <Link

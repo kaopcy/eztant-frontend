@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { DAY_COLOR } from "../../../../generalConfig";
 import gsap from "gsap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const RequestSubjectList = ({ posts, ...props }) => {
     return (
-        <div className="left-scroll sticky top-[80px] h-[calc(100vh-120px)] w-[270px]  shrink-0 flex-col items-center overflow-auto bg-primary-burn py-10 px-4 text-text shadow-md">
+        <div className="left-scroll sticky top-[80px] h-[calc(100vh-120px)] w-[270px]  shrink-0 flex-col items-center overflow-auto bg-primary-burn py-10 px-4 text-text shadow-lg">
             <div className="left-scroll-child w-full">
                 <div className="mb-5 text-2xl font-bold text-white">รายวิชา</div>
 
@@ -37,12 +39,15 @@ const EachPost = ({ setActive, index, active = false, post, ...props }) => {
     return (
         <div onClick={() => setActive(index)} className="w-full cursor-pointer bg-white">
             <div className="flex  min-w-0 flex-col px-3 py-4">
-                <div className=" ellipsis text-base font-bold uppercase leading-5 tracking-wide text-primary">{post.subjectName}</div>
-                <div className="text-base font-bold  text-gray-400">01006030</div>
+                <div className="  flex items-center justify-between leading-5 tracking-wide text-primary">
+                    <div className="ellipsis text-base font-bold uppercase">{post?.subject_name}</div>
+                    <FontAwesomeIcon icon={faChevronDown} className={`ml-3 shrink-0 transition-all  ${active ? "rotate-180" : "rotate-0"}`} />
+                </div>
+                <div className="text-base font-bold  text-gray-400">{post?.subject_id}</div>
             </div>
             <div ref={contentRef} className="relative h-0 w-full overflow-hidden">
                 <div ref={absoluteRef} className="absolute w-full  pb-5">
-                    {post.tables.map((table, i) => (
+                    {post.schedules.map((table, i) => (
                         <EachSection {...props} index={i} table={table} key={i} />
                     ))}
                 </div>

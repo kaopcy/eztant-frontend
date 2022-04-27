@@ -26,7 +26,7 @@ const Like = ({ flashAnimate, likes, postID }) => {
 
     const initLike = useRef(likes.some(e => e._id === user._id));
     const [isLike, setIsLike] = useState(initLike.current);
-    
+
     useEffect(() => {
         animation.current = gsap
             .timeline({ paused: true, reversed: true })

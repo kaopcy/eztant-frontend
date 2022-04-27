@@ -79,8 +79,9 @@ export const CommunityContext = createContext();
 export const CommunityActionContext = createContext();
 
 export const Provider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, COMMUNITY);
+
     const { user } = useSelector(state => state.user);
+    const [state, dispatch] = useReducer(reducer, user?.communities);
 
     useEffect(() => {
         console.log(state);

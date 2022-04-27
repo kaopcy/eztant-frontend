@@ -20,8 +20,6 @@ const PostListDesktop = ({ postList, isLoading , totalPage }) => {
     const isHideSortPanel = useMediaQuery({ query: "(max-width: 1180px)" });
     const isDepartmentPanel = useMediaQuery({ query: "(max-width: 980px)" });
 
-    const [selectedPost, setSelectedPost] = useState(null);
-
     const documentHeight = () => {
         var body = document.body,
             html = document.documentElement;
@@ -52,7 +50,7 @@ const PostListDesktop = ({ postList, isLoading , totalPage }) => {
             {!isDepartmentPanel && <DepartmentPanel onChangeDepartment={scrollThenCallback} />}
             <div className="flex-col-cen space-y-4 text-text">
                 {postList && !isLoading ? (
-                    postList.map((post, i) => <PostDesktop post={post} key={post._id} setSelectedPost={setSelectedPost} />)
+                    postList.map((post, i) => <PostDesktop post={post} key={post._id}  />)
                 ) : (
                     <>
                         <PostFallBack />
@@ -65,7 +63,6 @@ const PostListDesktop = ({ postList, isLoading , totalPage }) => {
                 <div className="h-10"></div>
             </div>
             {!isHideSortPanel && <SortPanel setPage={scrollThenCallback} />}
-            {selectedPost && <ApplyPopup setSelectedPost={setSelectedPost} selectedPost={selectedPost} />}
         </div>
     );
 };
