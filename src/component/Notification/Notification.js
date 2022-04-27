@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { v4 as uuid } from "uuid";
 import Moment from "react-moment";
@@ -20,7 +20,11 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
         console.log(user?.notifications);
     }, [user.notifications]);
     const notificationList = useMemo(() => {
-        return user?.notifications.filter(e => (type === "all" ? true : e.event_type.split()[0] === ""));
+        return user?.notifications.filter(e => {
+            console.log(`type: ${type}`);
+            console.log(`event: ${e.event_type.split()[0]}`);
+            return type === "all" ? true : e.event_type.split(" ")[0] === type;
+        });
     }, [user, type]);
 
     const container = useRef(null);
@@ -30,7 +34,9 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
         close: () => {
             closeAnimation.current.play();
         },
-        play: () => animation.current.play(),
+        play: () => {
+                animation.current.play();
+        },
     }));
 
     const { data: newNoti } = useNotification();
@@ -38,13 +44,14 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
 
     useEffect(() => {
         return () => {
-            if (newNoti) dispatch({ type: NEW_NOTIFICATION, payload: newNoti.data });
+            // if (newNoti) dispatch({ type: NEW_NOTIFICATION, payload: newNoti.data });
         };
     }, [newNoti, dispatch]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         animation.current = gsap
             .timeline({
+                delay: 0.1,
                 defaults: {
                     ease: "none",
                 },
@@ -67,7 +74,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
             );
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         console.log("change aniamtion");
         closeAnimation.current = gsap
             .timeline({ paused: true, onComplete: () => setIsNoti(false) })
@@ -100,9 +107,9 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
 
     useNonInitialEffect(() => {
         const direction = () => {
-            if (tempType.current === "post" && type === "all") return -1;
-            else if (tempType.current === "post" && type === "community") return 1;
-            else if (tempType.current === "community" && type === "post") return -1;
+            if (tempType.current === "recruitPostModel" && type === "all") return -1;
+            else if (tempType.current === "recruitPostModel" && type === "community") return 1;
+            else if (tempType.current === "community" && type === "recruitPostModel") return -1;
             else if (type === "all") return -1;
             return 1;
         };
@@ -128,7 +135,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     return (
         <div
             ref={container}
-            className="absolute top-[140%] -right-10 w-screen max-w-[450px]  overflow-hidden  whitespace-nowrap rounded-lg border-2  bg-white font-normal  text-text shadow-md">
+            className="absolute top-[140%] -right-10 w-screen max-w-[450px] overflow-hidden  overflow-y-auto  whitespace-nowrap rounded-lg border-2  bg-white font-normal  text-text shadow-md">
             <Triangle />
             <div className="py-4  px-4 text-2xl">การแจ้งเตือน</div>
             <Nav type={type} setType={setType} />
@@ -136,7 +143,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
             <FontAwesomeIcon icon={faXmark} className="absolute right-4 top-4 p-4 text-red-500" onClick={() => closeAnimation.current.play()} />
             {user ? (
                 notificationList.length > 0 ? (
-                    notificationList.map(data => <EachDetail key={data._id} data={data} />)
+                    notificationList.map((data,index) => <EachDetail key={data._id} data={data} index={index}/>)
                 ) : (
                     <div className="each-detail-noti"></div>
                 )
@@ -159,7 +166,7 @@ const Nav = ({ type, setType }) => {
     const properties = useMemo(() => {
         if (type === "all") {
             return { left: 24 };
-        } else if (type === "post") {
+        } else if (type === "recruitPostModel") {
             return { left: allRef.current.clientWidth + 40 + 24, width: postRef.current.clientWidth };
         } else if (type === "community") {
             return { left: allRef.current.clientWidth + postRef.current.clientWidth + 80 + 24, width: communityRef.current.clientWidth };
@@ -175,7 +182,7 @@ const Nav = ({ type, setType }) => {
             <div onClick={() => setType("all")} ref={allRef} className="mr-[40px] cursor-pointer">
                 ทั้งหมด
             </div>
-            <div onClick={() => setType("post")} ref={postRef} className="mr-[40px] cursor-pointer">
+            <div onClick={() => setType("recruitPostModel")} ref={postRef} className="mr-[40px] cursor-pointer">
                 โพสต์
             </div>
             <div onClick={() => setType("community")} ref={communityRef} className=" cursor-pointer">
@@ -186,7 +193,7 @@ const Nav = ({ type, setType }) => {
     );
 };
 
-const EachDetail = forwardRef(({ data }, ref) => {
+const EachDetail = forwardRef(({ data , index}, ref) => {
     const interactUser = useMemo(() => {
         return data.description.split(" ")?.slice(0, 3)?.join(" ");
     }, [data.description]);
@@ -197,7 +204,7 @@ const EachDetail = forwardRef(({ data }, ref) => {
 
     return (
         <>
-            <div  ref={ref} className={`each-detail-noti flex w-full items-center px-4 py-3 ${data.is_watched ? 'bg-white' : 'bg-slate-100'}`}>
+            <div ref={ref} className={`${index < 5 ? 'each-detail-noti' : ''} flex w-full items-center px-4 py-3 ${data.is_watched ? "bg-white" : "bg-slate-100"}`}>
                 <div className="mr-6 aspect-square w-10 shrink-0 overflow-hidden rounded-full">
                     <img src={data.imgURL} alt="" className="mr-4 h-full w-full bg-slate-100 object-cover" />
                 </div>
@@ -206,7 +213,7 @@ const EachDetail = forwardRef(({ data }, ref) => {
                         <span className="  text-base ">{interactUser}</span>
                         <span className="  text-blue-600">{interactDescription}</span>
                     </div>
-                    <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow date={data.created_at} />
+                    <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow date={data.createdAt} />
                     <div className="-mt-[2px]  text-xs text-text-light ">{}</div>
                 </div>
             </div>

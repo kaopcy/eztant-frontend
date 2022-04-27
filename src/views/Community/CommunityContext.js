@@ -13,7 +13,6 @@ const actions = {
 const reducer = (state, { type, payload }) => {
     switch (type) {
         case actions.ADD_POST: {
-            console.log(payload.file);
             return {
                 ...state,
                 posts: [
@@ -82,10 +81,6 @@ export const Provider = ({ children }) => {
 
     const { user } = useSelector(state => state.user);
     const [state, dispatch] = useReducer(reducer, user?.communities);
-
-    useEffect(() => {
-        console.log(state);
-    }, [state]);
 
     const action = {
         addPost: (newPost, file) => {

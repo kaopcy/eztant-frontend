@@ -1,27 +1,29 @@
-import React from 'react'
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSort, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Studentsearchbar = () => {
-return (
-<div>
-    <div className='flex w-full items-center lg:justify-between justify-center md:space-x-1 lg:space-x-2 flex-wrap'>
-        <div className='text-secondary inline-block static m-[1.8%] lg:pl-[18%] xs:pl-0 text-2xl lg:text-4xl font-bold whitespace-nowrap'>
-            รายชื่อนักศึกษา
+    return (
+        <div>
+            <div className="flex w-full flex-wrap items-center justify-center md:space-x-1 lg:justify-between lg:space-x-2">
+                <div className="static m-[1.8%] inline-block whitespace-nowrap text-2xl font-bold text-secondary xs:pl-0 lg:pl-[18%] lg:text-4xl">
+                    รายชื่อนักศึกษา
+                </div>
+                <div className="static inline-block justify-between space-x-3 xs:justify-center xs:pl-0 lg:m-[1.8%] lg:pr-[20%] ">
+                    <FontAwesomeIcon icon={faArrowLeft} className="cursor-pointer text-2xl text-text-light sm:hidden sm:text-xl " />
+                    <input className="form-input h-7 w-44 rounded-lg px-3 py-2 ring-1 ring-gray-300"></input>
+                    <FontAwesomeIcon icon={faSearch} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
+                    {
+                        <select className=" m-0 h-7 w-20 rounded-lg ring-1 ring-gray-300 focus:text-gray-500">
+                            <option className="text-sm">มาก-น้อย</option>
+                            <option className="text-sm">น้อย-มาก</option>
+                        </select>
+                    }
+                    <FontAwesomeIcon icon={faSort} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
+                </div>
+            </div>
         </div>
-        <div className='justify-between space-x-3 xs:justify-center xs:pl-0 lg:pr-[20%] lg:m-[1.8%] inline-block static '>
-            <FontAwesomeIcon icon={faArrowLeft} className="sm:hidden cursor-pointer text-2xl text-text-light sm:text-xl " />
-            <input className='form-input w-44 h-7 px-3 py-2 rounded-lg ring-1 ring-gray-300'></input>
-            <FontAwesomeIcon icon={faSearch} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
-            {<select className=' w-20 h-7 rounded-lg ring-1 ring-gray-300 m-0 focus:text-gray-500'>
-            <option className='text-sm'>มาก-น้อย</option>
-            <option className='text-sm'>น้อย-มาก</option>
-            </select>}
-            <FontAwesomeIcon icon={faSort} className="cursor-pointer text-2xl text-text-light  sm:text-xl" />
-        </div>
-    </div>
-</div>
-)
-}
+    );
+};
 
-export default Studentsearchbar
+export default Studentsearchbar;

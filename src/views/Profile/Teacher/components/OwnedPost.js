@@ -35,7 +35,7 @@ const OwnedPost = () => {
             {posts && !isLoading ? (
                 posts.length ? (
                     <div className="absolute mt-10 overflow-hidden px-3 pb-20">
-                        <div className="" ref={container}>
+                        <div className="space-y-10" ref={container}>
                             {posts.map(post => (
                                 <div key={uuid()}>
                                     <Post post={post} />

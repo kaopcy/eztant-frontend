@@ -6,7 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const AcceptedList = ({ post, activeSubject, activeSection, setActiveSection }) => {
-    const allRequestList = post?.schedules?.map(table => table.requested);
+    const allRequestList = post?.schedules?.map(table => [...table.accepted, ...table.requested]);
+
+    console.log(allRequestList);
 
     const allRequestCount = useMemo(() => {
         let temp = 0;
@@ -18,13 +20,11 @@ const AcceptedList = ({ post, activeSubject, activeSection, setActiveSection }) 
 
     const allAcceptCount = useMemo(() => {
         let temp = 0;
-        allRequestList.forEach(request => {
-            request.forEach(user => {
-                if (user.is_accepted) temp += 1;
-            });
+        post?.schedules?.forEach(request => {
+            temp += request.accepted?.length;
         });
         return temp;
-    }, [allRequestList]);
+    }, [post]);
 
     return (
         <div className="sticky top-[80px] flex h-[calc(100vh-120px)] w-[280px] shrink-0 flex-col overflow-auto border bg-white px-4 py-10 text-text shadow-lg">
@@ -47,11 +47,7 @@ const AcceptedList = ({ post, activeSubject, activeSection, setActiveSection }) 
 
 const EachSection = ({ index, table, isActive, setActive, activeSubject }) => {
     const acceptNum = useMemo(() => {
-        let temp = 0;
-        table?.requested.forEach(request => {
-            if (request.is_accepted) temp += 1;
-        });
-        return temp;
+        return table?.accepted.length;
     }, [table]);
 
     return (
@@ -71,7 +67,9 @@ const EachSection = ({ index, table, isActive, setActive, activeSubject }) => {
                 {isActive && (
                     <div className="relative w-full overflow-hidden ">
                         {acceptNum === 0 && <div className="">-</div>}
-                        {table.requested.map((request, i) => request.is_accepted && <EachStudent request={request} key={`${i}+${activeSubject}`} />)}
+                        {table.accepted.map((request, i) => (
+                            <EachStudent request={request} key={`${i}+${activeSubject}`} />
+                        ))}
                     </div>
                 )}
             </div>

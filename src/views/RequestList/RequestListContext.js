@@ -57,7 +57,7 @@ export const useHandleUserPost = (postNum, sectionNum, userNum) => {
                             if (i === sectionNum) {
                                 return {
                                     ...section,
-                                    requested: section.requested.map((user, userI) => {
+                                    accepted: section.accepted.map((user, userI) => {
                                         if (userI === userNum) {
                                             return { ...user, is_accepted: false };
                                         }

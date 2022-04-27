@@ -24,6 +24,7 @@ ReactDOM.render(
                 </BrowserRouter>
             </ResponsiveProvider>
         </Provider>
+        <ReactQueryDevtools/>
     </QueryClientProvider>,
     document.getElementById("root")
 );

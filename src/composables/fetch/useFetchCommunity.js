@@ -1,15 +1,22 @@
 import axios from "axios";
-import { useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 
 const jwt = JSON.parse(localStorage.getItem("jwt"));
-const fetchPostByID = id => {
-    const query = {
-        filter: {
-            _id: id,
-        },
-    };
-    return axios.post(`${process.env.REACT_APP_API_URL}/api/recruit_post/getposts`, query, { headers: { Authorization: `Bearer ${jwt}` } });
+const fetchCommunityByID = id => {
+    return axios.get(`${process.env.REACT_APP_API_URL}/api/community/${id}`, { headers: { Authorization: `Bearer ${jwt}` } });
 };
-export const useFetchPostByID = () => {
-    return useMutation("previewPost", fetchPostByID);
+export const useFetchCommunityByID = () => {
+    const { id } = useParams();
+    return useQuery(["community", id], () => fetchCommunityByID(id), {
+        select: value => ({
+            data: {
+                ...value.data,
+                community_posts: {
+                    ...value.data.community_posts,
+                }
+            },
+            ...value,
+        }),
+    });
 };

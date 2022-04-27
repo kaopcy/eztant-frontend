@@ -69,7 +69,7 @@ const App = () => {
     const state = location.state;
 
     const { user } = useSelector(state => state.user);
-    const firstCommunity = user?.community?.[0]?.id || "no-community";
+    const firstCommunity = user?.communities?.[0]?._id || "no-community";
     const isMobile = useResponsive();
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);

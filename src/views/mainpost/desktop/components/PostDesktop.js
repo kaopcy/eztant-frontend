@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import "moment/locale/th";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightLong, faChevronDown, faEllipsis, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
 import TeachTable from "./TeachTable";
@@ -14,21 +14,29 @@ import { useRequestPost } from "../../../../composables/interact/useRequestPost"
 import { getUser } from "../../../../store/actions/authAction";
 import ApplyPopup from "./ApplyPopup";
 import { useDeletePostByID } from "../../../../composables/interact/useDeletePost";
+import { useNavigate } from "react-router-dom";
 
 const PostDesktop = ({ post }) => {
     const { user } = useSelector(state => state.user);
     const dispatch = useDispatch();
-
-    const { mutate: request, data, isLoading, error, isSuccess } = useRequestPost(() => {
+    const navigate = useNavigate();
+    const {
+        mutate: request,
+        data,
+        isLoading,
+        error,
+        isSuccess,
+    } = useRequestPost(() => {
         dispatch(getUser());
         setIsRequest(false);
-        flash('#EF4444')
+        flash("#EF4444");
     });
-    
-    const [isSelect, setIsSelect] = useState(false);
-    const [requestedSection , setRequestedSection] = useState(false)
 
-    useEffect(()=>{
+    const [isSelect, setIsSelect] = useState(false);
+    const [requestedSection, setRequestedSection] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
+
+    useEffect(() => {
         post?.tables?.forEach(table => {
             table.requested.forEach(requestedUser => {
                 if (requestedUser._id === user._id) {
@@ -36,8 +44,7 @@ const PostDesktop = ({ post }) => {
                 }
             });
         });
-
-    })
+    });
 
     const onCancle = () => {
         if (!requestedSection) return;
@@ -45,6 +52,13 @@ const PostDesktop = ({ post }) => {
     };
 
     const [isRequest, setIsRequest] = useState(user?.requested?.map(e => e._id).includes(post?._id));
+    const isAccepted = useMemo(() => {
+        return user?.communities.some(e => e.recruit_post_id === post._id);
+    }, [user, post]);
+
+    useEffect(() => {
+        console.log(`isAccepted: ${isAccepted}`);
+    }, [isAccepted]);
 
     const container = useRef(null);
     const animate = useRef(null);
@@ -57,17 +71,42 @@ const PostDesktop = ({ post }) => {
     };
 
     return (
-        <div ref={container} className="mypost w-[768px] shrink-0 rounded-md  border bg-white px-10 py-8 text-xl shadow-md ">
-            {isSelect && <ApplyPopup selectedPost={post} setSelectedPost={setIsSelect} setIsRequest={setIsRequest} setRequestedSection={setRequestedSection} flash={flash} />}
-            <Header post={post} />
+        <div ref={container} className="mypost relative w-[768px] shrink-0 overflow-hidden  rounded-md border bg-white px-10 py-8 text-xl shadow-md">
+            {(isDeleted || isAccepted) && (
+                <div className="flex-col-cen absolute top-0 left-0 z-50  h-full w-full ">
+                    <div className="absolute top-0 left-0  h-full w-full bg-black opacity-40"></div>
+                    {isAccepted && <div className="z-10 text-center mb-5 cursor-default bg-transparent text-5xl font-bold text-white">{post.subject_name}</div>}
+                    <div className="z-10 cursor-default bg-transparent text-3xl font-bold text-white">
+                        {isDeleted ? "โพสต์นี้ถูกลบไปแล้ว" : "คุณได้เป็น TA ของวิชานี้แล้ว!"}
+                    </div>
+                    {isAccepted && (
+                        <div
+                            className="btn-white z-10 mt-14 flex items-center space-x-3 rounded-md border-2 px-4 py-2 text-base"
+                            onClick={() => navigate("/community")}>
+                            <div className="">สำรวจคอมมูนิตี้</div>
+                            <FontAwesomeIcon icon={faArrowRightLong} />
+                        </div>
+                    )}
+                </div>
+            )}
+            {isSelect && (
+                <ApplyPopup
+                    selectedPost={post}
+                    setSelectedPost={setIsSelect}
+                    setIsRequest={setIsRequest}
+                    setRequestedSection={setRequestedSection}
+                    flash={flash}
+                />
+            )}
+            <Header post={post} setIsDeleted={setIsDeleted} />
             <Detail post={post} />
             <div className="relative flex justify-end space-x-8">
                 <>
                     {isRequest ? (
                         <>
-                            {error && <div className="text-xs self-center text-red-500">{error.response.data.message}</div>}
-                            {isLoading && <div className="text-xs self-center">กำลังโหลด</div>}
-                            {isSuccess && <div className="text-xs self-center text-green-500">ยกเลิกสำเร็จ</div>}
+                            {error && <div className="self-center text-xs text-red-500">{error.response.data.message}</div>}
+                            {isLoading && <div className="self-center text-xs">กำลังโหลด</div>}
+                            {isSuccess && <div className="self-center text-xs text-green-500">ยกเลิกสำเร็จ</div>}
                             <button
                                 type="button"
                                 disabled={user?.role === "teacher"}
@@ -97,7 +136,7 @@ const PostDesktop = ({ post }) => {
     );
 };
 
-const Header = ({ post }) => {
+const Header = ({ post, setIsDeleted }) => {
     const { user } = useSelector(state => state.user);
     const [isEllipsis, setIsEllipsis] = useState(false);
 
@@ -121,7 +160,7 @@ const Header = ({ post }) => {
             {post.owner_id._id === user._id && (
                 <div className="relative">
                     <FontAwesomeIcon icon={faEllipsis} className="text-lg " onClick={() => setIsEllipsis(e => !e)} />
-                    {isEllipsis && <DeleteButton postID={post?._id} setIsEllipsis={setIsEllipsis} />}
+                    {isEllipsis && <DeleteButton postID={post?._id} setIsEllipsis={setIsEllipsis} setIsDeleted={setIsDeleted} />}
                 </div>
             )}
         </div>
@@ -135,9 +174,12 @@ const Header = ({ post }) => {
     );
 };
 
-const DeleteButton = ({ setIsEllipsis , postID }) => {
+const DeleteButton = ({ setIsEllipsis, postID, setIsDeleted }) => {
     const deleteRef = useRef(null);
-    const { mutate ,error } = useDeletePostByID(()=>{ console.log('deleted successfully'); })
+    const { mutate, error } = useDeletePostByID(() => {
+        setIsDeleted(true);
+        console.log("deleted successfully");
+    });
 
     useEffect(() => {
         const onClick = e => {
@@ -149,14 +191,16 @@ const DeleteButton = ({ setIsEllipsis , postID }) => {
         return () => window.removeEventListener("click", onClick);
     }, [setIsEllipsis]);
 
-    const onClickDelete = ()=>{
+    const onClickDelete = () => {
         console.log(postID);
-        mutate(postID)
-    }
+        mutate(postID);
+    };
 
     return (
         <div ref={deleteRef} className="absolute bottom-full right-0  flex items-center whitespace-nowrap rounded-md border-2 bg-white px-4 py-2 ">
-            <div className="mr-3 text-base" onClick={()=> onClickDelete()} >ลบโพสต์</div>
+            <div className="mr-3 text-base" onClick={() => onClickDelete()}>
+                ลบโพสต์
+            </div>
             <FontAwesomeIcon className="text-sm text-red-500" icon={faTrashAlt} />
         </div>
     );
@@ -210,7 +254,7 @@ const Detail = ({ post }) => {
                     <div className="mr-6 font-semibold">หน้าที่</div>
                     <div className="whitespace-pre-line px-5  ">
                         <div className="leading-[28px]">
-                            <div className="w-full">{post?.duty.trim() || "-"}</div>
+                            <div className="w-full">{post?.duty?.trim() || "-"}</div>
                         </div>
                         <br />
                     </div>
@@ -219,7 +263,7 @@ const Detail = ({ post }) => {
                     <div className="mr-6 font-semibold">ข้อกำหนด</div>
                     <div className="whitespace-pre-line px-5 py-4 ">
                         <div className="leading-[28px]">
-                            <div className="w-full">{post?.requirement.trim() || "-"}</div>
+                            <div className="w-full">{post?.requirement?.trim() || "-"}</div>
                         </div>
                         <br />
                     </div>

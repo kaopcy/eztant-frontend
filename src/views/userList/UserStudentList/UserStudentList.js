@@ -1,5 +1,5 @@
 import React from 'react'
-import Studentsearchbar from './Studentsearchbar'
+import Studentsearchbar from './studentsearchbar'
 import Studentdirectory from './Studentdirectory'
 
 const UserStudentList = () => {

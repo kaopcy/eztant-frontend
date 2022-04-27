@@ -1,7 +1,7 @@
 export const subjectNameValidate = {
     validate: {
         require: value => value.length > 0 || "กรุณากรอกชื่อวิชา",
-        lengthLimil: value => value.length < 30 || "ชื่อวิชาห้ามเกิน 20 ตัวอักษร",
+        lengthLimil: value => value.length < 50 || "ชื่อวิชาห้ามเกิน 50 ตัวอักษร",
         format: value => /^[A-Za-z\s0-9]*$/g.test(value) || "กรุณากรอกเป็นภาษาอังกฤษและตัวเลขเท่านั้น",
     },
 };
@@ -41,6 +41,6 @@ export const minGradeValidate = {
 
 export const fieldValidate = {
     validate: {
-        maxLength: value => value.length < 300 || 'ความยาวไม่เกิน 300 ตัวอักษร'
+        maxLength: value => value.length < 500 || 'ความยาวไม่เกิน 300 ตัวอักษร'
     }
 }

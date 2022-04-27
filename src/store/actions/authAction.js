@@ -1,13 +1,15 @@
 import { REQUEST_LOGIN, REQUEST_LOGIN_FAILURE, REQUEST_LOGIN_SUCCESS, LOGOUT, VIEW_NOTIFICATION, GET_USER } from "./type";
 import axios from "axios";
-
-const url = "http://localhost:8000";
+import { useMutation, useQueryClient } from "react-query";
 
 export const getUser = setIsloading => async dispatch => {
     const jwt = JSON.parse(localStorage.getItem("jwt")) || null;
     if (!jwt) return setIsloading();
+
+    
+
     try {
-        const { data: userData } = await axios.get(`${url}/api/users/getme`, {
+        const { data: userData } = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/getme`, {
             headers: {
                 Authorization: `Bearer ${jwt}`,
             },
@@ -34,7 +36,7 @@ export const login = (userinput, cb) => async dispatch => {
         dispatch({ type: REQUEST_LOGIN });
         const {
             data: { token },
-        } = await axios.post(`${url}/api/users/login`, userinput);
+        } = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/login`, userinput);
         await localStorage.setItem("jwt", JSON.stringify(token));
         dispatch({ type: REQUEST_LOGIN_SUCCESS });
         if (cb) cb();
@@ -47,7 +49,7 @@ export const login = (userinput, cb) => async dispatch => {
 
 export const register = (userinput, cb) => async dispatch => {
     try {
-        const { data } = await axios.post(`${url}/api/users/register`, userinput);
+        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/register`, userinput);
         console.log(data);
         if (cb) cb();
         console.log("success");
@@ -57,6 +59,7 @@ export const register = (userinput, cb) => async dispatch => {
 };
 
 export const logout = () => {
+    window.location.reload();
     localStorage.clear("jwt");
     return { type: LOGOUT };
 };

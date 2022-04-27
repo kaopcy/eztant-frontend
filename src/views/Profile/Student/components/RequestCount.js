@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useRequestPost } from "../../../../composables/interact/useRequestPost";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightLong, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 const RequestCount = () => {
     const { user } = useSelector(state => state.user);
@@ -73,7 +73,7 @@ const RequestCount = () => {
 
 const Request = ({ post }) => {
     const { mutate, isLoading, error, isSuccess } = useRequestPost();
-
+    const navigate = useNavigate()
     const { user } = useSelector(state => state.user);
     const sectionID = useMemo(() => {
         let temp;
@@ -101,11 +101,14 @@ const Request = ({ post }) => {
                 <div className="mr-2">{post.subject_name}</div>
                 <div className="">{post.subject_id}</div>
             </div>
-            <div className="text-secondary underline " onClick={() => onCancle()}>
+            <div className="text-secondary underline flex items-center" onClick={() => onCancle()}>
                 {isLoading && <div className="">กำลังโหลด</div>}
                 {error && <div className="">{error?.response?.data?.message}</div>}
                 {isSuccess && <div className="">สำเร็จ!</div>}
-                <div className="">ยกเลิกคำขอ</div>
+                {/* <div className="mr-3">ยกเลิกคำขอ</div> */}
+                <FontAwesomeIcon className="text-secondary text-base" icon={faArrowUpRightFromSquare} 
+                    onClick={navigate(`/post-list/all-department?search=${post.subject_id}`)}
+                />
             </div>
         </div>
     );

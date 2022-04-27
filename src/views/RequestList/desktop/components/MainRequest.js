@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { DAY_COLOR } from "../../../../generalConfig";
 
@@ -12,7 +12,7 @@ const MainRequest = ({ post, postNum, setActiveSection }) => {
     return (
         <div className="h-[500px] w-[975px]  ">
             <div className="mb-5 flex w-full  items-center border-b-2 py-5 px-5 text-xl font-semibold text-text">
-                นักศึกษาที่สมัครเป็น TA วิชา {post.subjectName} {post.subjectID}
+                นักศึกษาที่สมัครเป็น TA วิชา {post.subject_name} {post.subject_id}
             </div>
             {post.schedules.map((table, index) => (
                 <EachSection setActiveSection={setActiveSection} postNum={postNum} sectionNum={index} table={table} key={index} />
@@ -23,12 +23,11 @@ const MainRequest = ({ post, postNum, setActiveSection }) => {
 
 const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
     let requestNum = 0;
-    let acceptNum = 0;
-    table?.requested.forEach(request => {
-        requestNum += 1;
-        if (request.is_accepted) acceptNum += 1;
-    });
-
+    console.log(table?.accepted.length || 0 , table.max_ta);
+    const [acceptNum, setAcceptNum] = useState( null);
+    useEffect(()=>{
+        setAcceptNum(table?.accepted.length|| 0)
+    },[table])
     const container = useRef(null);
     useEffect(() => {
         const copyContainer = container.current;
@@ -49,7 +48,7 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
 
     return (
         <div
-            className={`mx-auto flex w-full max-w-[800px] flex-col bg-white px-10 text-text outline-2 outline-gray-200 hover:rounded-md hover:outline `}
+            className={`mx-auto flex w-full max-w-[800px] flex-col bg-white py-4 px-10 text-text outline-2 outline-gray-200 hover:rounded-md hover:outline `}
             ref={container}>
             <div className="mb-2 flex items-center text-base  ">
                 เซค {table.section}{" "}
@@ -59,8 +58,8 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
                 {/* <div className="ml-2 h-4 w-6  shrink-0 rounded-md" style={{ backgroundColor: DAY_COLOR[table.day] }}></div> */}
             </div>
             <div className="  ">
-                {table.requested.length > 0 ? (
-                    table.requested.map((request, index) => (
+                {table.requested.length > 0 || table.accepted.length > 0 ? (
+                    [...table.accepted, ...table.requested].map((request, index) => (
                         <div key={index} className="relative pt-3 pl-5 pr-0 pb-4 first:overflow-hidden xl:pr-5">
                             {request.is_accepted && (
                                 <div className="absolute -top-12 left-1 h-full w-[2px] bg-gray-300">
@@ -68,9 +67,11 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
                                 </div>
                             )}
                             <EachUser
+                                section={table}
                                 userID={request._id}
                                 scheduleID={table}
                                 acceptNum={acceptNum}
+                                setAcceptNum={setAcceptNum}
                                 max_ta={table.max_ta}
                                 sectionNum={sectionNum}
                                 userNum={index}
@@ -87,29 +88,54 @@ const EachSection = ({ table, sectionNum, setActiveSection, ...props }) => {
     );
 };
 
-const EachUser = ({ acceptNum, max_ta, request, userNum, postNum, sectionNum }) => {
-    const user = request;
+const EachUser = ({ acceptNum, setAcceptNum, max_ta, request: user, userNum, postNum, sectionNum, section }) => {
     const { setAccept, reject, unAccept } = useHandleUserPost(postNum, sectionNum, userNum);
-    const { mutate , isLoading , error } = useAcceptRequest()
+    const {
+        mutate: serverToggle,
+        isLoading,
+        error,
+    } = useAcceptRequest(() => {
+        window.location.reload();
+    });
 
-    useEffect(()=>{
-        console.log(request)
-    },[request])
+    useEffect(() => {
+        console.log(
+            section.accepted.some(e => {
+                return e._id === user._id;
+            })
+        );
+    }, [section.accepted, user]);
 
-    const onAccept = ()=>{
-        mutate()
-        setAccept()
-    }
+    const [isAccepted, setIsAccepted] = useState(false);
 
-    useEffect(()=>{
-        if(error)
-        console.log(error.response);
-    },[error])
+    useEffect(() => {
+        setIsAccepted(
+            section.accepted.some(e => {
+                return e._id === user._id;
+            })
+        );
+    }, [section,user]);
+
+    const onAccept = () => {
+        serverToggle({ scheduleID: section._id, userID: user._id });
+        setAcceptNum(e => e + 1);
+        setAccept();
+    };
+
+    const onUnAccept = () => {
+        serverToggle({ scheduleID: section._id, userID: user._id });
+        setIsAccepted(false);
+        setAcceptNum(e => e - 1);
+    };
+
+    useEffect(() => {
+        console.log(`acceptNum: ${acceptNum}`);
+    }, [acceptNum]);
 
     return (
         <div
             className={`relative flex w-full items-center justify-between  rounded-md bg-zinc-100 px-2 py-3 shadow-sm hover:bg-zinc-200 ${
-                !request.is_accepted && acceptNum >= max_ta && "opacity-30"
+                !isAccepted && acceptNum >= max_ta && "opacity-30"
             }`}>
             <div className="flex space-x-5">
                 <div className="aspect-square  w-12 shrink-0 overflow-hidden rounded-full lg:ml-5">
@@ -122,16 +148,16 @@ const EachUser = ({ acceptNum, max_ta, request, userNum, postNum, sectionNum }) 
                     <div className="text-sm font-normal">{user.student_id}</div>
                 </div>
             </div>
-
+            {isLoading && <div className="">กำลังโหลด</div>}
             <div className="flex shrink-0 items-center space-x-6">
-                {request.is_accepted ? (
+                {isAccepted ? (
                     <>
-                        <div className="font-bold text-green-500">รับแล้ว</div>
-                        <FontAwesomeIcon icon={faXmark} onClick={() => unAccept()} className="cursor-pointer text-2xl text-secondary" />
+                        <div className="font-bold text-green-500">รับแล้ว {JSON.stringify(isAccepted)}</div>
+                        <FontAwesomeIcon icon={faXmark} onClick={() => onUnAccept()} className="cursor-pointer text-2xl text-secondary" />
                     </>
                 ) : acceptNum < max_ta ? (
                     <>
-                        <FontAwesomeIcon icon={faCheck} onClick={() => setAccept()} className="cursor-pointer text-2xl text-primary-dark" />
+                        <FontAwesomeIcon icon={faCheck} onClick={() => onAccept()} className="cursor-pointer text-2xl text-primary-dark" />
                         <FontAwesomeIcon icon={faTrashAlt} onClick={() => reject()} className="cursor-pointer text-lg text-secondary" />
                     </>
                 ) : (

@@ -10,23 +10,12 @@ const NavSidebar = () => {
     const {
         user: { communities },
     } = useSelector(state => state.user);
-    const subjectLinks = [
-        {
-            color: "bg-red-500",
-            to: communities?.[0]?.id,
-            name: "DATA COMMUNICATION",
-        },
-        {
-            color: "bg-blue-600",
-            to: communities?.[1]?.id,
-            name: "DATA COMMUNICATION",
-        },
-        {
-            color: "bg-green-600",
-            to: communities?.[2]?.id,
-            name: "DATA COMMUNICATION",
-        },
-    ];
+    console.log(communities);
+    const subjectLinks = communities.map(community => ({
+        color: "bg-red-500",
+        to: community?._id,
+        name: community?.recruit_post_id?.subject_name,
+    }));
 
     const { id } = useParams();
 
@@ -70,7 +59,7 @@ const SubjectLink = ({ name, color, to }) => {
     return (
         <Link to={toPath} className="flex w-full min-w-0 items-center px-8 py-3">
             <div className={`mr-3 h-4 w-4 shrink-0 rounded-full ${color}`}></div>
-            <div className={`ellipsis w-full text-base  ${match ? "font-bold" : "font-normal"}`}>{name}</div>
+            <div className={`ellipsis uppercase w-full text-base  ${match ? "font-bold" : "font-normal"}`}>{name}</div>
         </Link>
     );
 };
