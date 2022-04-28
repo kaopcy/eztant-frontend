@@ -4,7 +4,7 @@ import gsap from "gsap";
 import Moment from "react-moment";
 import "moment/locale/th";
 
-import { CommunityContext, CommunityActionContext } from "../CommunityContext";
+import { CommunityContext } from "../CommunityContext";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faCircleChevronRight, faXmarkCircle, faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -22,8 +22,20 @@ const CommunityHome = () => {
 
     return (
         <div className="mt-3 flex w-full max-w-[900px] flex-col items-center  pb-20 text-text">
-            {!isLoading && <Header community={data?.data?.recruit_post_id} />}
-            {!isLoading && data?.data?.community_posts.map((eachPost, index) => <Post index={index} key={eachPost._id} post={eachPost} />)}
+            {isLoading ? (
+                <div className="flex h-screen w-full flex-col items-center pt-32">กำลังโหลด . . .</div>
+            ) : (
+                <>
+                    <div className="w-full">
+                        <Header community={data?.data?.recruit_post_id} />
+                    </div>
+                    <div className="w-full">
+                        {data?.data?.community_posts.map((eachPost, index) => (
+                            <Post index={index} key={eachPost._id} post={eachPost} />
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 };
@@ -55,7 +67,7 @@ const Header = ({ community }) => {
     //     setFileInputName(fileWatch?.[0]?.name);
     // }, [fileWatch]);
 
-    const { data: commudata } = useFetchCommunityByID();
+    const { data: commudata, isLoading: commuLoading } = useFetchCommunityByID();
     const onSubmit = data => {
         console.log(data.body);
         addPost({ commuID: commudata?.data?._id, body: data.body });
@@ -63,63 +75,65 @@ const Header = ({ community }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="h-[450px] w-full overflow-hidden  rounded-md  bg-white shadow-md">
-            <div className="flex h-[45%] w-full flex-col items-center justify-around bg-secondary">
-                <div className="font mt-2 rounded-full bg-white px-6 py-1 text-sm text-gray-400  shadow-md ">{community.department}</div>
-                <div className="text-4xl font-bold uppercase text-white">{community.subject_name}</div>
-                <div className="mb-4 text-3xl font-bold text-white ">{community.subject_id}</div>
-            </div>
-            <div className="flex h-full w-full items-start bg-white px-4 py-4 md:px-8 lg:px-14">
-                <img src={user.imgURL} alt="" className="mr-3 h-14 w-14 rounded-full " />
-                <div className="mt-3 flex w-full flex-col items-start">
-                    <div className="text-xl font-bold ">
-                        {user.firstname} {user.lastname}
-                    </div>
-                    <div className="relative  mt-4  h-24 w-full ">
-                        <div className="absolute bottom-full right-0 text-sm text-red-400">{errors?.body?.message}</div>
-                        <textarea
-                            placeholder="ประกาศ..."
-                            {...register("body", { required: { message: "กรุณากรอกข้อความ", value: true } })}
-                            className={`cool-input h-full w-full rounded-md border-2 p-2 ${errors?.body && "border-2  border-red-300"}`}
-                        />
-                    </div>
-                    {/* <div className="">{ JSON.stringify(errors) || 'dd' }</div> */}
-                    <div className="mt-6 flex w-full items-center justify-between">
-                        <div className="flex items-center">
-                            <div className="relative flex cursor-pointer items-center rounded-full bg-gray-200 px-4 py-2">
-                                <FontAwesomeIcon icon={faUpload} className="mr-2 text-text" />
-                                <input {...register("file", fileValidate)} type="file" className="absolute h-0 w-0 opacity-0" id="file" />
-                                <label htmlFor="file" className="cursor-pointer text-sm font-semibold">
-                                    อัปโหลดไฟล์
-                                </label>
-                            </div>
-                            {errors?.file && <div className="">{errors?.file?.message}</div>}
-                            {fileInputName && (
-                                <div className="ml-4 flex min-w-0  items-center rounded-full bg-gray-200 px-3 py-1 text-sm font-normal text-text">
-                                    <FontAwesomeIcon icon={fileIcon(fileInputName)} />
-                                    <div className="ellipsis ml-2 max-w-[50px] ">{fileInputName}</div>
-                                    <FontAwesomeIcon
-                                        icon={faXmarkCircle}
-                                        className="ml-2 text-xs"
-                                        onClick={() => {
-                                            setFileInputName(null);
-                                            resetField("file");
-                                        }}
-                                    />
-                                </div>
-                            )}
+        !commuLoading && (
+            <form onSubmit={handleSubmit(onSubmit)} className="h-[450px] w-full overflow-hidden  rounded-md  bg-white shadow-md">
+                <div className="flex h-[45%] w-full flex-col items-center justify-around bg-secondary">
+                    <div className="font mt-2 rounded-full bg-white px-6 py-1 text-sm text-gray-400  shadow-md ">{community?.department}</div>
+                    <div className="text-4xl font-bold uppercase text-white">{community?.subject_name}</div>
+                    <div className="mb-4 text-3xl font-bold text-white ">{community?.subject_id}</div>
+                </div>
+                <div className="flex h-full w-full items-start bg-white px-4 py-4 md:px-8 lg:px-14">
+                    <img src={user.imgURL} alt="" className="mr-3 h-14 w-14 rounded-full " />
+                    <div className="mt-3 flex w-full flex-col items-start">
+                        <div className="text-xl font-bold ">
+                            {user.firstname} {user.lastname}
                         </div>
-                        <div className="flex items-center">
-                            {isLoading && <div className="mr-4 text-sm text-gray-400">กำลังส่ง...</div>}
-                            {error && <div className="mr-4 text-sm text-red-500">{error?.response?.data.message}</div>}
-                            <button type="submit" className="btn-orange rounded-md px-8 py-1 text-xl">
-                                โพสต์
-                            </button>
+                        <div className="relative  mt-4  h-24 w-full ">
+                            <div className="absolute bottom-full right-0 text-sm text-red-400">{errors?.body?.message}</div>
+                            <textarea
+                                placeholder="ประกาศ..."
+                                {...register("body", { required: { message: "กรุณากรอกข้อความ", value: true } })}
+                                className={`cool-input h-full w-full rounded-md border-2 p-2 ${errors?.body && "border-2  border-red-300"}`}
+                            />
+                        </div>
+                        {/* <div className="">{ JSON.stringify(errors) || 'dd' }</div> */}
+                        <div className="mt-6 flex w-full items-center justify-between">
+                            <div className="flex items-center">
+                                <div className="relative flex cursor-pointer items-center rounded-full bg-gray-200 px-4 py-2">
+                                    <FontAwesomeIcon icon={faUpload} className="mr-2 text-text" />
+                                    <input {...register("file", fileValidate)} type="file" className="absolute h-0 w-0 opacity-0" id="file" />
+                                    <label htmlFor="file" className="cursor-pointer text-sm font-semibold">
+                                        อัปโหลดไฟล์
+                                    </label>
+                                </div>
+                                {errors?.file && <div className="">{errors?.file?.message}</div>}
+                                {fileInputName && (
+                                    <div className="ml-4 flex min-w-0  items-center rounded-full bg-gray-200 px-3 py-1 text-sm font-normal text-text">
+                                        <FontAwesomeIcon icon={fileIcon(fileInputName)} />
+                                        <div className="ellipsis ml-2 max-w-[50px] ">{fileInputName}</div>
+                                        <FontAwesomeIcon
+                                            icon={faXmarkCircle}
+                                            className="ml-2 text-xs"
+                                            onClick={() => {
+                                                setFileInputName(null);
+                                                resetField("file");
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex items-center">
+                                {isLoading && <div className="mr-4 text-sm text-gray-400">กำลังส่ง...</div>}
+                                {error && <div className="mr-4 text-sm text-red-500">{error?.response?.data.message}</div>}
+                                <button type="submit" className="btn-orange rounded-md px-8 py-1 text-xl">
+                                    โพสต์
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        )
     );
 };
 
@@ -185,7 +199,7 @@ const Post = ({ post, index }) => {
                             <div className="text-xl font-bold ">
                                 {post.owner_id?.firstname} {post.owner_id?.lastname}
                             </div>
-                            <div className="-mt-2 text-sm text-text-light">{post.owner_id.role === "teacher" ? "อาจารย์" : "นักศึกษา"}</div>
+                            <div className="-mt-2 text-sm text-text-light">{post.owner_id?.role === "teacher" ? "อาจารย์" : "นักศึกษา"}</div>
                         </div>
                     </div>
                     <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow date={post.createdAt} />
@@ -219,7 +233,7 @@ const Post = ({ post, index }) => {
 const Comment = ({ postID, comments, index }) => {
     const { mutate: addComment, isLoading, error } = useAddCommunityComment();
 
-    const { data: commudata } = useFetchCommunityByID();
+    const { data: commudata, isFetching } = useFetchCommunityByID();
 
     const container = useRef(null);
     const animate = useRef(null);
@@ -227,19 +241,24 @@ const Comment = ({ postID, comments, index }) => {
     const { user } = useSelector(state => state.user);
     const [isExpand, setIsExpand] = useState(false);
     const [input, setInput] = useState("");
-    // const { addComment } = useContext(CommunityActionContext);
 
     useEffect(() => {
         setTimeout(() => {
             const height = commentRef.current.clientHeight + 48;
-            animate.current = gsap.to(container.current, { height: height, paused: true, reversed: true });
+            animate.current = gsap.to(container.current, {
+                height: height,
+                paused: true,
+                reversed: true,
+                duration: Math.min(1, (comments.length + 1) * 0.1),
+                overwrite: true,
+            });
             if (isExpand) {
                 animate.current.play();
             } else {
-                gsap.to(container.current, { height: "48px" });
+                gsap.to(container.current, { overwrite: true, height: "48px", duration: Math.min(1, (comments.length + 1) * 0.1) });
             }
         }, 1);
-    }, [comments, isExpand]);
+    }, [comments, isExpand, isLoading]);
 
     const toggle = () => {
         setIsExpand(e => !e);
@@ -256,56 +275,67 @@ const Comment = ({ postID, comments, index }) => {
     const isSameUser = useCallback(comment => user?._id === comment?.owner_id?._id, [user]);
 
     return (
-        !isLoading && (
-            <>
-                <form onSubmit={handleSubmit} ref={container} className="relative mt-10 h-12 w-full bg-secondary">
-                    <div className="flex h-12 cursor-pointer items-center px-4 text-white md:px-8 lg:px-14 " onClick={() => toggle()}>
-                        <div className="mr-2 text-base font-semibold">คอมเมนท์ ({comments?.length})</div>
-                        <FontAwesomeIcon icon={faChevronDown} className={`text-xs transition-transform ${isExpand && "rotate-180 "}`} />
-                    </div>
-                    <div className="w-full bg-secondary px-4 pb-4 md:px-8 lg:px-14" ref={commentRef}>
-                        {comments.map(comment => (
-                            <div
-                                key={comment?._id}
-                                className={`mt-6 flex w-full first:mt-0   ${isSameUser(comment) ? "flex-row-reverse" : "justify-start"}`}>
-                                <div
-                                    className={` h-14 w-14 shrink-0 overflow-hidden rounded-full ${
-                                        isSameUser(comment) ? "ml-5 mr-0 " : "mr-5 ml-0"
-                                    }`}>
-                                    <img src={user?.imgURL || ""} alt="" className="h-full w-full" />
-                                </div>
-                                <div className="rounded-md bg-white px-4 py-2">
-                                    <div className="font-semibold text-orange-500 ">
-                                        {comment?.owner_id?.firstname} {comment?.owner_id?.lastname}
-                                    </div>
-                                    <div className="max-w-[300px] break-all">{comment?.comment}</div>
-                                </div>
-                                <Moment className="mx-4 self-end whitespace-nowrap text-sm text-white" locale="th" fromNow>
-                                    {comment.createdAt}
-                                </Moment>
-                            </div>
-                        ))}
-                        <div className="mt-6 mb-6 flex w-full items-start">
-                            <div className="mr-5  h-14  w-14 shrink-0 overflow-hidden rounded-full">
+        <>
+            <form onSubmit={handleSubmit} ref={container} className="relative mt-10 h-12 w-full bg-secondary">
+                <div className="flex h-12 cursor-pointer items-center px-4 text-white md:px-8 lg:px-14 " onClick={() => toggle()}>
+                    <div className="mr-2 text-base font-semibold">คอมเมนท์ ({comments?.length})</div>
+                    <FontAwesomeIcon icon={faChevronDown} className={`text-xs transition-transform ${isExpand && "rotate-180 "}`} />
+                </div>
+                <div className="w-full bg-secondary px-4 pb-4 md:px-8 lg:px-14" ref={commentRef}>
+                    {comments.map(comment => (
+                        <div
+                            key={comment?._id}
+                            className={`mt-6 flex w-full first:mt-0   ${isSameUser(comment) ? "flex-row-reverse" : "justify-start"}`}>
+                            <div className={` h-14 w-14 shrink-0 overflow-hidden rounded-full ${isSameUser(comment) ? "ml-5 mr-0 " : "mr-5 ml-0"}`}>
                                 <img src={user?.imgURL || ""} alt="" className="h-full w-full" />
                             </div>
-                            <div className=" relative flex h-16 w-full items-center ">
-                                <textarea
-                                    placeholder="เพิ่มความคิดเห็นของคุณ..."
-                                    id="text-area"
-                                    value={input}
-                                    onChange={e => setInput(e.target.value)}
-                                    className="cool-input h-16 w-full rounded-md border p-2 pr-10"
-                                />
-                                <button className="absolute right-5" type="submit">
-                                    <FontAwesomeIcon icon={faCircleChevronRight} className="text-lg" />
-                                </button>
+                            <div className="rounded-md bg-white px-4 py-2">
+                                <div className="font-semibold text-orange-500 ">
+                                    {comment?.owner_id?.firstname} {comment?.owner_id?.lastname}
+                                </div>
+                                <div className="max-w-[300px] break-all">{comment?.comment}</div>
                             </div>
+                            <Moment className="mx-4 self-end whitespace-nowrap text-sm text-white" locale="th" fromNow>
+                                {comment?.createdAt}
+                            </Moment>
+                        </div>
+                    ))}
+                    {(isLoading || isFetching) && (
+                        <div className={`mt-6 flex w-full flex-row-reverse  first:mt-0`}>
+                            <div className={` ml-5 mr-0 h-14 w-14 shrink-0 overflow-hidden rounded-full`}>
+                                <img src={user?.imgURL || ""} alt="" className="h-full w-full" />
+                            </div>
+                            <div className="rounded-md bg-white px-4 py-2">
+                                <div className="font-semibold text-orange-500 ">
+                                    {user?.firstname} {user?.lastname}
+                                </div>
+                                <div className="max-w-[300px] break-all">กำลังส่ง ...</div>
+                            </div>
+                            <Moment className="mx-4 self-end whitespace-nowrap text-sm text-white" locale="th" fromNow>
+                                {Date.now()}
+                            </Moment>
+                        </div>
+                    )}
+                    <div className="mt-6 mb-6 flex w-full items-start">
+                        <div className="mr-5  h-14  w-14 shrink-0 overflow-hidden rounded-full">
+                            <img src={user?.imgURL || ""} alt="" className="h-full w-full" />
+                        </div>
+                        <div className=" relative flex h-16 w-full items-center ">
+                            <textarea
+                                placeholder="เพิ่มความคิดเห็นของคุณ..."
+                                id="text-area"
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
+                                className="cool-input h-16 w-full rounded-md border p-2 pr-10"
+                            />
+                            <button className="absolute right-5" type="submit">
+                                <FontAwesomeIcon icon={faCircleChevronRight} className="text-lg" />
+                            </button>
                         </div>
                     </div>
-                </form>
-            </>
-        )
+                </div>
+            </form>
+        </>
     );
 };
 

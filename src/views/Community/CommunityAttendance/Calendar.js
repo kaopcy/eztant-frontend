@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { v4 as uuid } from "uuid";
 import gsap from "gsap";
@@ -6,12 +6,11 @@ import gsap from "gsap";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { DAY_COLOR } from "../../../generalConfig";
+import { DAY_COLOR, DAY_SHORT_EN } from "../../../generalConfig";
 import { getMonthDetails, DAY_MAP, MONTH_MAP_TH } from "../../../utils/calendarUtils";
 
 import { useToday, useSelectedDay, useSetSelectedDay } from "./AttendanceContext";
-
-
+import { useFetchCommunityByID } from "../../../composables/fetch/useFetchCommunity";
 
 const Calendar = forwardRef((_, ref) => {
     const [monthDetail, setMonthDetail] = useState([]);
@@ -131,6 +130,13 @@ const Calendar = forwardRef((_, ref) => {
         );
     };
 
+    const { data: community, isLoading, error } = useFetchCommunityByID();
+
+    const isActiveIndex = useCallback(
+        index => community?.data?.recruit_post_id?.schedules?.map(e => Object.keys(DAY_SHORT_EN).indexOf(e.day)).includes(index),
+        [community]
+    );
+
     return (
         <div className="flex w-full max-w-[400px] flex-col items-center">
             <div className="mb-4 flex  w-full items-center justify-center space-x-2 text-xl text-white ">
@@ -159,8 +165,14 @@ const Calendar = forwardRef((_, ref) => {
             <div ref={ref} className="flex w-full flex-col items-center rounded-md border bg-white p-4 text-xs shadow-md lg:text-sm">
                 <div className="mt-4 flex w-full flex-wrap justify-between ">
                     {DAY_MAP.map((day, i) => (
-                        <div key={uuid()} className="flex-col-cen w-[13%] ">
-                            <div className="font-bold uppercase opacity-50" style={{ color: Object.values(DAY_COLOR)[i] }}>
+                        <div key={uuid()} className="flex-col-cen relative  w-[13%]">
+                            {isActiveIndex(i) && (
+                                <div
+                                    className={`absolute bottom-full right-0 h-2 w-2  rounded-full ${
+                                        isActiveIndex(i) ? "!bg-red-500" : "bg-black"
+                                    }`}></div>
+                            )}
+                            <div className={` relative font-bold uppercase opacity-50`} style={{ color: Object.values(DAY_COLOR)[i] }}>
                                 {day}
                             </div>
                         </div>

@@ -75,7 +75,9 @@ const PostDesktop = ({ post }) => {
             {(isDeleted || isAccepted) && (
                 <div className="flex-col-cen absolute top-0 left-0 z-50  h-full w-full ">
                     <div className="absolute top-0 left-0  h-full w-full bg-black opacity-40"></div>
-                    {isAccepted && <div className="z-10 text-center mb-5 cursor-default bg-transparent text-5xl font-bold text-white">{post.subject_name}</div>}
+                    {isAccepted && (
+                        <div className="z-10 mb-5 cursor-default bg-transparent text-center text-5xl font-bold text-white">{post.subject_name}</div>
+                    )}
                     <div className="z-10 cursor-default bg-transparent text-3xl font-bold text-white">
                         {isDeleted ? "โพสต์นี้ถูกลบไปแล้ว" : "คุณได้เป็น TA ของวิชานี้แล้ว!"}
                     </div>
@@ -152,19 +154,21 @@ const Header = ({ post, setIsDeleted }) => {
         </div>
     );
 
-    const right = post => (
-        <div className="flex-cen space-x-3">
-            <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow>
-                {post.createdAt}
-            </Moment>
-            {post.owner_id._id === user._id && (
-                <div className="relative">
-                    <FontAwesomeIcon icon={faEllipsis} className="text-lg " onClick={() => setIsEllipsis(e => !e)} />
-                    {isEllipsis && <DeleteButton postID={post?._id} setIsEllipsis={setIsEllipsis} setIsDeleted={setIsDeleted} />}
-                </div>
-            )}
-        </div>
-    );
+    const right = post => {
+        return (
+            <div className="flex-cen space-x-3">
+                <Moment className="whitespace-nowrap text-sm text-text-light" locale="th" fromNow>
+                    {post?.schedules?.[0]?.createdAt}
+                </Moment>
+                {post.owner_id._id === user._id && (
+                    <div className="relative">
+                        <FontAwesomeIcon icon={faEllipsis} className="text-lg " onClick={() => setIsEllipsis(e => !e)} />
+                        {isEllipsis && <DeleteButton postID={post?._id} setIsEllipsis={setIsEllipsis} setIsDeleted={setIsDeleted} />}
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     return (
         <div className="flex-cen w-full">

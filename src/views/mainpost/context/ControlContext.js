@@ -5,7 +5,7 @@ export const SearchContext = createContext({ searchValue: null, setSearchValue: 
 
 export const ControlProvider = ({ children }) => {
     const [searchValue, setSearchValue] = useState("");
-    const [sortBy, setSortBy] = useState("teacherName");
+    const [sortBy, setSortBy] = useState("createdAt");
     const [orderBy, setOrderBy] = useState("ascending");
     return (
         <SortContext.Provider value={{ sortBy, setSortBy, orderBy, setOrderBy }}>

@@ -16,13 +16,8 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
     const { user } = useSelector(state => state.user);
     const tempType = useRef("all");
     const [type, setType] = useState("all");
-    useEffect(() => {
-        console.log(user?.notifications);
-    }, [user.notifications]);
     const notificationList = useMemo(() => {
         return user?.notifications.filter(e => {
-            console.log(`type: ${type}`);
-            console.log(`event: ${e.event_type.split()[0]}`);
             return type === "all" ? true : e.event_type.split(" ")[0] === type;
         });
     }, [user, type]);
@@ -35,7 +30,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
             closeAnimation.current.play();
         },
         play: () => {
-                animation.current.play();
+            animation.current.play();
         },
     }));
 
@@ -143,7 +138,7 @@ const Notification = forwardRef(({ isNoti, setIsNoti }, ref) => {
             <FontAwesomeIcon icon={faXmark} className="absolute right-4 top-4 p-4 text-red-500" onClick={() => closeAnimation.current.play()} />
             {user ? (
                 notificationList.length > 0 ? (
-                    notificationList.map((data,index) => <EachDetail key={data._id} data={data} index={index}/>)
+                    notificationList.map((data, index) => <EachDetail key={data._id} data={data} index={index} />)
                 ) : (
                     <div className="each-detail-noti"></div>
                 )
@@ -193,7 +188,7 @@ const Nav = ({ type, setType }) => {
     );
 };
 
-const EachDetail = forwardRef(({ data , index}, ref) => {
+const EachDetail = forwardRef(({ data, index }, ref) => {
     const interactUser = useMemo(() => {
         return data.description.split(" ")?.slice(0, 3)?.join(" ");
     }, [data.description]);
@@ -202,9 +197,25 @@ const EachDetail = forwardRef(({ data , index}, ref) => {
         return data.description.split(" ")?.slice(3)?.join(" ");
     }, [data.description]);
 
+    // console.log(data);
+
+    const mapped = () => {
+        let to = "";
+        if (data.event_type.split(" ")[0] === "communityPostModel") {
+            to = `/community/${data.api_link}`;
+        }
+        console.log(to);
+        return;
+    };
+    mapped();
+
     return (
         <>
-            <div ref={ref} className={`${index < 5 ? 'each-detail-noti' : ''} flex w-full items-center px-4 py-3 ${data.is_watched ? "bg-white" : "bg-slate-100"}`}>
+            <div
+                ref={ref}
+                className={`${index < 5 ? "each-detail-noti" : ""} flex w-full items-center px-4 py-3 ${
+                    data.is_watched ? "bg-white" : "bg-slate-100"
+                }`}>
                 <div className="mr-6 aspect-square w-10 shrink-0 overflow-hidden rounded-full">
                     <img src={data.imgURL} alt="" className="mr-4 h-full w-full bg-slate-100 object-cover" />
                 </div>

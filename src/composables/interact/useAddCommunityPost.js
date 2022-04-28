@@ -39,7 +39,6 @@ export const useAddCommunityComment = () => {
     return useMutation(addCommunityComment, {
         onSuccess: data => {
             queryClient.invalidateQueries("community");
-
             console.log(data);
         },
     });

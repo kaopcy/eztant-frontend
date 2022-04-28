@@ -63,6 +63,10 @@ export const DEPARTMENT_LINK = [
 
 export const SORT_TYPE = [
     {
+        label: "ตามวันที่",
+        value: "createdAt",
+    },
+    {
         label: "ตามชื่อผู้สอน",
         value: "owner_id.firstname",
     },
@@ -821,7 +825,7 @@ export const COMMUNITY = {
 };
 
 export const DEPARTMENT_MAP = {
-    'All Department': "รวมทุกภาควิชา",
+    "All Department": "รวมทุกภาควิชา",
     Agricultural: "การเกษตร",
     Computer: "คอมพิวเตอร์",
     Chemistry: "เคมี",

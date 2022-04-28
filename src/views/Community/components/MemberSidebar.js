@@ -16,7 +16,7 @@ const MemberSidebar = () => {
             <div className="mx-4 mt-14 text-xl font-bold">สมาชิก ({20})</div>
             <Teacher />
             <div className="mt-10 w-full px-4 text-lg font-semibold">TA</div>
-            {!isLoading && memberLists.map(student => <Student key={uuid()} student={student} />)}
+            {!isLoading && !error && memberLists?.map(student => <Student key={uuid()} student={student} />)}
         </div>
     );
 };

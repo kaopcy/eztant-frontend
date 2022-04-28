@@ -14,10 +14,10 @@ const CommunityAttendence = () => {
     }, [user]);
     return (
         <AttendanceProvider>
-            <div className="relative mt-2 flex w-full space-x-1 px-2">
+            <div className="relative mt-2 flex w-full space-x-1 px-2 justify-center">
                 {isTeacher ? (
                     <>
-                        <div className="flex w-full flex-col  items-center rounded-md border-2 bg-secondary py-8 px-3 shadow-lg">
+                        <div className="flex w-full flex-col max-w-[550px]  items-center rounded-md border-2 bg-secondary py-8 px-3 shadow-lg">
                             <div className="mb-4 flex flex-col items-center text-center font-bold text-white xl:flex-row">
                                 <div className="md:text-base lg:text-xl xl:text-2xl  ">DATA COMMUNICATION</div>
                                 <div className="ml-4 font-normal ">01000123</div>
@@ -27,7 +27,7 @@ const CommunityAttendence = () => {
                         <SectionList />
                     </>
                 ) : (
-                    <div className="flex min-h-[500px] w-full flex-col items-center rounded-md bg-secondary py-8 px-4">
+                    <div className="flex min-h-[500px] max-w-[950px] w-full flex-col items-center rounded-md bg-secondary py-8 px-4">
                         <div className="mb-4 flex  w-full items-center justify-center text-center font-bold text-white">
                             <div className="text-3xl">DATA COMMUNICATION</div>
                             <div className=" ml-4 text-3xl">01000123</div>

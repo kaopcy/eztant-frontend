@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo, useEffect, useLayoutEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import gsap from "gsap";
 import { useForm } from "react-hook-form";
@@ -11,6 +11,8 @@ import { fileValidate } from "../../../../utils/fileUploadValidate";
 import { fileIcon } from "../../../../utils/fileIcon";
 import TranscriptView from "./TranscriptView";
 import { useUploadTranscript } from "../../../../composables/interact/useTranscript";
+
+import { getUser } from '../../../../store/actions/authAction'
 
 const ProfileDetail = () => {
     const { user } = useSelector(state => state.user);
@@ -172,9 +174,10 @@ const FileInput = ({ name, label, register, formState, watch, resetField, setIsO
     const error = useMemo(() => {
         return formState.errors?.[name];
     }, [formState, name]);
-
+    const dispatch = useDispatch()
     const onSuccess = () => {
         console.log("upload transcript success");
+        dispatch(getUser())
     };
     const { mutate, isLoading, error: uploadError, isSuccess } = useUploadTranscript(onSuccess);
 
@@ -215,8 +218,8 @@ const FileInput = ({ name, label, register, formState, watch, resetField, setIsO
 
     return (
         <>
-            <div className="relative flex items-center">
-                <div className="w-[110px]">{label}</div>
+            <div className="relative flex items-center ">
+                <div className="w-[110px] shrink-0">{label}</div>
                 {user.transcript ? (
                     <div className="flex items-center">
                         <div onClick={() => setIsOpenTranscript(true)} className="cursor-pointer text-secondary underline">
@@ -245,7 +248,7 @@ const FileInput = ({ name, label, register, formState, watch, resetField, setIsO
 
                         <label
                             htmlFor="transcript"
-                            className={` btn-white flex  items-center rounded-md border-[1.7px]  px-2 py-1 disabled:text-text-light ${
+                            className={` btn-white flex  items-center whitespace-nowrap rounded-md  border-[1.7px] px-2 py-1 disabled:text-text-light  ${
                                 error ? "border-red-500" : ""
                             }`}>
                             <FontAwesomeIcon className="mr-2" icon={faFileUpload} />
@@ -258,20 +261,25 @@ const FileInput = ({ name, label, register, formState, watch, resetField, setIsO
                                 <div className="absolute text-xs text-red-500">{error.message}</div>
                             </div>
                         )}
-                        {fileInputName && (
-                            <div className="ml-4 flex min-w-0  items-center rounded-full bg-gray-200 px-3 py-1 text-sm font-normal text-text">
-                                <FontAwesomeIcon icon={fileIcon(fileInputName)} />
-                                <div className="ellipsis ml-2 max-w-[100px] ">{fileInputName}</div>
-                                <FontAwesomeIcon
-                                    icon={faXmarkCircle}
-                                    className="ml-2 text-xs"
-                                    onClick={() => {
-                                        setFileInputName(null);
-                                        resetField("file");
-                                    }}
-                                />
-                            </div>
-                        )}
+                        <div className="flex flex-col items-start">
+                            {fileInputName && (
+                                <div className="ml-4 flex min-w-0  items-center rounded-full bg-gray-200 px-3 py-1 text-sm font-normal text-text mb-4">
+                                    <FontAwesomeIcon icon={fileIcon(fileInputName)} />
+                                    <div className="ellipsis ml-2 max-w-[100px] ">{fileInputName}</div>
+                                    <FontAwesomeIcon
+                                        icon={faXmarkCircle}
+                                        className="ml-2 text-xs"
+                                        onClick={() => {
+                                            setFileInputName(null);
+                                            resetField("file");
+                                        }}
+                                    />
+                                </div>
+                            )}
+                            {isLoading && <div className="ml-4 text-xs text-text">กำลังโหลด ...</div>}
+                            {isSuccess && <div className="ml-4 text-xs text-green-400">สำเร็จ</div>}
+                            {uploadError && <div className="ml-4 text-xs text-red-400">{uploadError.response.data.message}</div>}
+                        </div>
                     </>
                 )}
             </div>

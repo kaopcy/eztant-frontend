@@ -15,7 +15,6 @@ const CommunityFile = () => {
         return allFile;
     }, [community]);
     useEffect(() => {
-        console.log("file: ");
         console.log(files);
     }, [files]);
     return (
